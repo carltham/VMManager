@@ -1,0 +1,243 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #102a43;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(26, 158, 255, 0.16), transparent 48%),
+    radial-gradient(circle at 85% 12%, rgba(10, 183, 158, 0.2), transparent 38%),
+    linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.manager-shell {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 24px rgba(16, 42, 67, 0.08);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+}
+
+.hero p {
+  margin: 8px 0 14px;
+  color: #486581;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.notice {
+  margin-top: 14px;
+  background: #eff8ff;
+  border: 1px solid #cce5ff;
+  color: #1a56a0;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.notice.error {
+  background: #feefef;
+  border-color: #f8caca;
+  color: #a61b1b;
+}
+
+.notice.success {
+  background: #e6fffa;
+  border-color: #b2f5ea;
+  color: #0d6b59;
+}
+
+.forms-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.panel h2 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  color: #334e68;
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  border: 1px solid #bcccdc;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #fff;
+}
+
+button {
+  border: none;
+  border-radius: 9px;
+  padding: 9px 12px;
+  background: #127fbf;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(0.95);
+}
+
+.connections {
+  margin-top: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.vm-window {
+  margin-top: 18px;
+}
+
+.vm-window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vm-window-header h2 {
+  margin: 0;
+}
+
+.vm-window-header p {
+  margin: 6px 0 0;
+  color: #486581;
+}
+
+.vm-window-tabs,
+.vm-window-toolbar {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.secondary {
+  background: #486581;
+}
+
+.active-tab {
+  background: #0d6b59;
+}
+
+.vm-window-body {
+  margin-top: 12px;
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.vm-window-body pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #243b53;
+}
+
+.connection-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.connection-card header h3 {
+  margin: 0;
+}
+
+.connection-card header p {
+  margin: 4px 0 8px;
+  color: #486581;
+}
+
+.badge {
+  background: #d9f7ec;
+  color: #0d6b59;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.vm-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.vm-row {
+  border: 1px solid #e1e8f0;
+  border-radius: 10px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.vm-row p {
+  margin: 4px 0 0;
+  color: #486581;
+}
+
+.vm-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vm-actions button {
+  background: #0f6a9f;
+}
+
+.vm-actions .danger {
+  background: #b42318;
+}
+
+.empty {
+  color: #486581;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .manager-shell {
+    padding: 16px;
+  }
+}
