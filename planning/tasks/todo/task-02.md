@@ -1,0 +1,21 @@
+# Task 02 - vm-window
+
+- Status: todo
+- Verify: 0%
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/vmwindow.py, ui/vmwindow.ui, virtManager/baseclass.py, virtManager/details/details.py, virtManager/engine.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py, virtManager/systray.py
+- Flow Classes: vmmVMWindow -> vmmDetails -> vmmConsolePages -> vmmOverlayToolbar -> vmmConnectionManager
+- Actions: open, close, switch tabs, start VM, pause VM, reset VM, reboot VM, shutdown VM, save VM, update status, show console and details views.
+- Action Flows:
+  - open: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - close: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - switch tabs: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - start VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - pause VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - reset VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - reboot VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - shutdown VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - save VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - update status: <signal/click source> -> vmmVMWindow -> <helper/service class>
+  - show console and details views: <signal/click source> -> vmmVMWindow -> <helper/service class>
+- Scope: VM window layout, console display, action buttons, tab switching, and VM state updates.

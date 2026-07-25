@@ -1,0 +1,18 @@
+# Task 09 - add-storage
+
+- Status: todo
+- Verify: 0%
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/device/addstorage.py, ui/addstorage.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py, virtManager/storagebrowse.py
+- Flow Classes: vmmAddStorage -> vmmStorageBrowser
+- Actions: open, close, browse source, select storage path, change format, change size, attach storage, cancel.
+- Action Flows:
+  - open: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - close: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - browse source: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - select storage path: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - change format: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - change size: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - attach storage: <signal/click source> -> vmmAddStorage -> <helper/service class>
+  - cancel: <signal/click source> -> vmmAddStorage -> <helper/service class>
+- Scope: Storage device dialog, source selection, format/size handling, and attach flow.

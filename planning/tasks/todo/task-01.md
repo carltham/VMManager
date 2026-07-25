@@ -1,0 +1,25 @@
+# Task 01 - manager
+
+- Status: todo
+- Verify: 0%
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/manager.py, ui/manager.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/engine.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py, virtManager/vmmenu.py
+- Flow Classes: vmmManager -> vmmConnectionManager -> vmmEngine -> VMActionMenu/VMShutdownMenu
+- Actions: open, close, toggle stats, add connection, create VM, open VM, run VM, pause VM, shutdown VM, delete VM, open host details, open preferences, open about, row activate, show VM context menus.
+- Action Flows:
+  - open: <signal/click source> -> vmmManager -> <helper/service class>
+  - close: <signal/click source> -> vmmManager -> <helper/service class>
+  - toggle stats: <signal/click source> -> vmmManager -> <helper/service class>
+  - add connection: <signal/click source> -> vmmManager -> <helper/service class>
+  - create VM: <signal/click source> -> vmmManager -> <helper/service class>
+  - open VM: <signal/click source> -> vmmManager -> <helper/service class>
+  - run VM: <signal/click source> -> vmmManager -> <helper/service class>
+  - pause VM: <signal/click source> -> vmmManager -> <helper/service class>
+  - shutdown VM: <signal/click source> -> vmmManager -> <helper/service class>
+  - delete VM: <signal/click source> -> vmmManager -> <helper/service class>
+  - open host details: <signal/click source> -> vmmManager -> <helper/service class>
+  - open preferences: <signal/click source> -> vmmManager -> <helper/service class>
+  - open about: <signal/click source> -> vmmManager -> <helper/service class>
+  - row activate: <signal/click source> -> vmmManager -> <helper/service class>
+  - show VM context menus: <signal/click source> -> vmmManager -> <helper/service class>
+- Scope: Main manager window, connection tree, VM list, toolbar, menus, and selection/refresh flow.

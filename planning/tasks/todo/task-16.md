@@ -1,0 +1,20 @@
+# Task 16 - host-networks
+
+- Status: todo
+- Verify: 0%
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/hostnets.py, ui/hostnets.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/lib/uiutil.py
+- Flow Classes: vmmHostNets -> vmmConnectionManager
+- Actions: open, close, refresh list, start network, stop network, delete network, inspect network details.
+- Action Flows:
+	- open: vmmHostNets.__init__ -> vmmHostNets._init_ui -> vmmHostNets._populate_networks -> vmmHostNets._refresh_conn_state
+	- close: vmmHostNets.close -> vmmCreateNetwork.close
+	- refresh list: vmmHostNets.refresh_page -> vmmConnection.schedule_priority_tick(pollnet=True) -> vmmHostNets._conn_nets_changed_cb -> vmmHostNets._populate_networks
+	- add network: on_net_add_clicked -> vmmHostNets._add_network_cb -> vmmCreateNetwork
+	- start network: on_net_start_clicked -> vmmHostNets._start_network_cb -> vmmAsyncJob -> selected network object
+	- stop network: on_net_stop_clicked -> vmmHostNets._stop_network_cb -> vmmAsyncJob -> selected network object
+	- delete network: on_net_delete_clicked -> vmmHostNets._delete_network_cb -> vmmAsyncJob -> selected network object
+	- inspect network details: on_net_list_changed -> vmmHostNets._net_selected_cb -> vmmHostNets._refresh_current_network -> vmmHostNets._populate_net_state
+	- apply edits: on_net_apply_clicked -> vmmHostNets._net_apply -> selected network object update
+	- edit tracking: on_net_name_changed/on_net_autostart_toggled -> vmmHostNets._enable_net_apply
+- Scope: Host network management, network list, actions, and state transitions.

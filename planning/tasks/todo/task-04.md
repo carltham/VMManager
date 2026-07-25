@@ -1,0 +1,28 @@
+# Task 04 - create-vm
+
+- Status: todo
+- Verify: 0%
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/createvm.py, ui/createvm.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/device/addstorage.py, virtManager/device/mediacombo.py, virtManager/device/netlist.py, virtManager/engine.py, virtManager/object/domain.py, virtManager/oslist.py, virtManager/storagebrowse.py, virtManager/vmwindow.py
+- Flow Classes: vmmCreateVM -> vmmAddStorage -> vmmMediaCombo -> vmmNetworkList -> vmmStorageBrowser -> vmmOSList -> vmmAsyncJob -> vmmVMWindow
+- Actions: open, close, back, next, finish, change connection, change install method, browse ISO, browse URL, browse import source, browse app source, browse OS container source, toggle detect OS, toggle storage, change arch, change type, change machine, edit VM name.
+- Action Flows:
+  - open: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - close: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - back: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - next: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - finish: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - change connection: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - change install method: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - browse ISO: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - browse URL: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - browse import source: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - browse app source: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - browse OS container source: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - toggle detect OS: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - toggle storage: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - change arch: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - change type: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - change machine: <signal/click source> -> vmmCreateVM -> <helper/service class>
+  - edit VM name: <signal/click source> -> vmmCreateVM -> <helper/service class>
+- Scope: VM creation wizard, step navigation, input validation, device setup, and finish flow.
