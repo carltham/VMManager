@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.vmmanager.webapp.manager.ManagerService;
 
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
-import main.java.com.vmmanager.webapp.vmwindow.VmWindowDto;
-import main.java.com.vmmanager.webapp.vmwindow.VmWindowTab;
+import com.vmmanager.webapp.manager.ManagerVmDto;
+import com.vmmanager.webapp.vmwindow.VmWindowDto;
+import com.vmmanager.webapp.vmwindow.VmWindowTab;
 
 @Service
 public class VmWindowService {

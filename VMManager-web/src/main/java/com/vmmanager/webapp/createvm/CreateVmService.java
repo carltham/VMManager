@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.vmmanager.webapp.manager.ManagerOverviewDto;
 import com.vmmanager.webapp.manager.ManagerService;
 
-import main.java.com.vmmanager.webapp.createvm.CreateVmWizardDto;
-import main.java.com.vmmanager.webapp.manager.ManagerConnectionDto;
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
+import com.vmmanager.webapp.createvm.CreateVmWizardDto;
+import com.vmmanager.webapp.manager.ManagerConnectionDto;
+import com.vmmanager.webapp.manager.ManagerVmDto;
 
 @Service
 public class CreateVmService {

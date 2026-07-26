@@ -1,7 +1,14 @@
 <main class="manager-shell">
   <header class="hero">
     <h1>VM Manager</h1>
-    <p>Componentized UI modules: manager, vm-window, vm-details</p>
+    <p>Grouped views: manager workspace and VM wizards</p>
+    <nav class="top-nav">
+      <button type="button" [class.active]="showManagerPage()" (click)="setActivePage('manager')">Manager</button>
+      <button type="button" [class.active]="showCreateVmPage()" (click)="setActivePage('create-vm')">Create VM
+        Wizard</button>
+      <button type="button" [class.active]="showCloneVmPage()" (click)="setActivePage('clone-vm')">Clone VM
+        Wizard</button>
+    </nav>
   </header>
 
   @if (isLoading) {
@@ -16,11 +23,14 @@
   <section class="notice success">{{ infoMessage }}</section>
   }
 
+  @if (showManagerPage()) {
   <app-manager [overview]="overview" [initialConnectionId]="selectedConnectionId" (refresh)="refresh()"
     (toggleStats)="toggleStats()" (addConnection)="addConnection($event)" (createVm)="createVm($event)"
     (openVm)="openVm($event)" (runVm)="runVm($event)" (pauseVm)="pauseVm($event)" (shutdownVm)="shutdownVm($event)"
     (deleteVm)="deleteVm($event)" />
+  }
 
+  @if (showCreateVmPage()) {
   <app-create-vm [connections]="overview?.connections ?? []" [wizard]="createVmWizard"
     (openWizard)="openCreateVmWizard()" (closeWizard)="closeCreateVmWizard()" (back)="createVmBack()"
     (next)="createVmNext()" (finish)="createVmFinish()" (changeConnection)="createVmChangeConnection($event)"
@@ -31,16 +41,22 @@
     (toggleDetectOs)="createVmToggleDetectOs($event)" (toggleStorage)="createVmToggleStorage($event)"
     (changeArch)="createVmChangeArch($event)" (changeType)="createVmChangeType($event)"
     (changeMachine)="createVmChangeMachine($event)" (editVmName)="createVmEditVmName($event)" />
+  }
 
+  @if (showCloneVmPage()) {
   <app-clone-vm [allVms]="allVms()" [dialog]="cloneVmDialog" (openDialog)="openCloneVmDialog()"
     (closeDialog)="closeCloneVmDialog()" (selectSourceVm)="selectCloneSourceVm($event)"
     (chooseCloneMode)="chooseCloneMode($event)" (browseDestination)="browseCloneDestination($event)"
     (changeDiskOptions)="changeCloneDiskOptions($event)" (editCloneName)="editCloneName($event)"
     (confirmClone)="confirmClone()" />
+  }
 
+  @if (showManagerPage()) {
   <app-vm-window [vmWindow]="vmWindow" (closeWindow)="closeVmWindow()" (switchTab)="switchVmWindowTab($event)"
     (action)="runVmWindowActionFromUi($event)" />
+  }
 
+  @if (showManagerPage()) {
   <app-vm-details [allVms]="allVms()" [vmDetails]="vmDetails" (open)="openVmDetails($event)"
     (refresh)="refreshVmDetails()" (selectHardware)="selectDetailsHardware($event)"
     (editGeneral)="editGeneralSettings($event)" (editCpu)="editCpuSettings($event)"
@@ -50,4 +66,5 @@
     (editTpm)="editTpm($event)" (editVsock)="editVsock($event)" (launchXml)="launchXmlEditor()"
     (launchStorageBrowser)="launchStorageBrowser()" (launchOsList)="launchOsList()"
     (applyChanges)="applyDetailsChanges()" />
+  }
 </main>

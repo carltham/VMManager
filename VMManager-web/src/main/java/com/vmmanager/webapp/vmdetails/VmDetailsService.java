@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.vmmanager.webapp.manager.ManagerService;
 
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
+import com.vmmanager.webapp.manager.ManagerVmDto;
 
 @Service
 public class VmDetailsService {

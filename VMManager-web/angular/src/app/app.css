@@ -33,6 +33,29 @@
   color: #486581;
 }
 
+.top-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.top-nav button {
+  color: #0b4570;
+  font-weight: 600;
+  border: 1px solid #bcccdc;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+
+.top-nav button.active {
+  background: #0b4570;
+  color: #fff;
+  border-color: #0b4570;
+}
+
 .notice {
   margin-top: 14px;
   background: #eff8ff;

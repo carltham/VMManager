@@ -2,7 +2,7 @@ package com.vmmanager.webapp.vmdetails;
 
 import java.util.List;
 
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
+import com.vmmanager.webapp.manager.ManagerVmDto;
 
 public record VmDetailsDto(
         ManagerVmDto vm,

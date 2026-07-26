@@ -1,6 +1,6 @@
 package com.vmmanager.webapp.vmwindow;
 
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
+import com.vmmanager.webapp.manager.ManagerVmDto;
 
 public record VmWindowDto(
         ManagerVmDto vm,

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import main.java.com.vmmanager.webapp.vmwindow.VmWindowDto;
-import main.java.com.vmmanager.webapp.vmwindow.VmWindowTab;
+import com.vmmanager.webapp.vmwindow.VmWindowDto;
+import com.vmmanager.webapp.vmwindow.VmWindowTab;
 
 @RestController
 @RequestMapping("/api/vm-window")

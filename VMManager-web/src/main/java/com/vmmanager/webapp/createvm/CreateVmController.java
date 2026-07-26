@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import main.java.com.vmmanager.webapp.createvm.CreateVmWizardDto;
+import com.vmmanager.webapp.createvm.CreateVmWizardDto;
 
 @RestController
 @RequestMapping("/api/create-vm")

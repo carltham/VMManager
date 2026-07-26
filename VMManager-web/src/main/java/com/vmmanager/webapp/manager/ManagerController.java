@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import main.java.com.vmmanager.webapp.manager.ManagerActionResultDto;
-import main.java.com.vmmanager.webapp.manager.ManagerConnectionDto;
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
+import com.vmmanager.webapp.manager.ManagerActionResultDto;
+import com.vmmanager.webapp.manager.ManagerConnectionDto;
+import com.vmmanager.webapp.manager.ManagerVmDto;
 
 @RestController
 @RequestMapping("/api/manager")

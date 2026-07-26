@@ -47,9 +47,26 @@ export class App implements OnInit {
   cloneVmDialog: CloneVmDialogView | null = null;
   vmWindow: VmWindowView | null = null;
   vmDetails: VmDetailsView | null = null;
+  activePage: 'manager' | 'create-vm' | 'clone-vm' = 'manager';
 
   ngOnInit(): void {
     this.refresh();
+  }
+
+  setActivePage(page: 'manager' | 'create-vm' | 'clone-vm'): void {
+    this.activePage = page;
+  }
+
+  showManagerPage(): boolean {
+    return this.activePage === 'manager';
+  }
+
+  showCreateVmPage(): boolean {
+    return this.activePage === 'create-vm';
+  }
+
+  showCloneVmPage(): boolean {
+    return this.activePage === 'clone-vm';
   }
 
   refresh(): void {
