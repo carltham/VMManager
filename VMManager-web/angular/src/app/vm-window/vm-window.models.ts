@@ -1,4 +1,4 @@
-import { VmItem } from './manager.models';
+import { VmItem } from '../manager/manager.models';
 
 export type VmWindowTab = 'CONSOLE' | 'DETAILS';
 

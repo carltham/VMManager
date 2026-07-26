@@ -2,8 +2,8 @@
 
 ## Metadata
 
-- Status: todo
-- Verify: 0%
+- Status: done
+- Verify: 100%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 
 ## UIModule

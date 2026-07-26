@@ -1,13 +1,7 @@
 <main class="manager-shell">
   <header class="hero">
     <h1>VM Manager</h1>
-    <p>UIModule 01: manager (connections, VM list, and lifecycle actions)</p>
-    <div class="hero-actions">
-      <button type="button" (click)="refresh()">Refresh</button>
-      <button type="button" (click)="toggleStats()">
-        Toggle Stats: {{ overview?.statsEnabled ? 'ON' : 'OFF' }}
-      </button>
-    </div>
+    <p>Componentized UI modules: manager, vm-window, vm-details</p>
   </header>
 
   @if (isLoading) {
@@ -22,117 +16,38 @@
   <section class="notice success">{{ infoMessage }}</section>
   }
 
-  <section class="forms-grid">
-    <form class="panel" (ngSubmit)="addConnection()">
-      <h2>Add Connection</h2>
-      <label>
-        Name
-        <input name="connectionName" [(ngModel)]="connectionName" placeholder="Lab Host" required />
-      </label>
-      <label>
-        URI
-        <input name="connectionUri" [(ngModel)]="connectionUri" placeholder="qemu:///system" required />
-      </label>
-      <button type="submit">Add Connection</button>
-    </form>
+  <app-manager [overview]="overview" [initialConnectionId]="selectedConnectionId" (refresh)="refresh()"
+    (toggleStats)="toggleStats()" (addConnection)="addConnection($event)" (createVm)="createVm($event)"
+    (openVm)="openVm($event)" (runVm)="runVm($event)" (pauseVm)="pauseVm($event)" (shutdownVm)="shutdownVm($event)"
+    (deleteVm)="deleteVm($event)" />
 
-    <form class="panel" (ngSubmit)="createVm()">
-      <h2>Create VM</h2>
-      <label>
-        Connection
-        <select name="selectedConnectionId" [(ngModel)]="selectedConnectionId" required>
-          @for (connection of overview?.connections ?? []; track connection.id) {
-          <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
-          }
-        </select>
-      </label>
-      <label>
-        VM name
-        <input name="vmName" [(ngModel)]="vmName" placeholder="new-vm" required />
-      </label>
-      <button type="submit">Create VM</button>
-    </form>
-  </section>
+  <app-create-vm [connections]="overview?.connections ?? []" [wizard]="createVmWizard"
+    (openWizard)="openCreateVmWizard()" (closeWizard)="closeCreateVmWizard()" (back)="createVmBack()"
+    (next)="createVmNext()" (finish)="createVmFinish()" (changeConnection)="createVmChangeConnection($event)"
+    (changeInstallMethod)="createVmChangeInstallMethod($event)" (browseIso)="createVmBrowseIso($event)"
+    (browseUrl)="createVmBrowseUrl($event)" (browseImportSource)="createVmBrowseImportSource($event)"
+    (browseAppSource)="createVmBrowseAppSource($event)"
+    (browseOsContainerSource)="createVmBrowseOsContainerSource($event)"
+    (toggleDetectOs)="createVmToggleDetectOs($event)" (toggleStorage)="createVmToggleStorage($event)"
+    (changeArch)="createVmChangeArch($event)" (changeType)="createVmChangeType($event)"
+    (changeMachine)="createVmChangeMachine($event)" (editVmName)="createVmEditVmName($event)" />
 
-  <section class="connections">
-    @for (connection of overview?.connections ?? []; track connection.id) {
-    <article class="connection-card">
-      <header>
-        <h3>{{ connection.name }}</h3>
-        <p>{{ connection.uri }}</p>
-        <span class="badge">{{ vmCount(connection) }} VM(s)</span>
-      </header>
+  <app-clone-vm [allVms]="allVms()" [dialog]="cloneVmDialog" (openDialog)="openCloneVmDialog()"
+    (closeDialog)="closeCloneVmDialog()" (selectSourceVm)="selectCloneSourceVm($event)"
+    (chooseCloneMode)="chooseCloneMode($event)" (browseDestination)="browseCloneDestination($event)"
+    (changeDiskOptions)="changeCloneDiskOptions($event)" (editCloneName)="editCloneName($event)"
+    (confirmClone)="confirmClone()" />
 
-      <div class="vm-list">
-        @if (connection.vms.length === 0) {
-        <p class="empty">No VMs yet.</p>
-        }
+  <app-vm-window [vmWindow]="vmWindow" (closeWindow)="closeVmWindow()" (switchTab)="switchVmWindowTab($event)"
+    (action)="runVmWindowActionFromUi($event)" />
 
-        @for (vm of connection.vms; track vm.id) {
-        <div class="vm-row">
-          <div>
-            <strong>{{ vm.name }}</strong>
-            <p>State: {{ vm.state }} | Opened: {{ vm.opened ? 'yes' : 'no' }}</p>
-          </div>
-          <div class="vm-actions">
-            <button type="button" (click)="openVm(vm)">Open</button>
-            <button type="button" (click)="runVm(vm)">Run</button>
-            <button type="button" (click)="pauseVm(vm)">Pause</button>
-            <button type="button" (click)="shutdownVm(vm)">Shutdown</button>
-            <button type="button" class="danger" (click)="deleteVm(vm)">Delete</button>
-          </div>
-        </div>
-        }
-      </div>
-    </article>
-    }
-  </section>
-
-  <section class="vm-window panel">
-    <header class="vm-window-header">
-      <div>
-        <h2>VM Window Module (Task 02)</h2>
-        @if (vmWindow) {
-        <p>Active VM: {{ vmWindow.vm.name }} ({{ vmWindow.vm.state }})</p>
-        } @else {
-        <p>Open a VM from the manager list to instantiate vm-window.</p>
-        }
-      </div>
-      @if (vmWindow) {
-      <button type="button" class="secondary" (click)="closeVmWindow()">Close Window</button>
-      }
-    </header>
-
-    @if (vmWindow) {
-    <div class="vm-window-tabs">
-      <button type="button" [class.active-tab]="vmWindow.activeTab === 'CONSOLE'"
-        (click)="switchVmWindowTab('CONSOLE')">
-        Console
-      </button>
-      <button type="button" [class.active-tab]="vmWindow.activeTab === 'DETAILS'"
-        (click)="switchVmWindowTab('DETAILS')">
-        Details
-      </button>
-    </div>
-
-    <div class="vm-window-toolbar">
-      <button type="button" (click)="startFromVmWindow()">Start</button>
-      <button type="button" (click)="pauseFromVmWindow()">Pause</button>
-      <button type="button" (click)="resetFromVmWindow()">Reset</button>
-      <button type="button" (click)="rebootFromVmWindow()">Reboot</button>
-      <button type="button" (click)="shutdownFromVmWindow()">Shutdown</button>
-      <button type="button" (click)="saveFromVmWindow()">Save</button>
-      <button type="button" class="secondary" (click)="updateVmWindowStatus()">Update Status</button>
-    </div>
-
-    <div class="vm-window-body">
-      @if (vmWindow.activeTab === 'CONSOLE') {
-      <pre>{{ vmWindow.consoleText }}</pre>
-      }
-      @if (vmWindow.activeTab === 'DETAILS') {
-      <pre>{{ vmWindow.detailsText }}</pre>
-      }
-    </div>
-    }
-  </section>
+  <app-vm-details [allVms]="allVms()" [vmDetails]="vmDetails" (open)="openVmDetails($event)"
+    (refresh)="refreshVmDetails()" (selectHardware)="selectDetailsHardware($event)"
+    (editGeneral)="editGeneralSettings($event)" (editCpu)="editCpuSettings($event)"
+    (editMemory)="editMemorySettings($event)" (editBoot)="editBootSettings($event)"
+    (addHardware)="addHardwareFromDetails($event)" (removeHardware)="removeHardwareFromDetails($event)"
+    (editStorage)="editStorage($event)" (editNetwork)="editNetwork($event)" (editGraphics)="editGraphics($event)"
+    (editTpm)="editTpm($event)" (editVsock)="editVsock($event)" (launchXml)="launchXmlEditor()"
+    (launchStorageBrowser)="launchStorageBrowser()" (launchOsList)="launchOsList()"
+    (applyChanges)="applyDetailsChanges()" />
 </main>

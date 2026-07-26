@@ -8,10 +8,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
-import main.java.com.vmmanager.webapp.manager.ManagerConnectionDto;
-import main.java.com.vmmanager.webapp.manager.ManagerVmDto;
-import main.java.com.vmmanager.webapp.manager.ManagerVmState;
-
 @Service
 public class ManagerService {
 

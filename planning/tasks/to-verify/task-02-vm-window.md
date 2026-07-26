@@ -1,7 +1,7 @@
 # Task 02 - vm-window
 
-- Status: todo
-- Verify: 0%
+- Status: done
+- Verify: 100%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/vmwindow.py, ui/vmwindow.ui, virtManager/baseclass.py, virtManager/details/details.py, virtManager/engine.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py, virtManager/systray.py
 - Flow Classes: vmmVMWindow -> vmmDetails -> vmmConsolePages -> vmmOverlayToolbar -> vmmConnectionManager

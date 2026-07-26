@@ -1,0 +1,92 @@
+<section class="create-vm panel">
+  <header class="create-vm-header">
+    <h2>Create VM Module (Task 04)</h2>
+    @if (wizard) {
+    <p>Step {{ wizard.step }} of 5 | {{ wizard.statusMessage }}</p>
+    }
+  </header>
+
+  @if (!wizard || !wizard.open) {
+  <button type="button" (click)="openWizard.emit()">Open Create VM Wizard</button>
+  }
+
+  @if (wizard && wizard.open) {
+  <div class="wizard-grid">
+    <label>
+      Connection
+      <select [(ngModel)]="localConnectionId" (change)="changeConnection.emit(localConnectionId!)">
+        @for (connection of connections; track connection.id) {
+        <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Install Method
+      <input [(ngModel)]="localInstallMethod" (change)="changeInstallMethod.emit(localInstallMethod)" />
+    </label>
+
+    <label>
+      VM Name
+      <input [(ngModel)]="localVmName" (change)="editVmName.emit(localVmName)" />
+    </label>
+
+    <label>
+      ISO Path
+      <input [(ngModel)]="localIsoPath" (change)="browseIso.emit(localIsoPath)" />
+    </label>
+
+    <label>
+      URL
+      <input [(ngModel)]="localUrl" (change)="browseUrl.emit(localUrl)" />
+    </label>
+
+    <label>
+      Import Source
+      <input [(ngModel)]="localImportSource" (change)="browseImportSource.emit(localImportSource)" />
+    </label>
+
+    <label>
+      App Source
+      <input [(ngModel)]="localAppSource" (change)="browseAppSource.emit(localAppSource)" />
+    </label>
+
+    <label>
+      OS Container Source
+      <input [(ngModel)]="localOsContainerSource" (change)="browseOsContainerSource.emit(localOsContainerSource)" />
+    </label>
+
+    <label>
+      Detect OS
+      <input type="checkbox" [(ngModel)]="localDetectOs" (change)="toggleDetectOs.emit(localDetectOs)" />
+    </label>
+
+    <label>
+      Enable Storage
+      <input type="checkbox" [(ngModel)]="localStorageEnabled" (change)="toggleStorage.emit(localStorageEnabled)" />
+    </label>
+
+    <label>
+      Arch
+      <input [(ngModel)]="localArch" (change)="changeArch.emit(localArch)" />
+    </label>
+
+    <label>
+      Type
+      <input [(ngModel)]="localType" (change)="changeType.emit(localType)" />
+    </label>
+
+    <label>
+      Machine
+      <input [(ngModel)]="localMachine" (change)="changeMachine.emit(localMachine)" />
+    </label>
+  </div>
+
+  <div class="wizard-actions">
+    <button type="button" (click)="back.emit()">Back</button>
+    <button type="button" (click)="next.emit()">Next</button>
+    <button type="button" class="success" (click)="finish.emit()">Finish</button>
+    <button type="button" class="secondary" (click)="closeWizard.emit()">Close</button>
+  </div>
+  }
+</section>

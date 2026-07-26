@@ -1,7 +1,7 @@
 # Task 05 - clone-vm
 
-- Status: todo
-- Verify: 0%
+- Status: done
+- Verify: 100%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/clone.py, ui/clone.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/storagebrowse.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmCloneVM -> vmmAsyncJob -> vmmStorageBrowser

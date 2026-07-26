@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { API_BASE } from './api-base';
+import { API_BASE } from '../api-base';
 import { VmWindowTab, VmWindowView } from './vm-window.models';
 
 @Injectable({ providedIn: 'root' })

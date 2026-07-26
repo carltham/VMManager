@@ -1,0 +1,53 @@
+<section class="clone-vm panel">
+  <header class="clone-header">
+    <h2>Clone VM Module (Task 05)</h2>
+    @if (dialog) {
+    <p>{{ dialog.statusMessage }}</p>
+    }
+  </header>
+
+  @if (!dialog || !dialog.open) {
+  <button type="button" (click)="openDialog.emit()">Open Clone Dialog</button>
+  }
+
+  @if (dialog && dialog.open) {
+  <div class="clone-grid">
+    <label>
+      Source VM
+      <select [(ngModel)]="localSourceVmId" (change)="selectSourceVm.emit(localSourceVmId!)">
+        @for (vm of allVms; track vm.id) {
+        <option [ngValue]="vm.id">{{ vm.name }} ({{ vm.state }})</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Clone Mode
+      <select [(ngModel)]="localCloneMode" (change)="chooseCloneMode.emit(localCloneMode)">
+        <option value="clone">clone</option>
+        <option value="share">share</option>
+      </select>
+    </label>
+
+    <label>
+      Destination
+      <input [(ngModel)]="localDestinationPath" (change)="browseDestination.emit(localDestinationPath)" />
+    </label>
+
+    <label>
+      Disk Options
+      <input [(ngModel)]="localDiskOptions" (change)="changeDiskOptions.emit(localDiskOptions)" />
+    </label>
+
+    <label>
+      Clone Name
+      <input [(ngModel)]="localCloneName" (change)="editCloneName.emit(localCloneName)" />
+    </label>
+  </div>
+
+  <div class="clone-actions">
+    <button type="button" class="success" (click)="confirmClone.emit()">Confirm Clone</button>
+    <button type="button" class="secondary" (click)="closeDialog.emit()">Close</button>
+  </div>
+  }
+</section>

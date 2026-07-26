@@ -1,0 +1,83 @@
+.panel {
+  margin-top: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.vm-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vm-details-header h2 {
+  margin: 0;
+}
+
+.actions,
+.row-actions,
+.module-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status {
+  margin: 10px 0;
+  color: #0d6b59;
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  color: #334e68;
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  border: 1px solid #bcccdc;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #fff;
+}
+
+button {
+  border: none;
+  border-radius: 9px;
+  padding: 9px 12px;
+  background: #127fbf;
+  color: #fff;
+  cursor: pointer;
+}
+
+.secondary {
+  background: #486581;
+}
+
+.devices {
+  margin: 12px 0 0;
+  color: #334e68;
+}

@@ -1,0 +1,67 @@
+.panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.vm-window {
+  margin-top: 18px;
+}
+
+.vm-window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vm-window-header h2 {
+  margin: 0;
+}
+
+.vm-window-header p {
+  margin: 6px 0 0;
+  color: #486581;
+}
+
+.vm-window-tabs,
+.vm-window-toolbar {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: none;
+  border-radius: 9px;
+  padding: 9px 12px;
+  background: #127fbf;
+  color: #fff;
+  cursor: pointer;
+}
+
+.secondary {
+  background: #486581;
+}
+
+.active-tab {
+  background: #0d6b59;
+}
+
+.vm-window-body {
+  margin-top: 12px;
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.vm-window-body pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #243b53;
+}

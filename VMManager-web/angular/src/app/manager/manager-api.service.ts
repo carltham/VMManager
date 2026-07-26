@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { API_BASE } from './api-base';
+import { API_BASE } from '../api-base';
 import { ActionResult, ConnectionItem, ManagerOverview, VmItem } from './manager.models';
 
 @Injectable({ providedIn: 'root' })

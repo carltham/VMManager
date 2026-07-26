@@ -1,7 +1,7 @@
 # Task 04 - create-vm
 
-- Status: todo
-- Verify: 0%
+- Status: done
+- Verify: 100%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createvm.py, ui/createvm.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/device/addstorage.py, virtManager/device/mediacombo.py, virtManager/device/netlist.py, virtManager/engine.py, virtManager/object/domain.py, virtManager/oslist.py, virtManager/storagebrowse.py, virtManager/vmwindow.py
 - Flow Classes: vmmCreateVM -> vmmAddStorage -> vmmMediaCombo -> vmmNetworkList -> vmmStorageBrowser -> vmmOSList -> vmmAsyncJob -> vmmVMWindow
