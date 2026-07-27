@@ -1,7 +1,11 @@
 # Task 02 - vm-window
 
-- Status: done
-- Verify: 100%
+- Status: in-progress
+- Verify: 80%
+- Conversion Progress: [####################] 100%
+- Verification Progress: [################....] 80%
+- TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/vmwindow.py, ui/vmwindow.ui, virtManager/baseclass.py, virtManager/details/details.py, virtManager/engine.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py, virtManager/systray.py
 - Flow Classes: vmmVMWindow -> vmmDetails -> vmmConsolePages -> vmmOverlayToolbar -> vmmConnectionManager

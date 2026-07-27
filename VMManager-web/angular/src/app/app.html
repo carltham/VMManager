@@ -8,6 +8,11 @@
         Wizard</button>
       <button type="button" [class.active]="showCloneVmPage()" (click)="setActivePage('clone-vm')">Clone VM
         Wizard</button>
+      <button type="button" [class.active]="showCreateNetworkPage()" (click)="setActivePage('create-network')">Create
+        Network</button>
+      <button type="button" [class.active]="showHostNetworksPage()" (click)="setActivePage('host-networks')">Host
+        Networks</button>
+      <button type="button" [class.active]="showStoragePage()" (click)="setActivePage('storage')">Storage</button>
     </nav>
   </header>
 
@@ -27,7 +32,17 @@
   <app-manager [overview]="overview" [initialConnectionId]="selectedConnectionId" (refresh)="refresh()"
     (toggleStats)="toggleStats()" (addConnection)="addConnection($event)" (createVm)="createVm($event)"
     (openVm)="openVm($event)" (runVm)="runVm($event)" (pauseVm)="pauseVm($event)" (shutdownVm)="shutdownVm($event)"
-    (deleteVm)="deleteVm($event)" />
+    (migrateVm)="openMigrateVmDialog($event)" (deleteVm)="deleteVm($event)" />
+
+  <app-migrate-vm [dialog]="migrateVmDialog" (closeDialog)="closeMigrateVmDialog()"
+    (chooseDestination)="updateMigrationText('destination', $event)"
+    (toggleAddress)="updateMigrationOption('address', $event)" (togglePort)="updateMigrationOption('port', $event)"
+    (changeMigrationMode)="updateMigrationText('mode', $event)" (editXmlPreview)="updateMigrationText('xml', $event)"
+    (finishMigration)="finishMigration()" (cancelMigration)="cancelMigration()" />
+
+  <app-delete-vm [dialog]="deleteVmDialog" (closeDialog)="closeDeleteVmDialog()"
+    (toggleRemoveStorage)="toggleDeleteVmStorage($event)" (confirmDelete)="confirmDeleteVm()"
+    (cancelDelete)="cancelDeleteVm()" />
   }
 
   @if (showCreateVmPage()) {
@@ -50,6 +65,15 @@
     (changeDiskOptions)="changeCloneDiskOptions($event)" (editCloneName)="editCloneName($event)"
     (confirmClone)="confirmClone()" />
   }
+  @if (showCreateNetworkPage()) {
+  <app-create-network [wizard]="createNetworkWizard" (openWizard)="openCreateNetworkWizard()"
+    (closeWizard)="runCreateNetworkAction('close')" (back)="runCreateNetworkAction('back')"
+    (next)="runCreateNetworkAction('next')" (configureNetwork)="configureNetwork($event)"
+    (setAddressRange)="setNetworkAddressRange($event)" (review)="runCreateNetworkAction('review')"
+    (create)="runCreateNetworkAction('create')" (cancel)="runCreateNetworkAction('cancel')" />
+  }
+  @if (showHostNetworksPage()) { <app-host-networks /> }
+  @if (showStoragePage()) { <app-storage-management /> }
 
   @if (showManagerPage()) {
   <app-vm-window [vmWindow]="vmWindow" (closeWindow)="closeVmWindow()" (switchTab)="switchVmWindowTab($event)"
@@ -61,10 +85,39 @@
     (refresh)="refreshVmDetails()" (selectHardware)="selectDetailsHardware($event)"
     (editGeneral)="editGeneralSettings($event)" (editCpu)="editCpuSettings($event)"
     (editMemory)="editMemorySettings($event)" (editBoot)="editBootSettings($event)"
-    (addHardware)="addHardwareFromDetails($event)" (removeHardware)="removeHardwareFromDetails($event)"
-    (editStorage)="editStorage($event)" (editNetwork)="editNetwork($event)" (editGraphics)="editGraphics($event)"
-    (editTpm)="editTpm($event)" (editVsock)="editVsock($event)" (launchXml)="launchXmlEditor()"
-    (launchStorageBrowser)="launchStorageBrowser()" (launchOsList)="launchOsList()"
-    (applyChanges)="applyDetailsChanges()" />
+    (addHardware)="addHardwareFromDetails($event)" (openAddHardware)="openAddHardwareDialog()"
+    (openAddStorage)="openAddStorageDialog()" (openFilesystemDetails)="openFilesystemDetailsDialog()"
+    (openGraphicsDetails)="openGraphicsDetailsDialog()" (openTpmDetails)="openTpmDetailsDialog()"
+    (openVsockDetails)="openVsockDetailsDialog()" (openNetworkList)="openNetworkListDialog()"
+    (removeHardware)="removeHardwareFromDetails($event)" (editStorage)="editStorage($event)"
+    (editNetwork)="editNetwork($event)" (editGraphics)="editGraphics($event)" (editTpm)="editTpm($event)"
+    (editVsock)="editVsock($event)" (launchXml)="launchXmlEditor()" (launchStorageBrowser)="launchStorageBrowser()"
+    (launchOsList)="launchOsList()" (applyChanges)="applyDetailsChanges()" />
+
+  <app-add-hardware [dialog]="addHardwareDialog" (closeDialog)="runAddHardwareAction('close')"
+    (selectDeviceType)="updateAddHardware('type', $event)"
+    (configureDevice)="updateAddHardware('configuration', $event)" (validateDevice)="runAddHardwareAction('validate')"
+    (apply)="runAddHardwareAction('apply')" (cancel)="runAddHardwareAction('cancel')" />
+  <app-add-storage [dialog]="addStorageDialog" (closeDialog)="runAddStorageAction('close')"
+    (browseSource)="updateAddStorage('source', $event)" (selectStoragePath)="updateAddStorage('path', $event)"
+    (changeFormat)="updateAddStorage('format', $event)" (changeSize)="updateAddStorage('size', $event)"
+    (attachStorage)="runAddStorageAction('attach')" (cancel)="runAddStorageAction('cancel')" />
+  <app-filesystem-details [dialog]="filesystemDetailsDialog" (closeDialog)="runFilesystemDetailsAction('close')"
+    (editFilesystemPath)="updateFilesystemDetails('path', $event)"
+    (editTarget)="updateFilesystemDetails('target', $event)" (apply)="runFilesystemDetailsAction('apply')"
+    (cancel)="runFilesystemDetailsAction('cancel')" />
+  <app-graphics-details [dialog]="graphicsDetailsDialog" (closeDialog)="runGraphicsDetailsAction('close')"
+    (changeGraphicsType)="updateGraphicsType($event)" (changeConnection)="updateGraphicsConnection($event)"
+    (apply)="runGraphicsDetailsAction('apply')" (cancel)="runGraphicsDetailsAction('cancel')" />
+  <app-tpm-details [dialog]="tpmDetailsDialog" (closeDialog)="runTpmDetailsAction('close')"
+    (changeModel)="updateTpm('model',$event)" (changeVersion)="updateTpm('version',$event)"
+    (changeDevicePath)="updateTpm('path',$event)" (apply)="runTpmDetailsAction('apply')"
+    (cancel)="runTpmDetailsAction('cancel')" />
+  <app-vsock-details [dialog]="vsockDetailsDialog" (closeDialog)="runVsockDetailsAction('close')"
+    (toggleAutoCid)="updateVsockAutoCid($event)" (editCid)="updateVsockCid($event)"
+    (apply)="runVsockDetailsAction('apply')" (cancel)="runVsockDetailsAction('cancel')" />
+  <app-network-list [dialog]="networkListDialog" (closeDialog)="runNetworkListAction('close')"
+    (selectNetwork)="selectNetwork($event)" (confirmSource)="runNetworkListAction('confirm')"
+    (cancel)="runNetworkListAction('cancel')" />
   }
 </main>

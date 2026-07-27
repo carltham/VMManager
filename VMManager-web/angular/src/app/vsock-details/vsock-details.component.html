@@ -1,0 +1,11 @@
+@if(dialog;as activeDialog){@if(activeDialog.open){<section class="device-dialog" role="dialog" aria-modal="true">
+  <header>
+    <h2>VSock details</h2>
+    <p>{{activeDialog.statusMessage}}</p>
+  </header><label class="check"><input type="checkbox" [ngModel]="activeDialog.autoCid"
+      (ngModelChange)="toggleAutoCid.emit($event)" /> Assign CID automatically</label><label>CID<input type="number"
+      [disabled]="activeDialog.autoCid" [ngModel]="activeDialog.cid" (ngModelChange)="editCid.emit($event)" /></label>
+  <div class="actions"><button type="button" class="primary" (click)="apply.emit()">Apply</button><button type="button"
+      class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeDialog.emit()">Close</button></div>
+</section>}}

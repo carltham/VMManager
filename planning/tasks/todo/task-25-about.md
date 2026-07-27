@@ -2,6 +2,9 @@
 
 - Status: todo
 - Verify: 0%
+- Conversion Progress: [....................] 0%
+- Verification Progress: [....................] 0%
+- TDD UI Integration Test Progress: [....................] 0%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/about.py, ui/about.ui, virtManager/baseclass.py
 - Flow Classes: vmmAbout

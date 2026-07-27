@@ -1,0 +1,20 @@
+@if (dialog; as activeDialog) { @if (activeDialog.open) {
+<section class="storage-dialog" role="dialog" aria-modal="true" aria-labelledby="add-storage-title">
+  <header>
+    <h2 id="add-storage-title">Add storage</h2>
+    <p>{{ activeDialog.statusMessage }}</p>
+  </header>
+  <div class="storage-grid"><label>Source<input [ngModel]="activeDialog.source"
+        (ngModelChange)="browseSource.emit($event)" /></label><label>Storage path<input
+        [ngModel]="activeDialog.storagePath"
+        (ngModelChange)="selectStoragePath.emit($event)" /></label><label>Format<select [ngModel]="activeDialog.format"
+        (ngModelChange)="changeFormat.emit($event)">
+        <option value="qcow2">qcow2</option>
+        <option value="raw">raw</option>
+      </select></label><label>Size (GB)<input type="number" min="1" [ngModel]="activeDialog.sizeGb"
+        (ngModelChange)="changeSize.emit($event)" /></label></div>
+  <div class="actions"><button type="button" class="primary" (click)="attachStorage.emit()">Attach
+      Storage</button><button type="button" class="secondary" (click)="cancel.emit()">Cancel</button><button
+      type="button" class="text" (click)="closeDialog.emit()">Close</button></div>
+</section>
+} }

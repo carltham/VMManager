@@ -2,6 +2,9 @@
 
 - Status: todo
 - Verify: 0%
+- Conversion Progress: [....................] 0%
+- Verification Progress: [....................] 0%
+- TDD UI Integration Test Progress: [....................] 0%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/xmleditor.py, ui/xmleditor.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmXMLEditor

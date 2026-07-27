@@ -23,6 +23,13 @@ export class VmDetailsComponent implements OnChanges {
   @Output() editCpu = new EventEmitter<number>();
   @Output() editMemory = new EventEmitter<number>();
   @Output() editBoot = new EventEmitter<string>();
+  @Output() openAddHardware = new EventEmitter<void>();
+  @Output() openAddStorage = new EventEmitter<void>();
+  @Output() openFilesystemDetails = new EventEmitter<void>();
+  @Output() openGraphicsDetails = new EventEmitter<void>();
+  @Output() openTpmDetails = new EventEmitter<void>();
+  @Output() openVsockDetails = new EventEmitter<void>();
+  @Output() openNetworkList = new EventEmitter<void>();
   @Output() addHardware = new EventEmitter<string>();
   @Output() removeHardware = new EventEmitter<string>();
   @Output() editStorage = new EventEmitter<string>();

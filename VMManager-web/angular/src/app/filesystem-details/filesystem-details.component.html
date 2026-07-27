@@ -1,0 +1,12 @@
+@if (dialog; as activeDialog) { @if (activeDialog.open) { <section class="filesystem-dialog" role="dialog"
+  aria-modal="true" aria-labelledby="filesystem-details-title">
+  <header>
+    <h2 id="filesystem-details-title">Filesystem details</h2>
+    <p>{{ activeDialog.statusMessage }}</p>
+  </header><label>Filesystem path<input [ngModel]="activeDialog.filesystemPath"
+      (ngModelChange)="editFilesystemPath.emit($event)" /></label><label>Target mount<input
+      [ngModel]="activeDialog.target" (ngModelChange)="editTarget.emit($event)" /></label>
+  <div class="actions"><button type="button" class="primary" (click)="apply.emit()">Apply</button><button type="button"
+      class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeDialog.emit()">Close</button></div>
+</section> } }

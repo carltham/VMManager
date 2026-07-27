@@ -1,0 +1,1 @@
+export interface TpmDetailsDialogView { dialogId:number; open:boolean; vmId:number|null; model:string; version:string; devicePath:string; statusMessage:string; }

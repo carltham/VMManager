@@ -1,7 +1,11 @@
 # Task 18 - create-pool
 
-- Status: todo
-- Verify: 0%
+- Status: in-progress
+- Verify: 60%
+- Conversion Progress: [################....] 80%
+- Verification Progress: [############........] 60%
+- TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createpool.py, ui/createpool.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmCreatePool

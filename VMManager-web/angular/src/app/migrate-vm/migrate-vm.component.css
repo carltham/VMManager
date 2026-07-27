@@ -1,0 +1,13 @@
+.migrate-dialog { margin-top: 18px; border: 1px solid #b8d1df; border-radius: 8px; padding: 16px; background: #f6fcff; }
+h2, p { margin: 0; }
+header p { margin-top: 6px; color: #486581; }
+.migrate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 14px; }
+label { display: grid; gap: 6px; color: #334e68; font-weight: 600; }
+.check { display: flex; align-items: center; align-self: end; }
+input, select, textarea, button { font: inherit; }
+input, select, textarea { border: 1px solid #bcccdc; border-radius: 6px; padding: 9px; background: #fff; }
+.xml { margin-top: 14px; }
+textarea { min-height: 100px; resize: vertical; }
+.migrate-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+button { border: 0; border-radius: 6px; padding: 9px 12px; color: #fff; cursor: pointer; }
+.primary { background: #127fbf; }.secondary { background: #486581; }.text { background: #6b7280; }

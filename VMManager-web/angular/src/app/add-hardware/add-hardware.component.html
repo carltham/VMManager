@@ -1,0 +1,23 @@
+@if (dialog; as activeDialog) { @if (activeDialog.open) {
+<section class="device-dialog" role="dialog" aria-modal="true" aria-labelledby="add-hardware-title">
+  <header>
+    <h2 id="add-hardware-title">Add hardware</h2>
+    <p>{{ activeDialog.statusMessage }}</p>
+  </header>
+  <label>Device type<select [ngModel]="activeDialog.deviceType" (ngModelChange)="selectDeviceType.emit($event)">
+      <option value="disk">Disk</option>
+      <option value="network">Network</option>
+      <option value="graphics">Graphics</option>
+      <option value="tpm">TPM</option>
+      <option value="vsock">Vsock</option>
+    </select></label>
+  <label>Configuration<textarea [ngModel]="activeDialog.configuration"
+      (ngModelChange)="configureDevice.emit($event)"></textarea></label>
+  <p class="validation" [class.valid]="activeDialog.valid">{{ activeDialog.valid ? 'Configuration valid' : 'Validate
+    configuration before applying' }}</p>
+  <div class="actions"><button type="button" (click)="validateDevice.emit()">Validate</button><button type="button"
+      class="primary" [disabled]="!activeDialog.valid" (click)="apply.emit()">Apply</button><button type="button"
+      class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeDialog.emit()">Close</button></div>
+</section>
+} }

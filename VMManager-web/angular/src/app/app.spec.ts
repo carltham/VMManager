@@ -2,11 +2,21 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { App } from './app';
+import { AddHardwareApiService } from './add-hardware/add-hardware-api.service';
+import { AddStorageApiService } from './add-storage/add-storage-api.service';
 import { CloneVmApiService } from './clone-vm/clone-vm-api.service';
+import { CreateNetworkApiService } from './create-network/create-network-api.service';
 import { CreateVmApiService } from './create-vm/create-vm-api.service';
+import { DeleteVmApiService } from './delete-vm/delete-vm-api.service';
+import { FilesystemDetailsApiService } from './filesystem-details/filesystem-details-api.service';
+import { GraphicsDetailsApiService } from './graphics-details/graphics-details-api.service';
 import { ManagerApiService } from './manager/manager-api.service';
+import { MigrateVmApiService } from './migrate-vm/migrate-vm-api.service';
+import { NetworkListApiService } from './network-list/network-list-api.service';
+import { TpmDetailsApiService } from './tpm-details/tpm-details-api.service';
 import { VmDetailsApiService } from './vm-details/vm-details-api.service';
 import { VmWindowApiService } from './vm-window/vm-window-api.service';
+import { VsockDetailsApiService } from './vsock-details/vsock-details-api.service';
 
 describe('App', () => {
   const managerApiStub: Partial<ManagerApiService> = {
@@ -85,15 +95,36 @@ describe('App', () => {
       }),
   };
 
+  const deleteVmApiStub: Partial<DeleteVmApiService> = {
+    open: () =>
+      of({
+        dialogId: 1,
+        open: true,
+        vmId: 1,
+        removeStorage: false,
+        statusMessage: 'Delete dialog opened',
+      }),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
       providers: [
+        { provide: AddHardwareApiService, useValue: {} },
+        { provide: AddStorageApiService, useValue: {} },
         { provide: CloneVmApiService, useValue: cloneVmApiStub },
+        { provide: CreateNetworkApiService, useValue: {} },
         { provide: CreateVmApiService, useValue: createVmApiStub },
+        { provide: DeleteVmApiService, useValue: deleteVmApiStub },
+        { provide: FilesystemDetailsApiService, useValue: {} },
+        { provide: GraphicsDetailsApiService, useValue: {} },
         { provide: ManagerApiService, useValue: managerApiStub },
+        { provide: MigrateVmApiService, useValue: {} },
+        { provide: NetworkListApiService, useValue: {} },
+        { provide: TpmDetailsApiService, useValue: {} },
         { provide: VmWindowApiService, useValue: vmWindowApiStub },
         { provide: VmDetailsApiService, useValue: vmDetailsApiStub },
+        { provide: VsockDetailsApiService, useValue: {} },
       ],
     }).compileComponents();
   });
@@ -109,5 +140,16 @@ describe('App', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('VM Manager');
+  });
+
+  it('should open a delete confirmation dialog for a selected VM', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+
+    app.deleteVm({ id: 1, connectionId: 1, name: 'dev-fedora', state: 'RUNNING', opened: true });
+
+    expect(app.deleteVmDialog).toEqual(
+      jasmine.objectContaining({ dialogId: 1, vmId: 1, open: true, removeStorage: false }),
+    );
   });
 });

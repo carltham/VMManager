@@ -1,0 +1,1 @@
+export interface CreateNetworkWizardView { wizardId:number; open:boolean; step:number; networkName:string; mode:string; addressRange:string; statusMessage:string; }

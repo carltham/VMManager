@@ -1,0 +1,21 @@
+@if (dialog; as activeDialog) { @if (activeDialog.open) { <section class="device-dialog" role="dialog" aria-modal="true"
+  aria-labelledby="graphics-details-title">
+  <header>
+    <h2 id="graphics-details-title">Graphics details</h2>
+    <p>{{ activeDialog.statusMessage }}</p>
+  </header>
+  <div class="grid"><label>Type<select [ngModel]="activeDialog.graphicsType"
+        (ngModelChange)="changeGraphicsType.emit($event)">
+        <option value="spice">SPICE</option>
+        <option value="vnc">VNC</option>
+      </select></label><label>Listen address<input #address [ngModel]="activeDialog.listenAddress"
+        (change)="changeConnection.emit({listenAddress:address.value,port:+port.value,keymap:keymap.value})" /></label><label>Port<input
+        #port type="number" [ngModel]="activeDialog.port"
+        (change)="changeConnection.emit({listenAddress:address.value,port:+port.value,keymap:keymap.value})" /></label><label>Keymap<input
+        #keymap [ngModel]="activeDialog.keymap"
+        (change)="changeConnection.emit({listenAddress:address.value,port:+port.value,keymap:keymap.value})" /></label>
+  </div>
+  <div class="actions"><button type="button" class="primary" (click)="apply.emit()">Apply</button><button type="button"
+      class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeDialog.emit()">Close</button></div>
+</section> } }

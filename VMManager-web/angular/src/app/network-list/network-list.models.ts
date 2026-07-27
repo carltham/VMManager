@@ -1,0 +1,1 @@
+export interface NetworkListDialogView { dialogId:number; open:boolean; selectedNetwork:string; availableNetworks:string[]; statusMessage:string; }

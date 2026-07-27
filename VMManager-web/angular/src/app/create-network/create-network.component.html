@@ -1,0 +1,19 @@
+<section class="network-wizard">
+  <header>
+    <h2>Create network</h2>@if(wizard){<p>Step {{wizard.step}}: {{wizard.statusMessage}}</p>}
+  </header>@if(!wizard||!wizard.open){<button type="button" (click)="openWizard.emit()">Open Network
+    Wizard</button>}@if(wizard;as activeWizard){@if(activeWizard.open){<div class="grid"><label>Name<input #name
+        [ngModel]="activeWizard.networkName"
+        (change)="configureNetwork.emit({networkName:name.value,mode:mode.value})" /></label><label>Mode<select #mode
+        [ngModel]="activeWizard.mode" (change)="configureNetwork.emit({networkName:name.value,mode:mode.value})">
+        <option value="nat">NAT</option>
+        <option value="isolated">Isolated</option>
+        <option value="route">Routed</option>
+      </select></label><label>Address range<input [ngModel]="activeWizard.addressRange"
+        (ngModelChange)="setAddressRange.emit($event)" /></label></div>
+  <div class="actions"><button type="button" (click)="back.emit()">Back</button><button type="button"
+      (click)="next.emit()">Next</button><button type="button" (click)="review.emit()">Review</button><button
+      type="button" class="primary" (click)="create.emit()">Create Network</button><button type="button"
+      class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeWizard.emit()">Close</button></div>}}
+</section>

@@ -1,0 +1,36 @@
+@if (dialog; as activeDialog) {
+@if (activeDialog.open) {
+<section class="migrate-dialog" role="dialog" aria-modal="true" aria-labelledby="migrate-vm-title">
+  <header>
+    <h2 id="migrate-vm-title">Migrate virtual machine</h2>
+    <p>{{ activeDialog.statusMessage }}</p>
+  </header>
+
+  <div class="migrate-grid">
+    <label>Destination
+      <input [ngModel]="activeDialog.destination" (ngModelChange)="chooseDestination.emit($event)" />
+    </label>
+    <label>Migration mode
+      <select [ngModel]="activeDialog.migrationMode" (ngModelChange)="changeMigrationMode.emit($event)">
+        <option value="live">Live</option>
+        <option value="tunnelled">Tunnelled</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" [ngModel]="activeDialog.addressEnabled"
+        (ngModelChange)="toggleAddress.emit($event)" /> Set address</label>
+    <label class="check"><input type="checkbox" [ngModel]="activeDialog.portEnabled"
+        (ngModelChange)="togglePort.emit($event)" /> Set port</label>
+  </div>
+
+  <label class="xml">XML preview
+    <textarea [ngModel]="activeDialog.xmlPreview" (ngModelChange)="editXmlPreview.emit($event)"></textarea>
+  </label>
+
+  <div class="migrate-actions">
+    <button type="button" class="primary" (click)="finishMigration.emit()">Start Migration</button>
+    <button type="button" class="secondary" (click)="cancelMigration.emit()">Cancel</button>
+    <button type="button" class="text" (click)="closeDialog.emit()">Close</button>
+  </div>
+</section>
+}
+}

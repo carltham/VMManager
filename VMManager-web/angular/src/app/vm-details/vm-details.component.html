@@ -66,13 +66,15 @@
           <input name="editValue" [(ngModel)]="editValue" placeholder="device or setting value" />
         </label>
         <div class="row-actions">
-          <button type="button" (click)="addHardware.emit(editValue || selectedHardware)">Add HW</button>
+          <button type="button" (click)="openAddHardware.emit()">Add HW</button>
+          <button type="button" (click)="openAddStorage.emit()">Add Storage</button>
+          <button type="button" (click)="openFilesystemDetails.emit()">Filesystem</button>
           <button type="button" (click)="removeHardware.emit(editValue || selectedHardware)">Remove HW</button>
           <button type="button" (click)="editStorage.emit(editValue)">Storage</button>
-          <button type="button" (click)="editNetwork.emit(editValue)">Network</button>
-          <button type="button" (click)="editGraphics.emit(editValue)">Graphics</button>
-          <button type="button" (click)="editTpm.emit(editValue)">TPM</button>
-          <button type="button" (click)="editVsock.emit(editValue)">VSOCK</button>
+          <button type="button" (click)="openNetworkList.emit()">Network</button>
+          <button type="button" (click)="openGraphicsDetails.emit()">Graphics</button>
+          <button type="button" (click)="openTpmDetails.emit()">TPM</button>
+          <button type="button" (click)="openVsockDetails.emit()">VSOCK</button>
         </div>
       </div>
     </div>

@@ -1,0 +1,18 @@
+@if(dialog;as activeDialog){@if(activeDialog.open){<section class="device-dialog" role="dialog" aria-modal="true">
+  <header>
+    <h2>TPM details</h2>
+    <p>{{activeDialog.statusMessage}}</p>
+  </header>
+  <div class="grid"><label>Model<select [ngModel]="activeDialog.model" (ngModelChange)="changeModel.emit($event)">
+        <option value="tpm-tis">TPM TIS</option>
+        <option value="tpm-crb">TPM CRB</option>
+      </select></label><label>Version<select [ngModel]="activeDialog.version"
+        (ngModelChange)="changeVersion.emit($event)">
+        <option value="1.2">1.2</option>
+        <option value="2.0">2.0</option>
+      </select></label><label>Device path<input [ngModel]="activeDialog.devicePath"
+        (ngModelChange)="changeDevicePath.emit($event)" /></label></div>
+  <div class="actions"><button type="button" class="primary" (click)="apply.emit()">Apply</button><button type="button"
+      class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeDialog.emit()">Close</button></div>
+</section>}}

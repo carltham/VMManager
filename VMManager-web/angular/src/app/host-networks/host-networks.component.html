@@ -1,0 +1,17 @@
+<section class="workspace">
+  <header>
+    <h2>Host networks</h2><button type="button" (click)="refresh()">Refresh</button>
+  </header>
+  <div class="layout">
+    <div class="list">@for(network of networks;track network.id){<button type="button" class="item"
+        [class.selected]="selected?.id===network.id" (click)="selected=network">{{network.name}} <small>{{network.mode}}
+          / {{network.active?'running':'stopped'}}</small></button>}</div>@if(selected){<div class="details">
+      <label>Name<input [(ngModel)]="selected.name" /></label><label class="check"><input type="checkbox"
+          [(ngModel)]="selected.autostart" /> Autostart</label>
+      <div class="actions"><button type="button" (click)="action(selected.id,'start')">Start</button><button
+          type="button" (click)="action(selected.id,'stop')">Stop</button><button type="button"
+          (click)="apply()">Apply</button><button type="button" class="danger"
+          (click)="action(selected.id,'delete')">Delete</button></div>
+    </div>}
+  </div>
+</section>

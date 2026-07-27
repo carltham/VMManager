@@ -1,0 +1,1 @@
+export interface FilesystemDetailsDialogView { dialogId: number; open: boolean; vmId: number | null; filesystemPath: string; target: string; statusMessage: string; }

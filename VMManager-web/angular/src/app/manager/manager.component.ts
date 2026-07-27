@@ -23,6 +23,7 @@ export class ManagerComponent implements OnChanges {
   @Output() runVm = new EventEmitter<VmItem>();
   @Output() pauseVm = new EventEmitter<VmItem>();
   @Output() shutdownVm = new EventEmitter<VmItem>();
+  @Output() migrateVm = new EventEmitter<VmItem>();
   @Output() deleteVm = new EventEmitter<VmItem>();
 
   connectionName = '';

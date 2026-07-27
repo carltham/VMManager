@@ -1,0 +1,1 @@
+export interface VsockDetailsDialogView { dialogId:number; open:boolean; vmId:number|null; autoCid:boolean; cid:number; statusMessage:string; }

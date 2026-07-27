@@ -1,0 +1,1 @@
+export interface GraphicsDetailsDialogView { dialogId: number; open: boolean; vmId: number | null; graphicsType: string; listenAddress: string; port: number; keymap: string; statusMessage: string; }

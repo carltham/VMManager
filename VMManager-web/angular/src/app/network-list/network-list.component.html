@@ -1,0 +1,11 @@
+@if(dialog;as activeDialog){@if(activeDialog.open){<section class="network-list" role="dialog" aria-modal="true">
+  <header>
+    <h2>Select network source</h2>
+    <p>{{activeDialog.statusMessage}}</p>
+  </header><label>Network<select [ngModel]="activeDialog.selectedNetwork"
+      (ngModelChange)="selectNetwork.emit($event)">@for(network of activeDialog.availableNetworks;track network){<option
+        [value]="network">{{network}}</option>}</select></label>
+  <div class="actions"><button type="button" class="primary" (click)="confirmSource.emit()">Use Network</button><button
+      type="button" class="secondary" (click)="cancel.emit()">Cancel</button><button type="button" class="text"
+      (click)="closeDialog.emit()">Close</button></div>
+</section>}}

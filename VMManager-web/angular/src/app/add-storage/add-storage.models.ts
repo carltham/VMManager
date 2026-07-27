@@ -1,0 +1,1 @@
+export interface AddStorageDialogView { dialogId: number; open: boolean; vmId: number | null; source: string; storagePath: string; format: string; sizeGb: number; statusMessage: string; }
