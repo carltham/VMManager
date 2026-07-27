@@ -1,0 +1,22 @@
+# Task 20 - host-storage
+
+- Status: in-progress
+- Verify: 60%
+- Conversion Progress: [################....] 80%
+- Verification Progress: [############........] 60%
+- TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/hoststorage.py, ui/hoststorage.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/lib/uiutil.py
+- Flow Classes: vmmHostStorage -> vmmConnectionManager
+- Actions: open, close, refresh pools, start pool, stop pool, delete pool, inspect volumes, create volume.
+- Action Flows:
+  - open: host storage view open / component init -> HostStorageComponent.open() -> POST /storage/open
+  - close: host storage page hidden by switching active view (no component close handler)
+  - refresh pools: Refresh button -> HostStorageComponent.open() -> POST /storage/open
+  - start pool: Start button -> HostStorageComponent.action('start', id) -> POST /storage/pools/start
+  - stop pool: Stop button -> HostStorageComponent.action('stop', id) -> POST /storage/pools/stop
+  - delete pool: Delete button -> HostStorageComponent.action('delete', id) -> POST /storage/pools/delete
+  - inspect volumes: volume list displayed from view.volumes loaded by HostStorageComponent.open()
+  - create volume: not implemented in host-storage component; separate create-volume panel is used for volume creation
+- Scope: Host storage view, pool lifecycle actions, volume listing, and refresh behavior.

@@ -7,19 +7,18 @@
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
-- UIModule: virtManager/vmwindow.py, ui/vmwindow.ui, virtManager/baseclass.py, virtManager/details/details.py, virtManager/engine.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py, virtManager/systray.py
-- Flow Classes: vmmVMWindow -> vmmDetails -> vmmConsolePages -> vmmOverlayToolbar -> vmmConnectionManager
-- Actions: open, close, switch tabs, start VM, pause VM, reset VM, reboot VM, shutdown VM, save VM, update status, show console and details views.
+- UIModule: virtManager/vmwindow.py, ui/vmwindow.ui, virtManager/details/snapshots.py, virtManager/baseclass.py, virtManager/engine.py, virtManager/vmmenu.py
+- Flow Classes: vmmVMWindow, vmmSnapshotPage, vmmConsole, vmmDetails
+- Actions: open window, close window, switch view tabs, start VM, pause VM, shutdown VM, fullscreen toggle, screenshot, USB redirection, view manager.
 - Action Flows:
-  - open: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - close: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - switch tabs: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - start VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - pause VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - reset VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - reboot VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - shutdown VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - save VM: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - update status: <signal/click source> -> vmmVMWindow -> <helper/service class>
-  - show console and details views: <signal/click source> -> vmmVMWindow -> <helper/service class>
-- Scope: VM window layout, console display, action buttons, tab switching, and VM state updates.
+  - open VM window: manager selection -> `vmmVMWindow.show()` -> detail window opens
+  - close window: close toolbar/menu/dialog signal -> `vmmVMWindow.close()` -> window hides
+  - switch tabs/details/console/snapshots: toggle signals -> `vmmVMWindow.details_console_changed()` -> view updates
+  - start VM: run button -> `vmmVMWindow.control_vm_run()` -> VM starts
+  - pause VM: pause toggle -> `vmmVMWindow.control_vm_pause()` -> VM pauses
+  - shutdown VM: shutdown button -> `vmmVMWindow.control_vm_shutdown()` -> VM shuts down
+  - fullscreen: fullscreen toolbar/menu signals -> `vmmVMWindow.control_fullscreen()` / `_fullscreen_changed_cb()` -> fullscreen state toggles
+  - screenshot: screenshot menu activation -> `vmmVMWindow.control_vm_screenshot()` -> screenshot captured
+  - USB redirection: USB redirection menu activation -> `vmmVMWindow.control_vm_usb_redirection()` -> USB redirect controls open
+  - view manager: view manager menu activation -> `vmmVMWindow.view_manager()` -> switch to manager view
+- Scope: VM detail window, console/details/snapshot view switching, VM lifecycle control, and toolbar/menu actions.

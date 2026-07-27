@@ -8,16 +8,16 @@
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/migrate.py, ui/migrate.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/object/domain.py, virtManager/xmleditor.py, virtManager/lib/uiutil.py
-- Flow Classes: vmmMigrateDialog -> vmmXMLEditor -> vmmConnectionManager -> vmmDomain -> vmmAsyncJob
+- Flow Classes: vmmMigrateDialog, vmmXMLEditor, vmmConnectionManager, vmmDomain, vmmAsyncJob
 - Actions: open, close, choose destination, toggle address, toggle port, change migration mode, edit XML preview, finish migration, cancel migration.
 - Action Flows:
-  - open: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - close: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - choose destination: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - toggle address: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - toggle port: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - change migration mode: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - edit XML preview: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - finish migration: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-  - cancel migration: <signal/click source> -> vmmMigrateDialog -> <helper/service class>
-- Scope: Migration dialog, destination selection, migration mode, and validation.
+  - open migration dialog: `vmmMigrateDialog.show()` from VM action flow
+  - close dialog: `on_vmm_migrate_delete_event` / `on_migrate_cancel_clicked` -> `vmmMigrateDialog._delete_event()` / `_cancel_clicked()`
+  - choose destination: `on_migrate_dest_changed` -> `vmmMigrateDialog._destconn_changed()`
+  - toggle address: `on_migrate_set_address_toggled` -> `vmmMigrateDialog._set_address_toggled()`
+  - toggle port: `on_migrate_set_port_toggled` -> `vmmMigrateDialog._set_port_toggled()`
+  - change migration mode: `on_migrate_mode_changed` -> `vmmMigrateDialog._mode_changed()`
+  - edit XML preview: XML editor changes propagate through `vmmXMLEditor` and `vmmMigrateDialog`
+  - finish migration: `on_migrate_finish_clicked` -> `vmmMigrateDialog._finish_clicked()`
+  - cancel migration: `on_migrate_cancel_clicked` -> `vmmMigrateDialog._cancel_clicked()`
+- Scope: VM migration dialog, destination selection, network/address options, XML preview, and migration execution.

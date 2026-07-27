@@ -11,10 +11,10 @@
 - Flow Classes: vmmVsockDetails
 - Actions: open, close, toggle auto CID, edit CID, apply changes, cancel.
 - Action Flows:
-  - open: <signal/click source> -> vmmVsockDetails -> <helper/service class>
-  - close: <signal/click source> -> vmmVsockDetails -> <helper/service class>
-  - toggle auto CID: <signal/click source> -> vmmVsockDetails -> <helper/service class>
-  - edit CID: <signal/click source> -> vmmVsockDetails -> <helper/service class>
-  - apply changes: <signal/click source> -> vmmVsockDetails -> <helper/service class>
-  - cancel: <signal/click source> -> vmmVsockDetails -> <helper/service class>
-- Scope: VSock device details, CID/channel settings, and input validation.
+  - open VSock details: `vmmVsockDetails.__init__()` builds the VSock pane
+  - close: parent dialog close hides VSock pane
+  - toggle auto CID: `on_vsock_auto_toggled` -> `vmmVsockDetails._vsock_auto_toggled()`
+  - edit CID: `on_vsock_cid_changed` -> `vmmVsockDetails.emit("changed-cid")`
+  - apply changes: parent dialog commit path through `vmmVsockDetails.get_values()`
+  - cancel: parent dialog cancel hides the pane
+- Scope: VSock device details, auto CID toggle, CID entry, and commit flow.

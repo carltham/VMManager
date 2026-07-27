@@ -1,0 +1,21 @@
+# Task 18 - create-pool
+
+- Status: in-progress
+- Verify: 60%
+- Conversion Progress: [################....] 80%
+- Verification Progress: [############........] 60%
+- TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/createpool.py, ui/createpool.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
+- Flow Classes: vmmCreatePool
+- Actions: open, close, select pool type, set source, set target, create pool, cancel.
+- Action Flows:
+  - open: Create Pool panel open button -> CreatePoolComponent.toggleOpen() -> view.open = true
+  - close: Cancel button -> CreatePoolComponent.cancel() -> view.open = false
+  - select pool type: type dropdown -> ngModel bound to view.type
+  - set source: source input -> ngModel bound to view.source
+  - set target: target input -> ngModel bound to view.target
+  - create pool: Create Pool button -> CreatePoolComponent.createPool() -> POST /storage/pools/create
+  - cancel: Cancel button -> CreatePoolComponent.cancel() -> view.open = false
+- Scope: Pool creation panel, source/target details, and pool creation action.

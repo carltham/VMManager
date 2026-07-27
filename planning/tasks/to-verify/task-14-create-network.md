@@ -9,15 +9,15 @@
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createnet.py, ui/createnet.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmCreateNetwork
-- Actions: open, close, back, next, configure network, set address range, review, create network, cancel.
+- Actions: open, close, back, next, configure network, set IP range, review, create network, cancel.
 - Action Flows:
-  - open: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - close: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - back: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - next: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - configure network: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - set address range: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - review: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - create network: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-  - cancel: <signal/click source> -> vmmCreateNetwork -> <helper/service class>
-- Scope: Network creation wizard, address allocation, and final create flow.
+  - open network wizard: `vmmCreateNetwork.show()` and `on_vmm_create_delete_event` / `on_create_cancel_clicked` handle lifecycle
+  - close: `on_vmm_create_delete_event` / `on_create_cancel_clicked` -> `vmmCreateNetwork.close()`
+  - back: `on_create_back_clicked` -> `vmmCreateNetwork._back_clicked()`
+  - next: `on_create_forward_clicked` -> `vmmCreateNetwork._forward_clicked()`
+  - configure network: mode and forward-device UI changes route through `on_net_forward_mode_changed` / `on_net_forward_device_changed`
+  - set address range: `on_net-ipv4-network_changed` / `on_net-ipv6-network_changed` / `on_net-dhcpv4-enable_toggled` / `on_net-dhcpv6-enable_toggled` -> internal config helpers
+  - review: review page navigation is part of wizard flow
+  - create network: `on_create_finish_clicked` -> `vmmCreateNetwork.finish()`
+  - cancel: `on_create_cancel_clicked` -> `vmmCreateNetwork.close()`
+- Scope: network creation wizard, IP/DHCP configuration, forwarding options, and create flow.

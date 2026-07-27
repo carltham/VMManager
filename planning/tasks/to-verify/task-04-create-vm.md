@@ -8,25 +8,25 @@
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createvm.py, ui/createvm.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/device/addstorage.py, virtManager/device/mediacombo.py, virtManager/device/netlist.py, virtManager/engine.py, virtManager/object/domain.py, virtManager/oslist.py, virtManager/storagebrowse.py, virtManager/vmwindow.py
-- Flow Classes: vmmCreateVM -> vmmAddStorage -> vmmMediaCombo -> vmmNetworkList -> vmmStorageBrowser -> vmmOSList -> vmmAsyncJob -> vmmVMWindow
+- Flow Classes: vmmCreateVM, vmmAddStorage, vmmMediaCombo, vmmNetworkList, vmmStorageBrowser, vmmOSList, vmmAsyncJob, vmmVMWindow
 - Actions: open, close, back, next, finish, change connection, change install method, browse ISO, browse URL, browse import source, browse app source, browse OS container source, toggle detect OS, toggle storage, change arch, change type, change machine, edit VM name.
 - Action Flows:
-  - open: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - close: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - back: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - next: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - finish: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - change connection: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - change install method: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - browse ISO: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - browse URL: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - browse import source: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - browse app source: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - browse OS container source: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - toggle detect OS: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - toggle storage: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - change arch: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - change type: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - change machine: <signal/click source> -> vmmCreateVM -> <helper/service class>
-  - edit VM name: <signal/click source> -> vmmCreateVM -> <helper/service class>
-- Scope: VM creation wizard, step navigation, input validation, device setup, and finish flow.
+  - open wizard: `on_vmm_newcreate_delete_event` / `on_create_new_clicked` -> `vmmCreateVM.show()`
+  - close/cancel: `on_vmm_newcreate_delete_event` / `on_create_cancel_clicked` -> `vmmCreateVM._close_requested()`
+  - back: `on_create_back_clicked` -> `vmmCreateVM._back_clicked()`
+  - next: `on_create_forward_clicked` -> `vmmCreateVM._forward_clicked()`
+  - finish: `on_create_finish_clicked` -> `vmmCreateVM._finish_clicked()`
+  - change connection: `on_create_conn_changed` -> `vmmCreateVM._conn_changed()`
+  - change install method: `on_method_changed` -> `vmmCreateVM._method_changed()`
+  - browse ISO: `on_install_iso_browse_clicked` -> `vmmCreateVM._browse_iso()`
+  - browse URL: `on_install_url_entry_changed` / `on_install_url_entry_activate` -> `vmmCreateVM._url_changed()` / `_url_activated()`
+  - browse import source: `on_install_import_browse_clicked` -> `vmmCreateVM._browse_import()`
+  - browse app source: `on_install_app_browse_clicked` -> `vmmCreateVM._browse_app()`
+  - browse OS container source: `on_install_oscontainer_browse_clicked` -> `vmmCreateVM._browse_oscontainer()`
+  - toggle detect OS: `on_install_detect_os_toggled` -> `vmmCreateVM._detect_os_toggled_cb()`
+  - toggle storage: `on_enable_storage_toggled` -> `vmmCreateVM._toggle_enable_storage()`
+  - change arch: `on_arch_changed` -> `vmmCreateVM._arch_changed()`
+  - change type: `on_virt_type_changed` / `on_vz_virt_type_changed` -> `vmmCreateVM._virt_type_changed()` / `_vz_virt_type_changed()`
+  - change machine: `on_machine_changed` -> `vmmCreateVM._machine_changed()`
+  - edit VM name: `on_create_vm_name_changed` -> `vmmCreateVM._name_changed()`
+- Scope: VM creation wizard, page navigation, install/source options, hardware and disk selection, and wizard finish flow.

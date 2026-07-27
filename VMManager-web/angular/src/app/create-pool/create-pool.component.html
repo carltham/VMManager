@@ -1,0 +1,17 @@
+<section class="dialog-panel">
+  <header>
+    <h2>Create Pool</h2>
+    <button type="button" (click)="toggleOpen()">{{ view.open ? 'Close' : 'Open' }}</button>
+  </header>
+  @if (view.open) {
+  <div class="form">
+    <label>Name<input [(ngModel)]="view.name" /></label>
+    <label>Type<select [(ngModel)]="view.type">@for(type of view.types){<option [value]="type">{{ type }}</option>}</select></label>
+    <label>Source<input [(ngModel)]="view.source" /></label>
+    <label>Target<input [(ngModel)]="view.target" /></label>
+    <div class="actions"><button type="button" (click)="createPool()">Create Pool</button><button type="button" (click)="cancel()">Cancel</button></div>
+    @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+    @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
+  </div>
+  }
+</section>

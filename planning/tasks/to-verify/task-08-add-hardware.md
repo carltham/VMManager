@@ -8,14 +8,14 @@
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/addhardware.py, ui/addhardware.ui, virtManager/baseclass.py, virtManager/device/addstorage.py, virtManager/device/fsdetails.py, virtManager/device/gfxdetails.py, virtManager/device/netlist.py, virtManager/device/tpmdetails.py, virtManager/device/vsockdetails.py, virtManager/lib/uiutil.py
-- Flow Classes: vmmAddHardware -> vmmAddStorage -> vmmFSDetails -> vmmGraphicsDetails -> vmmNetworkList -> vmmTPMDetails -> vmmVsockDetails
-- Actions: open, close, select device type, configure device, validate device, apply add-hardware changes, cancel.
+- Flow Classes: vmmAddHardware, vmmAddStorage, vmmFSDetails, vmmGraphicsDetails, vmmNetworkList, vmmTPMDetails, vmmVsockDetails
+- Actions: open, close, select hardware type, configure device, validate device, apply changes, cancel.
 - Action Flows:
-  - open: <signal/click source> -> vmmAddHardware -> <helper/service class>
-  - close: <signal/click source> -> vmmAddHardware -> <helper/service class>
-  - select device type: <signal/click source> -> vmmAddHardware -> <helper/service class>
-  - configure device: <signal/click source> -> vmmAddHardware -> <helper/service class>
-  - validate device: <signal/click source> -> vmmAddHardware -> <helper/service class>
-  - apply add-hardware changes: <signal/click source> -> vmmAddHardware -> <helper/service class>
-  - cancel: <signal/click source> -> vmmAddHardware -> <helper/service class>
-- Scope: Add hardware dialog, device type switching, configuration panes, and apply flow.
+  - open add-hardware dialog: `vmmAddHardware.__init__()` builds device panes and connects signals
+  - close/cancel: `on_create_cancel_clicked` / `on_vmm_create_delete_event` -> `vmmAddHardware.close()`
+  - select hardware type: hardware list change triggers `on_hw_list_changed` -> `vmmAddHardware._hw_selected_cb()`
+  - configure device: device fields signal changes route through `on_storage_devtype_changed` / `on_storage_bustype_changed` / `on_mac_address_clicked` / `on_char_device_type_changed` and other handlers
+  - validate device: internal validation flow runs before apply
+  - apply changes: `on_create_finish_clicked` -> `vmmAddHardware._finish()`
+  - cancel: `on_create_cancel_clicked` -> `vmmAddHardware.close()`
+- Scope: Add hardware dialog, device selection, nested storage/network/graphics/TPM/VSOCK panes, and apply workflow.

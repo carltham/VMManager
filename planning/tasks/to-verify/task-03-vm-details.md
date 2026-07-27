@@ -48,27 +48,43 @@
 	- vmmOSList
 
 - Actions:
+  - open details
+  - refresh details
+  - select hardware
+  - edit general name/settings
+  - edit CPU
+  - edit memory
+  - edit boot
+  - add hardware
+  - remove hardware
+  - edit storage device
+  - open network source dialog
+  - open graphics settings
+  - open TPM settings
+  - open VSOCK settings
+  - launch XML editor
+  - launch storage browser
+  - launch OS list
+  - apply changes
+
 - Action Flows:
-  - - Actions:: <signal/click source> -> - Flow Classes: -> <helper/service class>
-	- open
-	- refresh
-	- select hardware
-	- edit general settings
-	- edit CPU
-	- edit memory
-	- edit boot
-	- add hardware
-	- remove hardware
-	- edit storage
-	- edit network
-	- edit graphics
-	- edit TPM
-	- edit VSOCK
-	- launch XML editor
-	- launch storage browser
-	- launch OS list
-	- apply changes
+  - open details: host/manager selects VM and calls `vmmDetails.show()`
+  - refresh details: details UI state is refreshed through `vmmDetails._refresh()` and related callbacks in `virtManager/details/details.py`
+  - select hardware: details UI emits `on_hw_list_changed` -> `vmmDetails._hw_changed_cb()`
+  - edit general settings: `on_overview_name_changed` and form field signals route to internal edit/update callbacks in `vmmDetails`
+  - edit CPU/memory/boot: details UI field changes and `vmmDetails` callback handlers update the VM device model
+  - add hardware: `vmmDetails` opens `vmmAddHardware` and connects to `vmmAddHardware` signals for device type and validation
+  - remove hardware: details UI remove action triggers `vmmDetails` remove handling and device cleanup
+  - edit storage: details UI storage edit triggers `vmmDetails` and `vmmAddStorage` flows
+  - open network source: network button opens `vmmNetworkList`
+  - open graphics settings: graphics button opens `vmmGraphicsDetails`
+  - open TPM settings: TPM button opens `vmmTPMDetails`
+  - open VSOCK settings: VSOCK button opens `vmmVsockDetails`
+  - launch XML editor: details action opens `vmmXMLEditor`
+  - launch storage browser: details action opens `vmmStorageBrowser`
+  - launch OS list: details action opens `vmmOSList`
+  - apply changes: details apply button commits device and domain updates through `vmmDetails`
 
 ## Scope
 
-- Details container, tab structure, property editing, and live refresh behavior.
+- Details container, tab structure, property editing, device dialogs, and live VM detail refresh behavior.

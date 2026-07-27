@@ -1,0 +1,31 @@
+<section class="workspace">
+  <header>
+    <h2>Host Storage</h2>
+    <button type="button" (click)="open()">Refresh</button>
+  </header>
+  <div class="columns">
+    <div>
+      <h3>Pools</h3>
+      @for(pool of view.pools){
+      <article>
+        <strong>{{ pool.name }}</strong><span>{{ pool.target }}</span>
+        <small>{{ pool.active ? 'running' : 'stopped' }}</small>
+        <div class="actions">
+          <button type="button" (click)="action('start', pool.id)">Start</button>
+          <button type="button" (click)="action('stop', pool.id)">Stop</button>
+          <button type="button" class="danger" (click)="action('delete', pool.id)">Delete</button>
+        </div>
+      </article>}
+    </div>
+    <div>
+      <h3>Volumes</h3>
+      @for(volume of view.volumes){
+      <article>
+        <strong>{{ volume.name }}</strong>
+        <span>{{ volume.pool }} / {{ volume.format }} / {{ volume.sizeGb }} GB</span>
+      </article>}
+    </div>
+  </div>
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
+</section>

@@ -30,6 +30,10 @@ import { NetworkListComponent } from './network-list/network-list.component';
 import { NetworkListDialogView } from './network-list/network-list.models';
 import { HostNetworksComponent } from './host-networks/host-networks.component';
 import { StorageManagementComponent } from './storage-management/storage-management.component';
+import { CreateVolumeComponent } from './create-volume/create-volume.component';
+import { CreatePoolComponent } from './create-pool/create-pool.component';
+import { StorageBrowseComponent } from './storage-browse/storage-browse.component';
+import { HostStorageComponent } from './host-storage/host-storage.component';
 import { CreateVmApiService } from './create-vm/create-vm-api.service';
 import { CreateVmComponent } from './create-vm/create-vm.component';
 import { CreateVmWizardView } from './create-vm/create-vm.models';
@@ -63,6 +67,10 @@ import { VmWindowTab, VmWindowView } from './vm-window/vm-window.models';
     NetworkListComponent,
     HostNetworksComponent,
     StorageManagementComponent,
+    HostStorageComponent,
+    CreatePoolComponent,
+    CreateVolumeComponent,
+    StorageBrowseComponent,
     ManagerComponent,
     CreateVmComponent,
     CloneVmComponent,

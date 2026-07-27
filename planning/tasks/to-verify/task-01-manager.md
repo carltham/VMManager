@@ -7,23 +7,22 @@
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
-- UIModule: virtManager/manager.py, ui/manager.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/engine.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py, virtManager/vmmenu.py
-- Flow Classes: vmmManager -> vmmConnectionManager -> vmmEngine -> VMActionMenu/VMShutdownMenu
+- UIModule: virtManager/manager.py, ui/manager.ui, virtManager/connmanager.py, virtManager/baseclass.py, virtManager/engine.py, virtManager/vmmenu.py
+- Flow Classes: vmmManager, vmmConnectionManager, vmmEngine
 - Actions: open, close, toggle stats, add connection, create VM, open VM, run VM, pause VM, shutdown VM, delete VM, open host details, open preferences, open about, row activate, show VM context menus.
 - Action Flows:
-  - open: <signal/click source> -> vmmManager -> <helper/service class>
-  - close: <signal/click source> -> vmmManager -> <helper/service class>
-  - toggle stats: <signal/click source> -> vmmManager -> <helper/service class>
-  - add connection: <signal/click source> -> vmmManager -> <helper/service class>
-  - create VM: <signal/click source> -> vmmManager -> <helper/service class>
-  - open VM: <signal/click source> -> vmmManager -> <helper/service class>
-  - run VM: <signal/click source> -> vmmManager -> <helper/service class>
-  - pause VM: <signal/click source> -> vmmManager -> <helper/service class>
-  - shutdown VM: <signal/click source> -> vmmManager -> <helper/service class>
-  - delete VM: <signal/click source> -> vmmManager -> <helper/service class>
-  - open host details: <signal/click source> -> vmmManager -> <helper/service class>
-  - open preferences: <signal/click source> -> vmmManager -> <helper/service class>
-  - open about: <signal/click source> -> vmmManager -> <helper/service class>
-  - row activate: <signal/click source> -> vmmManager -> <helper/service class>
-  - show VM context menus: <signal/click source> -> vmmManager -> <helper/service class>
-- Scope: Main manager window, connection tree, VM list, toolbar, menus, and selection/refresh flow.
+  - create VM: New VM menu / New VM button -> `vmmManager.new_vm()` -> `vmmCreateVM.show_instance(self, conn_uri)`
+  - close/quit manager: `on_menu_file_close_activate` / `on_vmm_manager_delete_event` / `on_menu_file_quit_activate` -> `vmmManager.close()`
+  - toggle stats display: `on_menu_view_guest_cpu_usage_activate` / `on_menu_view_host_cpu_usage_activate` / `on_menu_view_memory_usage_activate` / `on_menu_view_disk_io_activate` / `on_menu_view_network_traffic_activate` -> `vmmManager.toggle_stats_visible_*()`
+  - add connection: `on_menu_file_add_connection_activate` -> `vmmManager.open_newconn()`
+  - open VM details: `on_vm_open_clicked` / `on_menu_edit_details_activate` -> `vmmManager.show_vm()`
+  - run VM: `on_vm_run_clicked` -> `vmmManager.start_vm()`
+  - pause VM: `on_vm_pause_toggled` -> `vmmManager.pause_vm_button()`
+  - shutdown VM: `on_vm_shutdown_clicked` -> `vmmManager.poweroff_vm()`
+  - delete VM: `on_menu_edit_delete_activate` -> `vmmManager.do_delete()`
+  - open host details: `on_menu_host_details_activate` -> `vmmManager.show_host()`
+  - open preferences: `on_menu_edit_preferences_activate` -> `vmmManager.show_preferences()`
+  - open about: `on_menu_help_about_activate` -> `vmmManager.show_about()`
+  - row activate: `on_vm_list_row_activated` -> `vmmManager.row_activated()`
+  - show VM context menus: `on_vm_list_button_press_event` / `on_vm_list_key_press_event` -> `vmmManager.popup_vm_menu_*()`
+- Scope: Main manager window, menu commands, VM list interactions, connection tree, and VM action toolbar.

@@ -9,13 +9,14 @@
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/device/tpmdetails.py, ui/tpmdetails.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmTPMDetails
-- Actions: open, close, change TPM model, change version, change device path, apply changes, cancel.
+- Actions: open, close, change TPM type, change model, change version, change device path, apply changes, cancel.
 - Action Flows:
-  - open: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-  - close: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-  - change TPM model: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-  - change version: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-  - change device path: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-  - apply changes: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-  - cancel: <signal/click source> -> vmmTPMDetails -> <helper/service class>
-- Scope: TPM device details, model/format options, and validation.
+  - open TPM details: `vmmTPMDetails.__init__()` builds the TPM pane
+  - close: parent dialog close hides TPM pane
+  - change TPM type: `on_tpm_type_changed` -> `vmmTPMDetails._change_cb(EDIT_TPM_TYPE)`
+  - change TPM model: `on_tpm_model_changed` -> `vmmTPMDetails._change_cb(EDIT_TPM_MODEL)`
+  - change TPM version: `on_tpm_version_changed` -> `vmmTPMDetails._change_cb(EDIT_TPM_VERSION)`
+  - change device path: `on_tpm_device_path_changed` -> `vmmTPMDetails._change_cb(EDIT_TPM_DEVICE_PATH)`
+  - apply changes: parent dialog commit path through `vmmTPMDetails.build_device()`
+  - cancel: parent dialog cancel hides the pane
+- Scope: TPM device details, model/version controls, and device path editing.

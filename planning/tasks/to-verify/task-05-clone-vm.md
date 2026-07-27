@@ -8,14 +8,14 @@
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/clone.py, ui/clone.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/storagebrowse.py, virtManager/lib/uiutil.py
-- Flow Classes: vmmCloneVM -> vmmAsyncJob -> vmmStorageBrowser
+- Flow Classes: vmmCloneVM, vmmAsyncJob, vmmStorageBrowser
 - Actions: open, close, select source VM, choose clone/share mode, browse destination, change disk options, confirm clone.
 - Action Flows:
-  - open: <signal/click source> -> vmmCloneVM -> <helper/service class>
-  - close: <signal/click source> -> vmmCloneVM -> <helper/service class>
-  - select source VM: <signal/click source> -> vmmCloneVM -> <helper/service class>
-  - choose clone/share mode: <signal/click source> -> vmmCloneVM -> <helper/service class>
-  - browse destination: <signal/click source> -> vmmCloneVM -> <helper/service class>
-  - change disk options: <signal/click source> -> vmmCloneVM -> <helper/service class>
-  - confirm clone: <signal/click source> -> vmmCloneVM -> <helper/service class>
-- Scope: Clone dialog, source selection, name/options handling, and copy workflow.
+  - open clone dialog: `on_clone_delete_event` / `on_clone_cancel_clicked` -> `vmmCloneVM.show()` and dialog lifecycle
+  - close: `on_clone_delete_event` / `on_clone_cancel_clicked` -> `vmmCloneVM._close_cb()`
+  - select source VM: `on_storage_selection_changed` -> `vmmCloneVM._storage_selection_changed_cb()`
+  - choose clone/share mode: `on_change_storage_doclone_toggled` -> `vmmCloneVM._storage_dialog_doclone_toggled_cb()`
+  - browse destination: `on_change_storage_browse_clicked` -> `vmmCloneVM._storage_dialog_browse_cb()`
+  - change disk options: disk selection and storage dialog events route through `vmmCloneVM._storage_dialog_finish_cb()` and related callbacks
+  - confirm clone: `on_clone_ok_clicked` -> `vmmCloneVM._finish_clicked_cb()`
+- Scope: VM clone dialog, source/destination selection, storage options, and clone confirmation.

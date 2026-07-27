@@ -1,0 +1,15 @@
+<section class="dialog-panel">
+  <header>
+    <h2>Storage Browse</h2>
+    <button type="button" (click)="toggleOpen()">{{ view.open ? 'Close' : 'Open' }}</button>
+  </header>
+  @if (view.open) {
+  <div class="browser">
+    <p class="path">Current: {{ view.currentPath }}</p>
+    <div class="entries">@for(entry of view.entries){<button type="button" class="entry" [class.selected]="view.selectedPath===entry" (click)="select(entry)">{{ entry }}</button>}</div>
+    <div class="actions"><button type="button" (click)="confirm()">Confirm</button><button type="button" (click)="cancel()">Cancel</button></div>
+    @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+    @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
+  </div>
+  }
+</section>

@@ -73,7 +73,13 @@
     (create)="runCreateNetworkAction('create')" (cancel)="runCreateNetworkAction('cancel')" />
   }
   @if (showHostNetworksPage()) { <app-host-networks /> }
-  @if (showStoragePage()) { <app-storage-management /> }
+  @if (showStoragePage()) {
+    <app-storage-management />
+    <app-host-storage />
+    <app-create-pool />
+    <app-create-volume />
+    <app-storage-browse />
+  }
 
   @if (showManagerPage()) {
   <app-vm-window [vmWindow]="vmWindow" (closeWindow)="closeVmWindow()" (switchTab)="switchVmWindowTab($event)"

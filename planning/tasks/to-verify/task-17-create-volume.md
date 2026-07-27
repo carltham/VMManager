@@ -1,0 +1,23 @@
+# Task 17 - create-volume
+
+- Status: in-progress
+- Verify: 60%
+- Conversion Progress: [################....] 80%
+- Verification Progress: [############........] 60%
+- TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/createvol.py, ui/createvol.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py, virtManager/storagebrowse.py
+- Flow Classes: vmmCreateVolume -> vmmStorageBrowser
+- Actions: open, close, select pool, browse path, set name, set format, set size, create volume, cancel.
+- Action Flows:
+  - open: Create Volume panel open button -> CreateVolumeComponent.toggleOpen() -> view.open = true
+  - close: Close button or cancel -> CreateVolumeComponent.cancel() / toggleOpen() -> view.open = false
+  - select pool: pool dropdown -> ngModel bound to view.pool
+  - browse path: Browse path button -> CreateVolumeComponent.browsePath() (placeholder, dialog not fully implemented)
+  - set name: name input -> ngModel bound to view.name
+  - set format: format dropdown -> ngModel bound to view.format
+  - set size: size input -> ngModel bound to view.sizeGb
+  - create volume: Create Volume button -> CreateVolumeComponent.createVolume() -> POST /storage/volumes/create
+  - cancel: Cancel button -> CreateVolumeComponent.cancel() -> view.open = false
+- Scope: Volume creation dialog, pool selection, path entry, and create action.

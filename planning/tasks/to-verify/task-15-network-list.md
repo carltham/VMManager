@@ -9,11 +9,12 @@
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/device/netlist.py, ui/netlist.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmNetworkList
-- Actions: open, close, select network, confirm source, cancel.
+- Actions: open, close, select network source, confirm source, cancel.
 - Action Flows:
-  - open: <signal/click source> -> vmmNetworkList -> <helper/service class>
-  - close: <signal/click source> -> vmmNetworkList -> <helper/service class>
-  - select network: <signal/click source> -> vmmNetworkList -> <helper/service class>
-  - confirm source: <signal/click source> -> vmmNetworkList -> <helper/service class>
-  - cancel: <signal/click source> -> vmmNetworkList -> <helper/service class>
-- Scope: Network list dialog, item selection, and network source selection behavior.
+  - open network list dialog: `vmmNetworkList.__init__()` creates the source selector
+  - close: parent dialog cancel/close hides the network list pane
+  - select network source: `on_net_source_changed` -> `vmmNetworkList._on_net_source_changed()`
+  - change portgroup/bridge name: `on_net_portgroup_changed` / `on_net_bridge_name_changed` -> `vmmNetworkList._emit_changed()`
+  - confirm source: selection commits network source into the VM device model
+  - cancel: parent dialog cancel hides the network list pane
+- Scope: network source selection, portgroup/bridge settings, and dialog confirm/cancel behavior.

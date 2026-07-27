@@ -1,0 +1,8 @@
+.dialog-panel {border: 1px solid #ccc; padding: 1rem; margin: 0.75rem 0;}
+.dialog-panel header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;}
+.dialog-panel .form label {display: block; margin: 0.5rem 0;}
+.dialog-panel .form input, .dialog-panel .form select {width: 100%;}
+.dialog-panel .actions {margin-top: 0.75rem; display: flex; gap: 0.5rem;}
+.notice {margin-top: 0.75rem; padding: 0.5rem; border-radius: 4px;}
+.success {background: #e6ffed; border: 1px solid #8ce39a;}
+.error {background: #ffe6e6; border: 1px solid #e38c8c;}

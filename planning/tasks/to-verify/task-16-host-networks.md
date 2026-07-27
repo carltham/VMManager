@@ -1,0 +1,23 @@
+# Task 16 - host-networks
+
+- Status: in-progress
+- Verify: 60%
+- Conversion Progress: [################....] 80%
+- Verification Progress: [############........] 60%
+- TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
+- UIModule: virtManager/hostnets.py, ui/hostnets.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/lib/uiutil.py
+- Flow Classes: vmmHostNets -> vmmConnectionManager
+- Actions: open, close, refresh list, start network, stop network, delete network, inspect network details, apply edits.
+- Action Flows:
+	- open: Host networks page open -> HostNetworksComponent.refresh() -> POST /host-networks/refresh
+	- close: page hidden by app view switch (no dedicated close API)
+	- refresh list: Refresh button -> HostNetworksComponent.refresh() -> POST /host-networks/refresh
+	- start network: Start button -> HostNetworksComponent.action(id,'start') -> POST /host-networks/{id}/start
+	- stop network: Stop button -> HostNetworksComponent.action(id,'stop') -> POST /host-networks/{id}/stop
+	- delete network: Delete button -> HostNetworksComponent.action(id,'delete') -> DELETE /host-networks/{id}
+	- inspect network details: select network row -> selected = network -> details panel updates from selected network
+	- apply edits: Apply button -> HostNetworksComponent.apply() -> POST /host-networks/{id}/apply with name/autostart
+	- edit tracking: name and autostart fields two-way bind to selected network state
+- Scope: Host network management, list rendering, lifecycle actions, and selected network edits.
