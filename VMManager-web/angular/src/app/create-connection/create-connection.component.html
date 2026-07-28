@@ -1,6 +1,24 @@
 <section class="workspace">
   <header>
-    <h2>CreateConnection</h2>
+    <h2>Create Connection</h2>
+    <button type="button" (click)="refresh()">Refresh</button>
   </header>
-  <p>CreateConnection component placeholder.</p>
+
+  <div class="form-grid">
+    <label>Name<input [(ngModel)]="view.name" /></label>
+    <label>URI<input [(ngModel)]="view.uri" /></label>
+    <button type="button" [disabled]="view.submitting" (click)="submit()">Add connection</button>
+  </div>
+
+  <h3>Known Connections</h3>
+  @for (connection of view.connections; track connection.id) {
+  <article>
+    <strong>{{ connection.name }}</strong>
+    <span>{{ connection.uri }}</span>
+    <small>{{ connection.vms.length }} VM(s)</small>
+  </article>
+  }
+
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

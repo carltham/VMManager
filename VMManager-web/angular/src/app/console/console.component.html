@@ -1,6 +1,32 @@
 <section class="workspace">
   <header>
     <h2>Console</h2>
+    <button type="button" (click)="refreshVmList()">Refresh VMs</button>
   </header>
-  <p>Console component placeholder.</p>
+
+  <div class="form-grid">
+    <label>VM
+      <select [(ngModel)]="view.selectedVmId">
+        @for (vm of view.vms; track vm.id) {
+        <option [ngValue]="vm.id">{{ vm.name }} ({{ vm.state }})</option>
+        }
+      </select>
+    </label>
+    <div class="actions">
+      <button type="button" (click)="openConsole()">Open</button>
+      <button type="button" (click)="refreshConsole()">Status</button>
+      <button type="button" (click)="runVm()">Run</button>
+      <button type="button" (click)="pauseVm()">Pause</button>
+    </div>
+  </div>
+
+  @if (view.window) {
+  <article>
+    <h3>{{ view.window.vm.name }} / {{ view.window.activeTab }}</h3>
+    <pre>{{ view.window.consoleText }}</pre>
+  </article>
+  }
+
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

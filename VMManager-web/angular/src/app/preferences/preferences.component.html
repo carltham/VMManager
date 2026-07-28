@@ -1,6 +1,13 @@
 <section class="workspace">
   <header>
     <h2>Preferences</h2>
+    <button type="button" (click)="refresh()">Refresh</button>
   </header>
-  <p>Preferences component placeholder.</p>
+  <article>
+    <p>Theme: {{ view.theme }}</p>
+    <p>Default Connection URI: {{ view.defaultConnectionUri }}</p>
+    <p>Auto Connect: {{ view.autoConnect }}</p>
+  </article>
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

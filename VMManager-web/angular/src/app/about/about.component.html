@@ -1,6 +1,13 @@
 <section class="workspace">
   <header>
     <h2>About</h2>
+    <button type="button" (click)="refresh()">Refresh</button>
   </header>
-  <p>About component placeholder.</p>
+  <article>
+    <p>Name: {{ view.name }}</p>
+    <p>Module: {{ view.module }}</p>
+    <p>Version: {{ view.version }}</p>
+  </article>
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

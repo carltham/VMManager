@@ -6,8 +6,10 @@
   @if (view.open) {
   <div class="browser">
     <p class="path">Current: {{ view.currentPath }}</p>
-    <div class="entries">@for(entry of view.entries){<button type="button" class="entry" [class.selected]="view.selectedPath===entry" (click)="select(entry)">{{ entry }}</button>}</div>
-    <div class="actions"><button type="button" (click)="confirm()">Confirm</button><button type="button" (click)="cancel()">Cancel</button></div>
+    <div class="entries">@for(entry of view.entries; track entry){<button type="button" class="entry"
+        [class.selected]="view.selectedPath===entry" (click)="select(entry)">{{ entry }}</button>}</div>
+    <div class="actions"><button type="button" (click)="confirm()">Confirm</button><button type="button"
+        (click)="cancel()">Cancel</button></div>
     @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
     @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
   </div>

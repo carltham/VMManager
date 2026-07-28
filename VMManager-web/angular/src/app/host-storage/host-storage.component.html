@@ -6,7 +6,7 @@
   <div class="columns">
     <div>
       <h3>Pools</h3>
-      @for(pool of view.pools){
+      @for(pool of view.pools; track pool.id){
       <article>
         <strong>{{ pool.name }}</strong><span>{{ pool.target }}</span>
         <small>{{ pool.active ? 'running' : 'stopped' }}</small>
@@ -19,7 +19,7 @@
     </div>
     <div>
       <h3>Volumes</h3>
-      @for(volume of view.volumes){
+      @for(volume of view.volumes; track volume.id){
       <article>
         <strong>{{ volume.name }}</strong>
         <span>{{ volume.pool }} / {{ volume.format }} / {{ volume.sizeGb }} GB</span>

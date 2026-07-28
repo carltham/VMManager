@@ -1,6 +1,11 @@
 <section class="workspace">
-  <header>
-    <h2>ConnectionAuth</h2>
-  </header>
-  <p>ConnectionAuth component placeholder.</p>
+  <header><h2>Connection Authentication</h2></header>
+  <div class="form-grid">
+    <label>Username<input [(ngModel)]="view.username" /></label>
+    <label>Password<input type="password" [(ngModel)]="view.password" /></label>
+    <label><input type="checkbox" [(ngModel)]="view.remember" /> Remember credentials</label>
+    <button type="button" [disabled]="view.isSubmitting" (click)="authenticate()">Authenticate</button>
+  </div>
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

@@ -1,6 +1,29 @@
 <section class="workspace">
-  <header>
-    <h2>OsList</h2>
-  </header>
-  <p>OsList component placeholder.</p>
+  <header><h2>OS List</h2></header>
+
+  <div class="form-grid">
+    <label>VM
+      <select [(ngModel)]="view.selectedVmId">
+        @for (vm of view.vms; track vm.id) {
+        <option [ngValue]="vm.id">{{ vm.name }}</option>
+        }
+      </select>
+    </label>
+    <label>Operating system
+      <select [(ngModel)]="view.selectedOs">
+        @for (os of view.osChoices; track os) {
+        <option [value]="os">{{ os }}</option>
+        }
+      </select>
+    </label>
+    <div class="actions">
+      <button type="button" (click)="open()">Open list</button>
+      <button type="button" (click)="apply()">Apply OS</button>
+    </div>
+  </div>
+
+  <p>OS list state: {{ view.osListOpen ? 'open' : 'closed' }}</p>
+
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

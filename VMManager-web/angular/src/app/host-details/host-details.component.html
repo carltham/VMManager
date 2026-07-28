@@ -1,6 +1,30 @@
 <section class="workspace">
   <header>
-    <h2>HostDetails</h2>
+    <h2>Host Details</h2>
+    <button type="button" (click)="refreshConnections()">Refresh connections</button>
   </header>
-  <p>HostDetails component placeholder.</p>
+
+  <div class="form-grid">
+    <label>Connection
+      <select [(ngModel)]="view.selectedConnectionId">
+        @for (connection of view.connections; track connection.id) {
+        <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
+        }
+      </select>
+    </label>
+    <button type="button" (click)="loadDetails()">Load host details</button>
+  </div>
+
+  @if (view.details) {
+  <article>
+    <h3>{{ view.details.connectionName }}</h3>
+    <p>URI: {{ view.details.uri }}</p>
+    <p>CPU usage: {{ view.details.cpuUsage }}%</p>
+    <p>Memory usage: {{ view.details.memoryUsageMb }} MB</p>
+    <p>VM count: {{ view.details.vmCount }}</p>
+  </article>
+  }
+
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

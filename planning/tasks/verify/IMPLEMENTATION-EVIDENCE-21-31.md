@@ -4,33 +4,35 @@ Updated: 2026-07-28
 
 ## Validation Commands
 
-- Backend: not executed for this batch (no backend changes made for tasks 21-31 in this update).
-- Frontend build: `cd VMManager-web/angular && npm run build` - fail.
+- Backend: not re-run in this batch (frontend-focused implementation).
+- Frontend build: `cd VMManager-web/angular && npm run build` - pass.
 
-## Frontend Implementation
+## Frontend Implementation (Functional)
 
-Added standalone Angular placeholder components and wired them into the app shell:
+Implemented dedicated component logic with supporting `models` and `api service` files:
 
-- `create-connection`
-- `connection-auth`
-- `host-details`
-- `preferences`
-- `about`
-- `async-job`
-- `console`
-- `xml-editor`
-- `os-list`
-- `snapshots`
-- `snapshot-new`
+- `create-connection`: create/list connections through manager endpoints.
+- `connection-auth`: form flow with validation and response states.
+- `host-details`: connection-scoped host metrics via `/api/manager/host/{connectionId}`.
+- `preferences`: load preferences via `/api/manager/preferences`.
+- `about`: load about metadata via `/api/manager/about`.
+- `async-job`: interactive start/cancel progress flow.
+- `console`: VM selection + VM window actions via vm-window API.
+- `xml-editor`: VM XML editor launch/apply path via vm-details API.
+- `os-list`: VM OS list launch/apply path via vm-details API.
+- `snapshots`: snapshot list/create/delete/revert state flow.
+- `snapshot-new`: event-driven snapshot creation panel.
 
-App-shell integration was added in:
+## App-Shell Integration
 
 - `VMManager-web/angular/src/app/app.ts` (imports + `imports: []` registration)
 - `VMManager-web/angular/src/app/app.html` (component selectors under manager page)
 
-## Current Verification Limitation
+## Verification Notes
 
-Frontend build currently fails due to existing Angular template issues outside tasks 21-31 (missing `track` expressions in several `@for` loops in older storage-related components). Therefore verification remains partial and all tasks stay `in-progress`.
+- Angular build blockers from template `@for` loops were fixed in storage-related components.
+- Frontend compiles successfully after adding functional behavior for tasks 21-31.
+- Tasks remain `in-progress` because integration-test parity (Python UI baseline <-> Angular integration/e2e mapping) is still missing.
 
 ## Integration-Test Parity
 

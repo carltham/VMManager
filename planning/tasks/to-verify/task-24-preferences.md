@@ -1,9 +1,9 @@
 # Task 24 - preferences
 
 - Status: in-progress
-- Verify: 20%
-- Conversion Progress: [##########..........] 50%
-- Verification Progress: [####................] 20%
+- Verify: 50%
+- Conversion Progress: [####################] 100%
+- Verification Progress: [##########..........] 50%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-21-31.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/

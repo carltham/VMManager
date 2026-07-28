@@ -1,6 +1,37 @@
 <section class="workspace">
   <header>
     <h2>Snapshots</h2>
+    <button type="button" (click)="refresh()">Refresh</button>
   </header>
-  <p>Snapshots component placeholder.</p>
+
+  <div class="form-grid">
+    <label>VM
+      <select [(ngModel)]="view.selectedVmId" (change)="refresh()">
+        @for (vm of view.vms; track vm.id) {
+        <option [ngValue]="vm.id">{{ vm.name }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <app-snapshot-new (createSnapshot)="createSnapshot($event)" />
+
+  <h3>Snapshot list</h3>
+  @for (snapshot of view.snapshots; track snapshot.id) {
+  <article>
+    <label>
+      <input type="radio" name="selectedSnapshot" [value]="snapshot.id" [(ngModel)]="view.selectedSnapshotId" />
+      <strong>{{ snapshot.name }}</strong>
+      <small>{{ snapshot.createdAt }}</small>
+    </label>
+  </article>
+  }
+
+  <div class="actions">
+    <button type="button" (click)="revertSelected()">Revert selected</button>
+    <button type="button" (click)="deleteSelected()">Delete selected</button>
+  </div>
+
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

@@ -1,6 +1,11 @@
 <section class="workspace">
-  <header>
-    <h2>AsyncJob</h2>
-  </header>
-  <p>AsyncJob component placeholder.</p>
+  <header><h2>Async Job</h2></header>
+  <div class="actions">
+    <button type="button" [disabled]="view.isRunning" (click)="start()">Start job</button>
+    <button type="button" [disabled]="!view.isRunning" (click)="cancel()">Cancel</button>
+  </div>
+  <p>Progress: {{ view.progress }}%</p>
+  <progress max="100" [value]="view.progress"></progress>
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>

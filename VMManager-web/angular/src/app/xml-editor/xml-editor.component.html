@@ -1,6 +1,23 @@
 <section class="workspace">
-  <header>
-    <h2>XmlEditor</h2>
-  </header>
-  <p>XmlEditor component placeholder.</p>
+  <header><h2>XML Editor</h2></header>
+
+  <div class="form-grid">
+    <label>VM
+      <select [(ngModel)]="view.selectedVmId">
+        @for (vm of view.vms; track vm.id) {
+        <option [ngValue]="vm.id">{{ vm.name }}</option>
+        }
+      </select>
+    </label>
+    <div class="actions">
+      <button type="button" (click)="open()">Open editor</button>
+      <button type="button" (click)="save()">Apply XML</button>
+    </div>
+  </div>
+
+  <textarea rows="8" [(ngModel)]="view.xmlText"></textarea>
+  <p>Editor state: {{ view.editorOpen ? 'open' : 'closed' }}</p>
+
+  @if (view.statusMessage) {<div class="notice success">{{ view.statusMessage }}</div>}
+  @if (view.errorMessage) {<div class="notice error">{{ view.errorMessage }}</div>}
 </section>
