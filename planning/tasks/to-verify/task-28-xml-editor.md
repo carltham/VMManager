@@ -1,10 +1,11 @@
 # Task 28 - xml-editor
 
-- Status: todo
-- Verify: 0%
-- Conversion Progress: [....................] 0%
-- Verification Progress: [....................] 0%
+- Status: in-progress
+- Verify: 20%
+- Conversion Progress: [##########..........] 50%
+- Verification Progress: [####................] 20%
 - TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-21-31.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/xmleditor.py, ui/xmleditor.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmXMLEditor

@@ -1,10 +1,11 @@
 # Task 27 - console
 
-- Status: todo
-- Verify: 0%
-- Conversion Progress: [....................] 0%
-- Verification Progress: [....................] 0%
+- Status: in-progress
+- Verify: 20%
+- Conversion Progress: [##########..........] 50%
+- Verification Progress: [####................] 20%
 - TDD UI Integration Test Progress: [....................] 0%
+- Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-21-31.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/details/console.py, ui/console.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py
 - Flow Classes: vmmConsolePages -> _ConsoleMenu -> vmmOverlayToolbar -> _TimedRevealer
