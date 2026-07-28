@@ -1,0 +1,21 @@
+.workspace {
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  background: #fff;
+  padding: 1rem;
+  margin: 0.75rem 0;
+}
+
+header {
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0;
+  color: #52606d;
+}

@@ -43,6 +43,18 @@
   <app-delete-vm [dialog]="deleteVmDialog" (closeDialog)="closeDeleteVmDialog()"
     (toggleRemoveStorage)="toggleDeleteVmStorage($event)" (confirmDelete)="confirmDeleteVm()"
     (cancelDelete)="cancelDeleteVm()" />
+
+  <app-create-connection />
+  <app-connection-auth />
+  <app-host-details />
+  <app-preferences />
+  <app-about />
+  <app-async-job />
+  <app-console />
+  <app-xml-editor />
+  <app-os-list />
+  <app-snapshots />
+  <app-snapshot-new />
   }
 
   @if (showCreateVmPage()) {
@@ -74,11 +86,11 @@
   }
   @if (showHostNetworksPage()) { <app-host-networks /> }
   @if (showStoragePage()) {
-    <app-storage-management />
-    <app-host-storage />
-    <app-create-pool />
-    <app-create-volume />
-    <app-storage-browse />
+  <app-storage-management />
+  <app-host-storage />
+  <app-create-pool />
+  <app-create-volume />
+  <app-storage-browse />
   }
 
   @if (showManagerPage()) {

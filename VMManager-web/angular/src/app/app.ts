@@ -1,57 +1,68 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 
-import { CloneVmApiService } from './clone-vm/clone-vm-api.service';
-import { CloneVmComponent } from './clone-vm/clone-vm.component';
-import { CloneVmDialogView } from './clone-vm/clone-vm.models';
+import { AboutComponent } from './about/about.component';
 import { AddHardwareApiService } from './add-hardware/add-hardware-api.service';
 import { AddHardwareComponent } from './add-hardware/add-hardware.component';
 import { AddHardwareDialogView } from './add-hardware/add-hardware.models';
 import { AddStorageApiService } from './add-storage/add-storage-api.service';
 import { AddStorageComponent } from './add-storage/add-storage.component';
 import { AddStorageDialogView } from './add-storage/add-storage.models';
+import { AsyncJobComponent } from './async-job/async-job.component';
+import { CloneVmApiService } from './clone-vm/clone-vm-api.service';
+import { CloneVmComponent } from './clone-vm/clone-vm.component';
+import { CloneVmDialogView } from './clone-vm/clone-vm.models';
+import { ConnectionAuthComponent } from './connection-auth/connection-auth.component';
+import { ConsoleComponent } from './console/console.component';
+import { CreateConnectionComponent } from './create-connection/create-connection.component';
+import { CreateNetworkApiService } from './create-network/create-network-api.service';
+import { CreateNetworkComponent } from './create-network/create-network.component';
+import { CreateNetworkWizardView } from './create-network/create-network.models';
+import { CreatePoolComponent } from './create-pool/create-pool.component';
+import { CreateVmApiService } from './create-vm/create-vm-api.service';
+import { CreateVmComponent } from './create-vm/create-vm.component';
+import { CreateVmWizardView } from './create-vm/create-vm.models';
+import { CreateVolumeComponent } from './create-volume/create-volume.component';
+import { DeleteVmApiService } from './delete-vm/delete-vm-api.service';
+import { DeleteVmComponent } from './delete-vm/delete-vm.component';
+import { DeleteVmDialogView } from './delete-vm/delete-vm.models';
 import { FilesystemDetailsApiService } from './filesystem-details/filesystem-details-api.service';
 import { FilesystemDetailsComponent } from './filesystem-details/filesystem-details.component';
 import { FilesystemDetailsDialogView } from './filesystem-details/filesystem-details.models';
 import { GraphicsDetailsApiService } from './graphics-details/graphics-details-api.service';
 import { GraphicsDetailsComponent } from './graphics-details/graphics-details.component';
 import { GraphicsDetailsDialogView } from './graphics-details/graphics-details.models';
-import { TpmDetailsApiService } from './tpm-details/tpm-details-api.service';
-import { TpmDetailsComponent } from './tpm-details/tpm-details.component';
-import { TpmDetailsDialogView } from './tpm-details/tpm-details.models';
-import { VsockDetailsApiService } from './vsock-details/vsock-details-api.service';
-import { VsockDetailsComponent } from './vsock-details/vsock-details.component';
-import { VsockDetailsDialogView } from './vsock-details/vsock-details.models';
-import { CreateNetworkApiService } from './create-network/create-network-api.service';
-import { CreateNetworkComponent } from './create-network/create-network.component';
-import { CreateNetworkWizardView } from './create-network/create-network.models';
-import { NetworkListApiService } from './network-list/network-list-api.service';
-import { NetworkListComponent } from './network-list/network-list.component';
-import { NetworkListDialogView } from './network-list/network-list.models';
+import { HostDetailsComponent } from './host-details/host-details.component';
 import { HostNetworksComponent } from './host-networks/host-networks.component';
-import { StorageManagementComponent } from './storage-management/storage-management.component';
-import { CreateVolumeComponent } from './create-volume/create-volume.component';
-import { CreatePoolComponent } from './create-pool/create-pool.component';
-import { StorageBrowseComponent } from './storage-browse/storage-browse.component';
 import { HostStorageComponent } from './host-storage/host-storage.component';
-import { CreateVmApiService } from './create-vm/create-vm-api.service';
-import { CreateVmComponent } from './create-vm/create-vm.component';
-import { CreateVmWizardView } from './create-vm/create-vm.models';
-import { DeleteVmApiService } from './delete-vm/delete-vm-api.service';
-import { DeleteVmComponent } from './delete-vm/delete-vm.component';
-import { DeleteVmDialogView } from './delete-vm/delete-vm.models';
 import { ManagerApiService } from './manager/manager-api.service';
 import { ManagerComponent } from './manager/manager.component';
 import { ConnectionItem, ManagerOverview, VmItem } from './manager/manager.models';
 import { MigrateVmApiService } from './migrate-vm/migrate-vm-api.service';
 import { MigrateVmComponent } from './migrate-vm/migrate-vm.component';
 import { MigrateVmDialogView } from './migrate-vm/migrate-vm.models';
+import { NetworkListApiService } from './network-list/network-list-api.service';
+import { NetworkListComponent } from './network-list/network-list.component';
+import { NetworkListDialogView } from './network-list/network-list.models';
+import { OsListComponent } from './os-list/os-list.component';
+import { PreferencesComponent } from './preferences/preferences.component';
+import { SnapshotNewComponent } from './snapshot-new/snapshot-new.component';
+import { SnapshotsComponent } from './snapshots/snapshots.component';
+import { StorageBrowseComponent } from './storage-browse/storage-browse.component';
+import { StorageManagementComponent } from './storage-management/storage-management.component';
+import { TpmDetailsApiService } from './tpm-details/tpm-details-api.service';
+import { TpmDetailsComponent } from './tpm-details/tpm-details.component';
+import { TpmDetailsDialogView } from './tpm-details/tpm-details.models';
 import { VmDetailsApiService } from './vm-details/vm-details-api.service';
 import { VmDetailsComponent } from './vm-details/vm-details.component';
 import { VmDetailsView } from './vm-details/vm-details.models';
 import { VmWindowApiService } from './vm-window/vm-window-api.service';
 import { VmWindowComponent } from './vm-window/vm-window.component';
 import { VmWindowTab, VmWindowView } from './vm-window/vm-window.models';
+import { VsockDetailsApiService } from './vsock-details/vsock-details-api.service';
+import { VsockDetailsComponent } from './vsock-details/vsock-details.component';
+import { VsockDetailsDialogView } from './vsock-details/vsock-details.models';
+import { XmlEditorComponent } from './xml-editor/xml-editor.component';
 
 @Component({
   selector: 'app-root',
@@ -78,6 +89,17 @@ import { VmWindowTab, VmWindowView } from './vm-window/vm-window.models';
     MigrateVmComponent,
     VmWindowComponent,
     VmDetailsComponent,
+    CreateConnectionComponent,
+    ConnectionAuthComponent,
+    HostDetailsComponent,
+    PreferencesComponent,
+    AboutComponent,
+    AsyncJobComponent,
+    ConsoleComponent,
+    XmlEditorComponent,
+    OsListComponent,
+    SnapshotsComponent,
+    SnapshotNewComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
@@ -119,13 +141,21 @@ export class App implements OnInit {
   migrateVmDialog: MigrateVmDialogView | null = null;
   vmWindow: VmWindowView | null = null;
   vmDetails: VmDetailsView | null = null;
-  activePage: 'manager' | 'create-vm' | 'clone-vm' | 'create-network' | 'host-networks' | 'storage' = 'manager';
+  activePage:
+    | 'manager'
+    | 'create-vm'
+    | 'clone-vm'
+    | 'create-network'
+    | 'host-networks'
+    | 'storage' = 'manager';
 
   ngOnInit(): void {
     this.refresh();
   }
 
-  setActivePage(page: 'manager' | 'create-vm' | 'clone-vm' | 'create-network' | 'host-networks' | 'storage'): void {
+  setActivePage(
+    page: 'manager' | 'create-vm' | 'clone-vm' | 'create-network' | 'host-networks' | 'storage',
+  ): void {
     this.activePage = page;
   }
 
@@ -140,9 +170,15 @@ export class App implements OnInit {
   showCloneVmPage(): boolean {
     return this.activePage === 'clone-vm';
   }
-  showCreateNetworkPage(): boolean { return this.activePage === 'create-network'; }
-  showHostNetworksPage(): boolean { return this.activePage === 'host-networks'; }
-  showStoragePage(): boolean { return this.activePage === 'storage'; }
+  showCreateNetworkPage(): boolean {
+    return this.activePage === 'create-network';
+  }
+  showHostNetworksPage(): boolean {
+    return this.activePage === 'host-networks';
+  }
+  showStoragePage(): boolean {
+    return this.activePage === 'storage';
+  }
 
   refresh(): void {
     this.isLoading = true;
@@ -473,46 +509,348 @@ export class App implements OnInit {
 
   openAddHardwareDialog(): void {
     if (!this.vmDetails) return;
-    this.addHardwareApi.open(this.vmDetails.vm.id).subscribe({ next: (dialog) => this.setAddHardwareDialog(dialog), error: () => { this.error = 'Failed to open add hardware dialog.'; } });
+    this.addHardwareApi.open(this.vmDetails.vm.id).subscribe({
+      next: (dialog) => this.setAddHardwareDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open add hardware dialog.';
+      },
+    });
   }
 
   updateAddHardware(action: 'type' | 'configuration', value: string): void {
     if (!this.addHardwareDialog) return;
-    const request = action === 'type' ? this.addHardwareApi.selectDeviceType(this.addHardwareDialog.dialogId, value) : this.addHardwareApi.configureDevice(this.addHardwareDialog.dialogId, value);
-    request.subscribe({ next: (dialog) => this.setAddHardwareDialog(dialog), error: () => { this.error = 'Failed to update hardware configuration.'; } });
+    const request =
+      action === 'type'
+        ? this.addHardwareApi.selectDeviceType(this.addHardwareDialog.dialogId, value)
+        : this.addHardwareApi.configureDevice(this.addHardwareDialog.dialogId, value);
+    request.subscribe({
+      next: (dialog) => this.setAddHardwareDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update hardware configuration.';
+      },
+    });
   }
 
   runAddHardwareAction(action: 'close' | 'validate' | 'apply' | 'cancel'): void {
     if (!this.addHardwareDialog) return;
     const id = this.addHardwareDialog.dialogId;
-    const request = action === 'close' ? this.addHardwareApi.close(id) : action === 'validate' ? this.addHardwareApi.validateDevice(id) : action === 'apply' ? this.addHardwareApi.apply(id) : this.addHardwareApi.cancel(id);
-    request.subscribe({ next: (dialog) => this.setAddHardwareDialog(dialog), error: () => { this.error = `Failed to ${action} hardware configuration.`; } });
+    const request =
+      action === 'close'
+        ? this.addHardwareApi.close(id)
+        : action === 'validate'
+          ? this.addHardwareApi.validateDevice(id)
+          : action === 'apply'
+            ? this.addHardwareApi.apply(id)
+            : this.addHardwareApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setAddHardwareDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} hardware configuration.`;
+      },
+    });
   }
 
-  openAddStorageDialog(): void { if (!this.vmDetails) return; this.addStorageApi.open(this.vmDetails.vm.id).subscribe({next:(dialog)=>this.setAddStorageDialog(dialog),error:()=>{this.error='Failed to open add storage dialog.';}}); }
-  updateAddStorage(action:'source'|'path'|'format'|'size',value:string|number):void { if(!this.addStorageDialog)return;const id=this.addStorageDialog.dialogId;const request=action==='source'?this.addStorageApi.browseSource(id,String(value)):action==='path'?this.addStorageApi.selectStoragePath(id,String(value)):action==='format'?this.addStorageApi.changeFormat(id,String(value)):this.addStorageApi.changeSize(id,Number(value));request.subscribe({next:(dialog)=>this.setAddStorageDialog(dialog),error:()=>{this.error='Failed to update storage configuration.';}}); }
-  runAddStorageAction(action:'close'|'attach'|'cancel'):void {if(!this.addStorageDialog)return;const id=this.addStorageDialog.dialogId;const request=action==='close'?this.addStorageApi.close(id):action==='attach'?this.addStorageApi.attachStorage(id):this.addStorageApi.cancel(id);request.subscribe({next:(dialog)=>this.setAddStorageDialog(dialog),error:()=>{this.error=`Failed to ${action} storage.`;}});}
-  openFilesystemDetailsDialog():void {if(!this.vmDetails)return;this.filesystemDetailsApi.open(this.vmDetails.vm.id).subscribe({next:(dialog)=>this.setFilesystemDetailsDialog(dialog),error:()=>{this.error='Failed to open filesystem details.';}});}
-  updateFilesystemDetails(action:'path'|'target',value:string):void {if(!this.filesystemDetailsDialog)return;const id=this.filesystemDetailsDialog.dialogId;const request=action==='path'?this.filesystemDetailsApi.editFilesystemPath(id,value):this.filesystemDetailsApi.editTarget(id,value);request.subscribe({next:(dialog)=>this.setFilesystemDetailsDialog(dialog),error:()=>{this.error='Failed to update filesystem details.';}});}
-  runFilesystemDetailsAction(action:'close'|'apply'|'cancel'):void {if(!this.filesystemDetailsDialog)return;const id=this.filesystemDetailsDialog.dialogId;const request=action==='close'?this.filesystemDetailsApi.close(id):action==='apply'?this.filesystemDetailsApi.apply(id):this.filesystemDetailsApi.cancel(id);request.subscribe({next:(dialog)=>this.setFilesystemDetailsDialog(dialog),error:()=>{this.error=`Failed to ${action} filesystem details.`;}});}
-  openGraphicsDetailsDialog():void {if(!this.vmDetails)return;this.graphicsDetailsApi.open(this.vmDetails.vm.id).subscribe({next:(dialog)=>this.setGraphicsDetailsDialog(dialog),error:()=>{this.error='Failed to open graphics details.';}});}
-  updateGraphicsType(value:string):void {if(!this.graphicsDetailsDialog)return;this.graphicsDetailsApi.changeGraphicsType(this.graphicsDetailsDialog.dialogId,value).subscribe({next:(dialog)=>this.setGraphicsDetailsDialog(dialog),error:()=>{this.error='Failed to update graphics type.';}});}
-  updateGraphicsConnection(value:{listenAddress:string;port:number;keymap:string}):void {if(!this.graphicsDetailsDialog)return;this.graphicsDetailsApi.changeListenPortKey(this.graphicsDetailsDialog.dialogId,value.listenAddress,value.port,value.keymap).subscribe({next:(dialog)=>this.setGraphicsDetailsDialog(dialog),error:()=>{this.error='Failed to update graphics connection.';}});}
-  runGraphicsDetailsAction(action:'close'|'apply'|'cancel'):void {if(!this.graphicsDetailsDialog)return;const id=this.graphicsDetailsDialog.dialogId;const request=action==='close'?this.graphicsDetailsApi.close(id):action==='apply'?this.graphicsDetailsApi.apply(id):this.graphicsDetailsApi.cancel(id);request.subscribe({next:(dialog)=>this.setGraphicsDetailsDialog(dialog),error:()=>{this.error=`Failed to ${action} graphics details.`;}});}
-  openTpmDetailsDialog():void {if(!this.vmDetails)return;this.tpmDetailsApi.open(this.vmDetails.vm.id).subscribe({next:(dialog)=>this.setTpmDetailsDialog(dialog),error:()=>{this.error='Failed to open TPM details.';}});}
-  updateTpm(action:'model'|'version'|'path',value:string):void {if(!this.tpmDetailsDialog)return;const id=this.tpmDetailsDialog.dialogId;const request=action==='model'?this.tpmDetailsApi.changeModel(id,value):action==='version'?this.tpmDetailsApi.changeVersion(id,value):this.tpmDetailsApi.changeDevicePath(id,value);request.subscribe({next:(dialog)=>this.setTpmDetailsDialog(dialog),error:()=>{this.error='Failed to update TPM details.';}});}
-  runTpmDetailsAction(action:'close'|'apply'|'cancel'):void {if(!this.tpmDetailsDialog)return;const id=this.tpmDetailsDialog.dialogId;const request=action==='close'?this.tpmDetailsApi.close(id):action==='apply'?this.tpmDetailsApi.apply(id):this.tpmDetailsApi.cancel(id);request.subscribe({next:(dialog)=>this.setTpmDetailsDialog(dialog),error:()=>{this.error=`Failed to ${action} TPM details.`;}});}
-  openVsockDetailsDialog():void {if(!this.vmDetails)return;this.vsockDetailsApi.open(this.vmDetails.vm.id).subscribe({next:(dialog)=>this.setVsockDetailsDialog(dialog),error:()=>{this.error='Failed to open VSock details.';}});}
-  updateVsockAutoCid(value:boolean):void {if(!this.vsockDetailsDialog)return;this.vsockDetailsApi.toggleAutoCid(this.vsockDetailsDialog.dialogId,value).subscribe({next:(dialog)=>this.setVsockDetailsDialog(dialog),error:()=>{this.error='Failed to update VSock mode.';}});}
-  updateVsockCid(value:number):void {if(!this.vsockDetailsDialog)return;this.vsockDetailsApi.editCid(this.vsockDetailsDialog.dialogId,value).subscribe({next:(dialog)=>this.setVsockDetailsDialog(dialog),error:()=>{this.error='Failed to update VSock CID.';}});}
-  runVsockDetailsAction(action:'close'|'apply'|'cancel'):void {if(!this.vsockDetailsDialog)return;const id=this.vsockDetailsDialog.dialogId;const request=action==='close'?this.vsockDetailsApi.close(id):action==='apply'?this.vsockDetailsApi.apply(id):this.vsockDetailsApi.cancel(id);request.subscribe({next:(dialog)=>this.setVsockDetailsDialog(dialog),error:()=>{this.error=`Failed to ${action} VSock details.`;}});}
-  openCreateNetworkWizard():void {this.createNetworkApi.open().subscribe({next:(wizard)=>this.setCreateNetworkWizard(wizard),error:()=>{this.error='Failed to open create network wizard.';}});}
-  runCreateNetworkAction(action:'close'|'back'|'next'|'review'|'create'|'cancel'):void {if(!this.createNetworkWizard)return;const id=this.createNetworkWizard.wizardId;const request=action==='close'?this.createNetworkApi.close(id):action==='back'?this.createNetworkApi.back(id):action==='next'?this.createNetworkApi.next(id):action==='review'?this.createNetworkApi.review(id):action==='create'?this.createNetworkApi.create(id):this.createNetworkApi.cancel(id);request.subscribe({next:(wizard)=>this.setCreateNetworkWizard(wizard),error:()=>{this.error=`Failed to ${action} network wizard.`;}});}
-  configureNetwork(value:{networkName:string;mode:string}):void {if(!this.createNetworkWizard)return;this.createNetworkApi.configureNetwork(this.createNetworkWizard.wizardId,value.networkName,value.mode).subscribe({next:(wizard)=>this.setCreateNetworkWizard(wizard),error:()=>{this.error='Failed to configure network.';}});}
-  setNetworkAddressRange(value:string):void {if(!this.createNetworkWizard)return;this.createNetworkApi.setAddressRange(this.createNetworkWizard.wizardId,value).subscribe({next:(wizard)=>this.setCreateNetworkWizard(wizard),error:()=>{this.error='Failed to set network range.';}});}
-  openNetworkListDialog():void {this.networkListApi.open().subscribe({next:(dialog)=>this.setNetworkListDialog(dialog),error:()=>{this.error='Failed to open network list.';}});}
-  selectNetwork(value:string):void {if(!this.networkListDialog)return;this.networkListApi.selectNetwork(this.networkListDialog.dialogId,value).subscribe({next:(dialog)=>this.setNetworkListDialog(dialog),error:()=>{this.error='Failed to select network.';}});}
-  runNetworkListAction(action:'close'|'confirm'|'cancel'):void {if(!this.networkListDialog)return;const id=this.networkListDialog.dialogId;const request=action==='close'?this.networkListApi.close(id):action==='confirm'?this.networkListApi.confirmSource(id):this.networkListApi.cancel(id);request.subscribe({next:(dialog)=>this.setNetworkListDialog(dialog),error:()=>{this.error=`Failed to ${action} network source.`;}});}
+  openAddStorageDialog(): void {
+    if (!this.vmDetails) return;
+    this.addStorageApi.open(this.vmDetails.vm.id).subscribe({
+      next: (dialog) => this.setAddStorageDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open add storage dialog.';
+      },
+    });
+  }
+  updateAddStorage(action: 'source' | 'path' | 'format' | 'size', value: string | number): void {
+    if (!this.addStorageDialog) return;
+    const id = this.addStorageDialog.dialogId;
+    const request =
+      action === 'source'
+        ? this.addStorageApi.browseSource(id, String(value))
+        : action === 'path'
+          ? this.addStorageApi.selectStoragePath(id, String(value))
+          : action === 'format'
+            ? this.addStorageApi.changeFormat(id, String(value))
+            : this.addStorageApi.changeSize(id, Number(value));
+    request.subscribe({
+      next: (dialog) => this.setAddStorageDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update storage configuration.';
+      },
+    });
+  }
+  runAddStorageAction(action: 'close' | 'attach' | 'cancel'): void {
+    if (!this.addStorageDialog) return;
+    const id = this.addStorageDialog.dialogId;
+    const request =
+      action === 'close'
+        ? this.addStorageApi.close(id)
+        : action === 'attach'
+          ? this.addStorageApi.attachStorage(id)
+          : this.addStorageApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setAddStorageDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} storage.`;
+      },
+    });
+  }
+  openFilesystemDetailsDialog(): void {
+    if (!this.vmDetails) return;
+    this.filesystemDetailsApi.open(this.vmDetails.vm.id).subscribe({
+      next: (dialog) => this.setFilesystemDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open filesystem details.';
+      },
+    });
+  }
+  updateFilesystemDetails(action: 'path' | 'target', value: string): void {
+    if (!this.filesystemDetailsDialog) return;
+    const id = this.filesystemDetailsDialog.dialogId;
+    const request =
+      action === 'path'
+        ? this.filesystemDetailsApi.editFilesystemPath(id, value)
+        : this.filesystemDetailsApi.editTarget(id, value);
+    request.subscribe({
+      next: (dialog) => this.setFilesystemDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update filesystem details.';
+      },
+    });
+  }
+  runFilesystemDetailsAction(action: 'close' | 'apply' | 'cancel'): void {
+    if (!this.filesystemDetailsDialog) return;
+    const id = this.filesystemDetailsDialog.dialogId;
+    const request =
+      action === 'close'
+        ? this.filesystemDetailsApi.close(id)
+        : action === 'apply'
+          ? this.filesystemDetailsApi.apply(id)
+          : this.filesystemDetailsApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setFilesystemDetailsDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} filesystem details.`;
+      },
+    });
+  }
+  openGraphicsDetailsDialog(): void {
+    if (!this.vmDetails) return;
+    this.graphicsDetailsApi.open(this.vmDetails.vm.id).subscribe({
+      next: (dialog) => this.setGraphicsDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open graphics details.';
+      },
+    });
+  }
+  updateGraphicsType(value: string): void {
+    if (!this.graphicsDetailsDialog) return;
+    this.graphicsDetailsApi
+      .changeGraphicsType(this.graphicsDetailsDialog.dialogId, value)
+      .subscribe({
+        next: (dialog) => this.setGraphicsDetailsDialog(dialog),
+        error: () => {
+          this.error = 'Failed to update graphics type.';
+        },
+      });
+  }
+  updateGraphicsConnection(value: { listenAddress: string; port: number; keymap: string }): void {
+    if (!this.graphicsDetailsDialog) return;
+    this.graphicsDetailsApi
+      .changeListenPortKey(
+        this.graphicsDetailsDialog.dialogId,
+        value.listenAddress,
+        value.port,
+        value.keymap,
+      )
+      .subscribe({
+        next: (dialog) => this.setGraphicsDetailsDialog(dialog),
+        error: () => {
+          this.error = 'Failed to update graphics connection.';
+        },
+      });
+  }
+  runGraphicsDetailsAction(action: 'close' | 'apply' | 'cancel'): void {
+    if (!this.graphicsDetailsDialog) return;
+    const id = this.graphicsDetailsDialog.dialogId;
+    const request =
+      action === 'close'
+        ? this.graphicsDetailsApi.close(id)
+        : action === 'apply'
+          ? this.graphicsDetailsApi.apply(id)
+          : this.graphicsDetailsApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setGraphicsDetailsDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} graphics details.`;
+      },
+    });
+  }
+  openTpmDetailsDialog(): void {
+    if (!this.vmDetails) return;
+    this.tpmDetailsApi.open(this.vmDetails.vm.id).subscribe({
+      next: (dialog) => this.setTpmDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open TPM details.';
+      },
+    });
+  }
+  updateTpm(action: 'model' | 'version' | 'path', value: string): void {
+    if (!this.tpmDetailsDialog) return;
+    const id = this.tpmDetailsDialog.dialogId;
+    const request =
+      action === 'model'
+        ? this.tpmDetailsApi.changeModel(id, value)
+        : action === 'version'
+          ? this.tpmDetailsApi.changeVersion(id, value)
+          : this.tpmDetailsApi.changeDevicePath(id, value);
+    request.subscribe({
+      next: (dialog) => this.setTpmDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update TPM details.';
+      },
+    });
+  }
+  runTpmDetailsAction(action: 'close' | 'apply' | 'cancel'): void {
+    if (!this.tpmDetailsDialog) return;
+    const id = this.tpmDetailsDialog.dialogId;
+    const request =
+      action === 'close'
+        ? this.tpmDetailsApi.close(id)
+        : action === 'apply'
+          ? this.tpmDetailsApi.apply(id)
+          : this.tpmDetailsApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setTpmDetailsDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} TPM details.`;
+      },
+    });
+  }
+  openVsockDetailsDialog(): void {
+    if (!this.vmDetails) return;
+    this.vsockDetailsApi.open(this.vmDetails.vm.id).subscribe({
+      next: (dialog) => this.setVsockDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open VSock details.';
+      },
+    });
+  }
+  updateVsockAutoCid(value: boolean): void {
+    if (!this.vsockDetailsDialog) return;
+    this.vsockDetailsApi.toggleAutoCid(this.vsockDetailsDialog.dialogId, value).subscribe({
+      next: (dialog) => this.setVsockDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update VSock mode.';
+      },
+    });
+  }
+  updateVsockCid(value: number): void {
+    if (!this.vsockDetailsDialog) return;
+    this.vsockDetailsApi.editCid(this.vsockDetailsDialog.dialogId, value).subscribe({
+      next: (dialog) => this.setVsockDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update VSock CID.';
+      },
+    });
+  }
+  runVsockDetailsAction(action: 'close' | 'apply' | 'cancel'): void {
+    if (!this.vsockDetailsDialog) return;
+    const id = this.vsockDetailsDialog.dialogId;
+    const request =
+      action === 'close'
+        ? this.vsockDetailsApi.close(id)
+        : action === 'apply'
+          ? this.vsockDetailsApi.apply(id)
+          : this.vsockDetailsApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setVsockDetailsDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} VSock details.`;
+      },
+    });
+  }
+  openCreateNetworkWizard(): void {
+    this.createNetworkApi.open().subscribe({
+      next: (wizard) => this.setCreateNetworkWizard(wizard),
+      error: () => {
+        this.error = 'Failed to open create network wizard.';
+      },
+    });
+  }
+  runCreateNetworkAction(action: 'close' | 'back' | 'next' | 'review' | 'create' | 'cancel'): void {
+    if (!this.createNetworkWizard) return;
+    const id = this.createNetworkWizard.wizardId;
+    const request =
+      action === 'close'
+        ? this.createNetworkApi.close(id)
+        : action === 'back'
+          ? this.createNetworkApi.back(id)
+          : action === 'next'
+            ? this.createNetworkApi.next(id)
+            : action === 'review'
+              ? this.createNetworkApi.review(id)
+              : action === 'create'
+                ? this.createNetworkApi.create(id)
+                : this.createNetworkApi.cancel(id);
+    request.subscribe({
+      next: (wizard) => this.setCreateNetworkWizard(wizard),
+      error: () => {
+        this.error = `Failed to ${action} network wizard.`;
+      },
+    });
+  }
+  configureNetwork(value: { networkName: string; mode: string }): void {
+    if (!this.createNetworkWizard) return;
+    this.createNetworkApi
+      .configureNetwork(this.createNetworkWizard.wizardId, value.networkName, value.mode)
+      .subscribe({
+        next: (wizard) => this.setCreateNetworkWizard(wizard),
+        error: () => {
+          this.error = 'Failed to configure network.';
+        },
+      });
+  }
+  setNetworkAddressRange(value: string): void {
+    if (!this.createNetworkWizard) return;
+    this.createNetworkApi.setAddressRange(this.createNetworkWizard.wizardId, value).subscribe({
+      next: (wizard) => this.setCreateNetworkWizard(wizard),
+      error: () => {
+        this.error = 'Failed to set network range.';
+      },
+    });
+  }
+  openNetworkListDialog(): void {
+    this.networkListApi.open().subscribe({
+      next: (dialog) => this.setNetworkListDialog(dialog),
+      error: () => {
+        this.error = 'Failed to open network list.';
+      },
+    });
+  }
+  selectNetwork(value: string): void {
+    if (!this.networkListDialog) return;
+    this.networkListApi.selectNetwork(this.networkListDialog.dialogId, value).subscribe({
+      next: (dialog) => this.setNetworkListDialog(dialog),
+      error: () => {
+        this.error = 'Failed to select network.';
+      },
+    });
+  }
+  runNetworkListAction(action: 'close' | 'confirm' | 'cancel'): void {
+    if (!this.networkListDialog) return;
+    const id = this.networkListDialog.dialogId;
+    const request =
+      action === 'close'
+        ? this.networkListApi.close(id)
+        : action === 'confirm'
+          ? this.networkListApi.confirmSource(id)
+          : this.networkListApi.cancel(id);
+    request.subscribe({
+      next: (dialog) => this.setNetworkListDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} network source.`;
+      },
+    });
+  }
 
   removeHardwareFromDetails(value: string): void {
     this.runVmDetailsTextAction('removeHardware', value);
@@ -608,28 +946,51 @@ export class App implements OnInit {
         this.migrateVmDialog = dialog;
         this.infoMessage = `Configure migration for ${vm.name}.`;
       },
-      error: () => { this.error = 'Failed to open migrate VM dialog.'; },
+      error: () => {
+        this.error = 'Failed to open migrate VM dialog.';
+      },
     });
   }
 
-  closeMigrateVmDialog(): void { this.runMigrateVmAction('close'); }
-  cancelMigration(): void { this.runMigrateVmAction('cancel'); }
-  finishMigration(): void { this.runMigrateVmAction('finish'); }
+  closeMigrateVmDialog(): void {
+    this.runMigrateVmAction('close');
+  }
+  cancelMigration(): void {
+    this.runMigrateVmAction('cancel');
+  }
+  finishMigration(): void {
+    this.runMigrateVmAction('finish');
+  }
 
   updateMigrationText(action: 'destination' | 'mode' | 'xml', value: string): void {
     if (!this.migrateVmDialog) return;
     const dialogId = this.migrateVmDialog.dialogId;
-    const request = action === 'destination' ? this.migrateVmApi.chooseDestination(dialogId, value)
-      : action === 'mode' ? this.migrateVmApi.changeMigrationMode(dialogId, value)
-        : this.migrateVmApi.editXmlPreview(dialogId, value);
-    request.subscribe({ next: (dialog) => this.setMigrateVmDialog(dialog), error: () => { this.error = 'Failed to update migration setting.'; } });
+    const request =
+      action === 'destination'
+        ? this.migrateVmApi.chooseDestination(dialogId, value)
+        : action === 'mode'
+          ? this.migrateVmApi.changeMigrationMode(dialogId, value)
+          : this.migrateVmApi.editXmlPreview(dialogId, value);
+    request.subscribe({
+      next: (dialog) => this.setMigrateVmDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update migration setting.';
+      },
+    });
   }
 
   updateMigrationOption(action: 'address' | 'port', value: boolean): void {
     if (!this.migrateVmDialog) return;
-    const request = action === 'address' ? this.migrateVmApi.toggleAddress(this.migrateVmDialog.dialogId, value)
-      : this.migrateVmApi.togglePort(this.migrateVmDialog.dialogId, value);
-    request.subscribe({ next: (dialog) => this.setMigrateVmDialog(dialog), error: () => { this.error = 'Failed to update migration option.'; } });
+    const request =
+      action === 'address'
+        ? this.migrateVmApi.toggleAddress(this.migrateVmDialog.dialogId, value)
+        : this.migrateVmApi.togglePort(this.migrateVmDialog.dialogId, value);
+    request.subscribe({
+      next: (dialog) => this.setMigrateVmDialog(dialog),
+      error: () => {
+        this.error = 'Failed to update migration option.';
+      },
+    });
   }
 
   closeDeleteVmDialog(): void {
@@ -948,10 +1309,18 @@ export class App implements OnInit {
   private runMigrateVmAction(action: 'close' | 'finish' | 'cancel'): void {
     if (!this.migrateVmDialog) return;
     const dialogId = this.migrateVmDialog.dialogId;
-    const request = action === 'close' ? this.migrateVmApi.close(dialogId)
-      : action === 'finish' ? this.migrateVmApi.finishMigration(dialogId)
-        : this.migrateVmApi.cancelMigration(dialogId);
-    request.subscribe({ next: (dialog) => this.setMigrateVmDialog(dialog), error: () => { this.error = `Failed to ${action} migration.`; } });
+    const request =
+      action === 'close'
+        ? this.migrateVmApi.close(dialogId)
+        : action === 'finish'
+          ? this.migrateVmApi.finishMigration(dialogId)
+          : this.migrateVmApi.cancelMigration(dialogId);
+    request.subscribe({
+      next: (dialog) => this.setMigrateVmDialog(dialog),
+      error: () => {
+        this.error = `Failed to ${action} migration.`;
+      },
+    });
   }
 
   private setMigrateVmDialog(dialog: MigrateVmDialogView): void {
@@ -964,13 +1333,40 @@ export class App implements OnInit {
     this.infoMessage = dialog.statusMessage;
     if (!dialog.open) this.refreshVmDetails();
   }
-  private setAddStorageDialog(dialog:AddStorageDialogView):void {this.addStorageDialog=dialog;this.infoMessage=dialog.statusMessage;if(!dialog.open)this.refreshVmDetails();}
-  private setFilesystemDetailsDialog(dialog:FilesystemDetailsDialogView):void {this.filesystemDetailsDialog=dialog;this.infoMessage=dialog.statusMessage;if(!dialog.open)this.refreshVmDetails();}
-  private setGraphicsDetailsDialog(dialog:GraphicsDetailsDialogView):void {this.graphicsDetailsDialog=dialog;this.infoMessage=dialog.statusMessage;if(!dialog.open)this.refreshVmDetails();}
-  private setTpmDetailsDialog(dialog:TpmDetailsDialogView):void {this.tpmDetailsDialog=dialog;this.infoMessage=dialog.statusMessage;if(!dialog.open)this.refreshVmDetails();}
-  private setVsockDetailsDialog(dialog:VsockDetailsDialogView):void {this.vsockDetailsDialog=dialog;this.infoMessage=dialog.statusMessage;if(!dialog.open)this.refreshVmDetails();}
-  private setCreateNetworkWizard(wizard:CreateNetworkWizardView):void {this.createNetworkWizard=wizard;this.infoMessage=wizard.statusMessage;}
-  private setNetworkListDialog(dialog:NetworkListDialogView):void {this.networkListDialog=dialog;this.infoMessage=dialog.statusMessage;if(!dialog.open)this.refreshVmDetails();}
+  private setAddStorageDialog(dialog: AddStorageDialogView): void {
+    this.addStorageDialog = dialog;
+    this.infoMessage = dialog.statusMessage;
+    if (!dialog.open) this.refreshVmDetails();
+  }
+  private setFilesystemDetailsDialog(dialog: FilesystemDetailsDialogView): void {
+    this.filesystemDetailsDialog = dialog;
+    this.infoMessage = dialog.statusMessage;
+    if (!dialog.open) this.refreshVmDetails();
+  }
+  private setGraphicsDetailsDialog(dialog: GraphicsDetailsDialogView): void {
+    this.graphicsDetailsDialog = dialog;
+    this.infoMessage = dialog.statusMessage;
+    if (!dialog.open) this.refreshVmDetails();
+  }
+  private setTpmDetailsDialog(dialog: TpmDetailsDialogView): void {
+    this.tpmDetailsDialog = dialog;
+    this.infoMessage = dialog.statusMessage;
+    if (!dialog.open) this.refreshVmDetails();
+  }
+  private setVsockDetailsDialog(dialog: VsockDetailsDialogView): void {
+    this.vsockDetailsDialog = dialog;
+    this.infoMessage = dialog.statusMessage;
+    if (!dialog.open) this.refreshVmDetails();
+  }
+  private setCreateNetworkWizard(wizard: CreateNetworkWizardView): void {
+    this.createNetworkWizard = wizard;
+    this.infoMessage = wizard.statusMessage;
+  }
+  private setNetworkListDialog(dialog: NetworkListDialogView): void {
+    this.networkListDialog = dialog;
+    this.infoMessage = dialog.statusMessage;
+    if (!dialog.open) this.refreshVmDetails();
+  }
 
   private runVmDetailsTextAction(
     action:
