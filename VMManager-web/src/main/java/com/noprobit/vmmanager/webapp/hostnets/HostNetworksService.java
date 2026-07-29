@@ -4,27 +4,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.noprobit.vmmanager.webapp.network.entity.NetworkEntity;
+import com.noprobit.vmmanager.webapp.network.repository.NetworkRepository;
 
 @Service
 public class HostNetworksService {
-    private final List<HostNetworkDto> networks = new ArrayList<>(List.of(
-            new HostNetworkDto(1, "default", "nat", true, true),
-            new HostNetworkDto(2, "isolated", "isolated", false, false)
-    ));
 
-    public synchronized List<HostNetworkDto> list() { return List.copyOf(networks); }
-    public synchronized HostNetworkDto start(long id) { return update(id, true, null, null); }
-    public synchronized HostNetworkDto stop(long id) { return update(id, false, null, null); }
-    public synchronized void delete(long id) { networks.removeIf(network -> network.id() == id); }
-    public synchronized HostNetworkDto update(long id, Boolean active, String name, Boolean autostart) {
-        for (int index = 0; index < networks.size(); index++) {
-            HostNetworkDto network = networks.get(index);
-            if (network.id() == id) {
-                HostNetworkDto updated = new HostNetworkDto(id, name == null || name.isBlank() ? network.name() : name.trim(), network.mode(), active == null ? network.active() : active, autostart == null ? network.autostart() : autostart);
-                networks.set(index, updated);
-                return updated;
-            }
+    private final NetworkRepository networkRepository;
+
+    public HostNetworksService(NetworkRepository networkRepository) {
+        this.networkRepository = networkRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public synchronized List<HostNetworkDto> list() {
+        List<HostNetworkDto> result = new ArrayList<>();
+        for (NetworkEntity network : networkRepository.findAllByOrderByIdAsc()) {
+            result.add(toDto(network));
         }
-        throw new IllegalArgumentException("Network not found");
+        return List.copyOf(result);
+    }
+
+    @Transactional
+    public synchronized HostNetworkDto start(long id) {
+        NetworkEntity network = find(id);
+        network.setActive(true);
+        networkRepository.save(network);
+        return toDto(network);
+    }
+
+    @Transactional
+    public synchronized HostNetworkDto stop(long id) {
+        NetworkEntity network = find(id);
+        network.setActive(false);
+        networkRepository.save(network);
+        return toDto(network);
+    }
+
+    @Transactional
+    public synchronized void delete(long id) {
+        NetworkEntity network = find(id);
+        networkRepository.delete(network);
+    }
+
+    @Transactional
+    public synchronized HostNetworkDto update(long id, Boolean active, String name, Boolean autostart) {
+        NetworkEntity network = find(id);
+        if (name != null && !name.isBlank()) {
+            String trimmedName = name.trim();
+            networkRepository.findByName(trimmedName).ifPresent(existing -> {
+                if (!existing.getId().equals(id)) {
+                    throw new IllegalArgumentException("Network name already in use");
+                }
+            });
+            network.setName(trimmedName);
+        }
+
+        network.setActive(active == null ? network.isActive() : active);
+        network.setAutostart(autostart == null ? network.isAutostart() : autostart);
+        networkRepository.save(network);
+        return toDto(network);
+    }
+
+    private HostNetworkDto toDto(NetworkEntity network) {
+        return new HostNetworkDto(
+                network.getId(),
+                network.getName(),
+                network.getMode(),
+                network.isActive(),
+                network.isAutostart());
+    }
+
+    private NetworkEntity find(long id) {
+        return networkRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Network not found"));
     }
 }

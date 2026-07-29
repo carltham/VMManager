@@ -1,5 +1,6 @@
 package com.noprobit.vmmanager.webapp.networklist;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,16 +8,24 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
+import com.noprobit.vmmanager.webapp.network.repository.NetworkRepository;
+
 @Service
 public class NetworkListService {
 
+    private final NetworkRepository networkRepository;
     private final AtomicLong dialogSeq = new AtomicLong(0);
     private final Map<Long, NetworkListState> dialogs = new LinkedHashMap<>();
+
+    public NetworkListService(NetworkRepository networkRepository) {
+        this.networkRepository = networkRepository;
+    }
 
     public synchronized NetworkListDto open() {
         long dialogId = dialogSeq.incrementAndGet();
         NetworkListState state = new NetworkListState();
         state.open = true;
+        state.availableNetworks = availableNetworks();
         state.statusMessage = "Network list opened";
         dialogs.put(dialogId, state);
         return toDto(dialogId, state);
@@ -65,6 +74,12 @@ public class NetworkListService {
         return value.trim();
     }
 
+    private List<String> availableNetworks() {
+        List<String> networks = new ArrayList<>();
+        networkRepository.findAllByOrderByIdAsc().forEach(network -> networks.add(network.getName()));
+        return networks;
+    }
+
     private NetworkListDto toDto(long dialogId, NetworkListState state) {
         return new NetworkListDto(
                 dialogId,
@@ -78,7 +93,7 @@ public class NetworkListService {
     private static final class NetworkListState {
         private boolean open;
         private String selectedNetwork = "default";
-        private List<String> availableNetworks = List.of("default", "lab-net", "dmz-net");
+        private List<String> availableNetworks = List.of();
         private String statusMessage = "Network list ready";
     }
 }

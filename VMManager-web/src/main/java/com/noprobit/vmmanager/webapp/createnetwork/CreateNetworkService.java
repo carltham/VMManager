@@ -6,13 +6,22 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
+import com.noprobit.vmmanager.webapp.network.entity.NetworkEntity;
+import com.noprobit.vmmanager.webapp.network.repository.NetworkRepository;
+
 @Service
 public class CreateNetworkService {
 
     private static final int MAX_STEP = 4;
+    private static final String DEFAULT_ADDRESS_RANGE = "192.168.100.0/24";
 
+    private final NetworkRepository networkRepository;
     private final AtomicLong wizardSeq = new AtomicLong(0);
     private final Map<Long, NetworkState> wizards = new LinkedHashMap<>();
+
+    public CreateNetworkService(NetworkRepository networkRepository) {
+        this.networkRepository = networkRepository;
+    }
 
     public synchronized CreateNetworkDto open() {
         long wizardId = wizardSeq.incrementAndGet();
@@ -67,6 +76,7 @@ public class CreateNetworkService {
 
     public synchronized CreateNetworkDto createNetwork(long wizardId) {
         NetworkState state = getState(wizardId);
+        networkRepository.save(new NetworkEntity(state.networkName, state.mode, state.addressRange, false, false));
         state.open = false;
         state.statusMessage = "Network created: " + state.networkName;
         return toDto(wizardId, state);
@@ -111,7 +121,7 @@ public class CreateNetworkService {
         private int step = 1;
         private String networkName = "default-net";
         private String mode = "nat";
-        private String addressRange = "192.168.100.0/24";
+        private String addressRange = DEFAULT_ADDRESS_RANGE;
         private String statusMessage = "Create network wizard ready";
     }
 }
