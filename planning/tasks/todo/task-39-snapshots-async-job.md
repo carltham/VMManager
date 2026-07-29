@@ -15,6 +15,102 @@
   - delete/revert snapshot: snapshot page action -> backend operation -> refresh snapshot list
 - Scope: Java async job handling for snapshot operations and snapshot lifecycle endpoints.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- snapshots API is currently in-memory simulated and must be migrated to HTTP endpoints
+- async-job API is currently interval-based simulated and must be migrated to job endpoints
+
+### Endpoint Contract
+
+- GET /api/snapshots/{vmId}
+  - response: { items: [{ id, name, createdAt }] }
+- POST /api/snapshots/{vmId}
+  - request: { name: string }
+  - response: { jobId: string, accepted: boolean }
+- DELETE /api/snapshots/{vmId}/{snapshotId}
+  - response: { jobId: string, accepted: boolean }
+- POST /api/snapshots/{vmId}/{snapshotId}/revert
+  - response: { jobId: string, accepted: boolean }
+- GET /api/jobs/{jobId}
+  - response: { jobId, state, progress, message?, errorCode? }
+- POST /api/jobs/{jobId}/cancel
+  - response: { jobId, state, message }
+
+### Example Payloads
+
+- GET /api/snapshots/7 response
+
+```json
+{
+  "items": [
+    { "id": 11, "name": "before-update", "createdAt": "2026-07-29T08:15:00Z" },
+    { "id": 8, "name": "clean-state", "createdAt": "2026-07-28T17:02:00Z" }
+  ]
+}
+```
+
+- POST /api/snapshots/7 request
+
+```json
+{
+  "name": "pre-upgrade"
+}
+```
+
+- POST /api/snapshots/7 response
+
+```json
+{
+  "jobId": "job_7f82c9",
+  "accepted": true
+}
+```
+
+- GET /api/jobs/job_7f82c9 response
+
+```json
+{
+  "jobId": "job_7f82c9",
+  "state": "RUNNING",
+  "progress": 65,
+  "message": "Creating snapshot..."
+}
+```
+
+- POST /api/jobs/job_7f82c9/cancel response
+
+```json
+{
+  "jobId": "job_7f82c9",
+  "state": "CANCELED",
+  "message": "Job canceled by user."
+}
+```
+
+### Java DTO Mapping
+
+- Snapshot list response: SnapshotListResponseDto
+- Snapshot item: SnapshotItemDto
+- Snapshot create request: SnapshotCreateRequestDto
+- Job accepted response: JobAcceptedResponseDto
+- Job status response: JobStatusResponseDto
+- Job cancel response: JobCancelResponseDto
+
+### Error Mapping
+
+- SNAPSHOT_NAME_REQUIRED -> snapshot-new validation message
+- SNAPSHOT_CONFLICT -> snapshots action conflict message
+- JOB_FAILED -> async-job error state
+- JOB_CANCELED -> async-job canceled state
+
+### UI Impact Checklist
+
+- [ ] Replace in-memory snapshot store with backend HTTP calls
+- [ ] Replace timer-based async progress with /api/jobs polling
+- [ ] Keep snapshot list refresh behavior after create/delete/revert completion
+
 ## Evidence
 
 ### Backend Evidence

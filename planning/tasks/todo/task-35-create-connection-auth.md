@@ -16,6 +16,101 @@
   - remember connection: auth failure recovery -> remember choice -> persisted connection behavior
 - Scope: Real backend endpoints and service logic for creating and authenticating libvirt connections.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- create-connection service currently calls manager overview + add connection
+- connection-auth service currently simulated and must switch to backend HTTP
+
+### Endpoint Contract
+
+- GET /api/manager/overview
+  - response: existing overview DTO with connections[]
+- POST /api/manager/connections
+  - request: { name: string, uri: string }
+  - response: connection item DTO { id, name, uri, state, vms[] }
+- POST /api/connection-auth/sessions
+  - request: { connectionId: number, username: string, password: string, remember: boolean }
+  - response: { success: boolean, message: string, sessionId?: string, expiresAt?: string }
+- DELETE /api/connection-auth/sessions/{sessionId}
+  - response: { success: boolean, message: string }
+
+### Example Payloads
+
+- POST /api/manager/connections request
+
+```json
+{
+  "name": "local-qemu",
+  "uri": "qemu:///system"
+}
+```
+
+- POST /api/manager/connections response
+
+```json
+{
+  "id": 101,
+  "name": "local-qemu",
+  "uri": "qemu:///system",
+  "state": "CONNECTED",
+  "vms": []
+}
+```
+
+- POST /api/connection-auth/sessions request
+
+```json
+{
+  "connectionId": 101,
+  "username": "root",
+  "password": "<redacted>",
+  "remember": true
+}
+```
+
+- POST /api/connection-auth/sessions response
+
+```json
+{
+  "success": true,
+  "message": "Authentication successful.",
+  "sessionId": "sess_9bf3a8",
+  "expiresAt": "2026-07-30T09:00:00Z"
+}
+```
+
+- DELETE /api/connection-auth/sessions/{sessionId} response
+
+```json
+{
+  "success": true,
+  "message": "Session closed."
+}
+```
+
+### Java DTO Mapping
+
+- Create connection request: CreateConnectionRequestDto
+- Connection summary response: ConnectionItemDto
+- Auth session create request: ConnectionAuthSessionCreateRequestDto
+- Auth session create response: ConnectionAuthSessionResponseDto
+- Auth session close response: ConnectionAuthSessionCloseResponseDto
+
+### Error Mapping
+
+- INVALID_URI -> inline create-connection form error
+- AUTH_REQUIRED -> open connection-auth prompt state
+- AUTH_FAILED -> connection-auth error banner
+- HOST_UNREACHABLE -> connection/auth network error message
+
+### UI Impact Checklist
+
+- [ ] Replace simulated connection-auth API service with HttpClient endpoint calls
+- [ ] Preserve existing create-connection success and error messaging behavior
+- [ ] Add handling for AUTH_REQUIRED and AUTH_FAILED response codes
+
 ## Evidence
 
 ### Backend Evidence

@@ -15,6 +15,58 @@
   - expose non-libvirt settings: settings/config service -> endpoint contract -> Angular binding
 - Scope: Thin Java endpoints for application metadata and preferences, intentionally without libvirt calls.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- about component calls manager/about endpoint
+- preferences component calls manager/preferences endpoint
+
+### Endpoint Contract
+
+- GET /api/manager/about
+  - response: { name: string, module: string, version: string }
+- GET /api/manager/preferences
+  - response: { theme: string, defaultConnectionUri: string, autoConnect: string }
+
+### Example Payloads
+
+- GET /api/manager/about response
+
+```json
+{
+  "name": "VMManager",
+  "module": "VMManager-web",
+  "version": "1.0.0"
+}
+```
+
+- GET /api/manager/preferences response
+
+```json
+{
+  "theme": "light",
+  "defaultConnectionUri": "qemu:///system",
+  "autoConnect": "true"
+}
+```
+
+### Java DTO Mapping
+
+- About response: AboutInfoDto
+- Preferences response: PreferencesDto
+
+### Error Mapping
+
+- CONFIG_UNAVAILABLE -> preferences load error banner
+- METADATA_UNAVAILABLE -> about load error banner
+
+### UI Impact Checklist
+
+- [ ] Preserve current key names consumed by Angular views
+- [ ] Maintain non-libvirt classification for this ticket
+- [ ] Keep responses lightweight and cacheable
+
 ## Evidence
 
 ### Backend Evidence

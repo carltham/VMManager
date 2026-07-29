@@ -16,6 +16,75 @@
   - open host subpanes: host details page -> networks/storage panes -> nested module entry
 - Scope: Java backend support for host-level details and connection-scoped metrics/actions.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- host-details component lists connections via manager overview
+- host-details component loads details via manager host endpoint
+
+### Endpoint Contract
+
+- GET /api/manager/overview
+  - response: existing overview DTO with connections[]
+- GET /api/manager/host/{connectionId}
+  - response: { connectionId, connectionName, uri, cpuUsage, memoryUsageMb, vmCount }
+- PATCH /api/manager/connections/{connectionId}/autoconnect
+  - request: { enabled: boolean }
+  - response: { connectionId, autoConnect: boolean, statusMessage: string }
+
+### Example Payloads
+
+- GET /api/manager/host/101 response
+
+```json
+{
+  "connectionId": 101,
+  "connectionName": "local-qemu",
+  "uri": "qemu:///system",
+  "cpuUsage": 27,
+  "memoryUsageMb": 4096,
+  "vmCount": 3
+}
+```
+
+- PATCH /api/manager/connections/101/autoconnect request
+
+```json
+{
+  "enabled": true
+}
+```
+
+- PATCH /api/manager/connections/101/autoconnect response
+
+```json
+{
+  "connectionId": 101,
+  "autoConnect": true,
+  "statusMessage": "Autoconnect enabled for local-qemu."
+}
+```
+
+### Java DTO Mapping
+
+- Host details response: HostDetailsDto
+- Autoconnect update request: ConnectionAutoconnectUpdateRequestDto
+- Autoconnect update response: ConnectionAutoconnectUpdateResponseDto
+- Shared connection entry: ConnectionItemDto
+
+### Error Mapping
+
+- CONNECTION_NOT_FOUND -> host-details not-found message
+- LIBVIRT_UNAVAILABLE -> host-details service unavailable message
+- PERMISSION_DENIED -> host-details access denied message
+
+### UI Impact Checklist
+
+- [ ] Keep host-details model fields backward-compatible with current Angular view model
+- [ ] Add optional autoconnect UI binding once backend endpoint is available
+- [ ] Ensure refresh path updates status/error message predictably
+
 ## Evidence
 
 ### Backend Evidence

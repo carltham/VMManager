@@ -16,6 +16,91 @@
   - toggle fullscreen: view toggle -> toolbar state -> window state transition
 - Scope: Java backend state and operations for VM console/viewer actions behind the VM window flows.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- console component currently uses vm-window endpoints for open/status/pause/run
+- console UI state derives from vm-window view DTO
+
+### Endpoint Contract
+
+- POST /api/vm-window/{vmId}/open
+- POST /api/vm-window/{vmId}/status
+- POST /api/vm-window/{vmId}/pause
+- POST /api/vm-window/{vmId}/start
+- POST /api/vm-window/{vmId}/console/connect-viewer
+  - request: { viewer: "graphics" | "serial" }
+- POST /api/vm-window/{vmId}/console/fullscreen
+  - request: { enabled: boolean }
+- POST /api/vm-window/{vmId}/console/send-keys
+  - request: { combo: string }
+
+### Example Payloads
+
+- POST /api/vm-window/7/open response
+
+```json
+{
+  "vmId": 7,
+  "vmName": "fedora-test",
+  "status": "RUNNING",
+  "statusMessage": "Console opened.",
+  "consoleConnected": true,
+  "viewerType": "graphics",
+  "fullscreen": false,
+  "keyboardGrabbed": false
+}
+```
+
+- POST /api/vm-window/7/console/connect-viewer request
+
+```json
+{
+  "viewer": "serial"
+}
+```
+
+- POST /api/vm-window/7/console/fullscreen request
+
+```json
+{
+  "enabled": true
+}
+```
+
+- POST /api/vm-window/7/console/send-keys request
+
+```json
+{
+  "combo": "Ctrl+Alt+Del"
+}
+```
+
+### Java DTO Mapping
+
+- VM window state response: VmWindowViewDto
+- Console connect viewer request: ConsoleConnectViewerRequestDto
+- Console fullscreen request: ConsoleFullscreenRequestDto
+- Console send keys request: ConsoleSendKeysRequestDto
+
+### Response Contract
+
+- Extend vm-window view DTO with optional console fields:
+  - consoleConnected, viewerType, fullscreen, keyboardGrabbed
+
+### Error Mapping
+
+- VIEWER_UNAVAILABLE -> console viewer error
+- CONSOLE_DISCONNECTED -> reconnect prompt
+- VM_NOT_RUNNING -> start VM suggestion
+
+### UI Impact Checklist
+
+- [ ] Existing console open/status/pause/run calls remain unchanged
+- [ ] New console actions are additive and backward-compatible
+- [ ] Console-specific errors map to clear frontend status messages
+
 ## Evidence
 
 ### Backend Evidence

@@ -15,6 +15,59 @@
   - separate metadata-only flows: about/preferences review -> non-libvirt endpoint classification -> ticket split
 - Scope: Audit and classify which original flows require real libvirt integration versus metadata/config handling.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- create-connection + connection-auth: URI build, auth prompts, credential handling
+- host-details: host summary/metrics panel
+- console: open/status/controls
+- xml-editor + os-list: launch/apply/selection flows
+- snapshots + async-job: lifecycle actions and progress tracking
+- about + preferences: metadata/config views
+
+### Contract Deliverables (Non-runtime)
+
+- Produce a boundary matrix documenting each UI action as one of:
+  - libvirt-backed operation
+  - metadata/config-only operation
+  - hybrid operation (libvirt + app state)
+- Produce owner mapping: controller, service, integration-layer class per action.
+- Produce error-source mapping: user validation, transport/auth, libvirt/runtime.
+
+### Output Artifact Requirements
+
+- Canonical artifact file path: planning/JAVA-LIBVIRT-BACKEND-PLAN.md (updated sections)
+- Ticket references from matrix rows to implementing tasks 33-40.
+
+### Example Payloads
+
+- Boundary matrix row sample
+
+```json
+{
+  "flow": "create-connection.authenticate",
+  "uiModule": "connection-auth",
+  "classification": "libvirt-backed",
+  "controllerFamily": "connection-auth",
+  "serviceOwner": "ConnectionAuthService",
+  "ticket": "task-35",
+  "errorSources": ["validation", "transport", "libvirt"]
+}
+```
+
+### Java DTO Mapping
+
+- Boundary matrix row: BoundaryMatrixRowDto
+- Error source entry: ErrorSourceDto
+- Flow owner reference: FlowOwnerRefDto
+
+### UI Impact Checklist
+
+- [ ] Every Angular feature flow in tasks 21-31 appears in the boundary matrix
+- [ ] Every matrix row links to one implementing backend ticket
+- [ ] Metadata-only flows are explicitly marked as non-libvirt
+
 ## Evidence
 
 ### Backend Evidence

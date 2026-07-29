@@ -15,6 +15,69 @@
   - snapshot plumbing: snapshot request -> async job wrapper -> libvirt call sequence
 - Scope: Central Java integration layer that hides libvirt APIs behind services used by all backend tickets.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- No direct Angular calls to integration-layer classes.
+- All frontend-visible behavior is exposed through tasks 35-40 controller endpoints.
+
+### Cross-cutting Runtime Contract
+
+- Common backend status projection for UI polling/refresh:
+  - operationState: IDLE | RUNNING | SUCCESS | FAILED | CANCELED
+- Common error projection to UI:
+  - code, message, retryable, correlationId
+- Common resource identity conventions:
+  - connectionId, vmId, snapshotId, jobId
+
+### Example Payloads
+
+- Long-running operation acceptance payload
+
+```json
+{
+  "jobId": "job_2ac114",
+  "operationState": "RUNNING",
+  "resource": {
+    "connectionId": 101,
+    "vmId": 7
+  },
+  "message": "Operation accepted."
+}
+```
+
+- Runtime failure payload
+
+```json
+{
+  "operationState": "FAILED",
+  "code": "LIBVIRT_UNAVAILABLE",
+  "message": "libvirt daemon is not reachable.",
+  "retryable": true,
+  "correlationId": "corr-20260729-0042"
+}
+```
+
+### Java DTO Mapping
+
+- Operation acceptance payload: OperationAcceptedDto
+- Operation status payload: OperationStatusDto
+- Operation resource reference: OperationResourceRefDto
+- Runtime failure payload: ApiErrorDto
+
+### Stability Requirements For Frontend
+
+- Libvirt exceptions must be translated to stable API error codes.
+- Long-running operations must return job identifiers suitable for async-job UI.
+- Backend response latency targets should support Angular polling without UI stalls.
+
+### UI Impact Checklist
+
+- [ ] Operation state model is consumable by async-job and snapshots views
+- [ ] Error translation avoids leaking backend stack traces
+- [ ] Resource identity fields match existing Angular model naming
+
 ## Evidence
 
 ### Backend Evidence

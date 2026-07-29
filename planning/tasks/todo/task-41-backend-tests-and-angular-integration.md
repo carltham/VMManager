@@ -15,6 +15,70 @@
   - mapping table: Python flow case -> Angular test case -> documented result
 - Scope: Verification ticket for proving the Java libvirt backend and Angular wiring behave like the original virt-manager flows.
 
+## Frontend Contract
+
+### Angular Integration Points
+
+- Verify all frontend backend consumers from tasks 21-31 are covered:
+  - create-connection, connection-auth, host-details, console, xml-editor, os-list, snapshots, async-job, about, preferences
+
+### Required Integration Assertions
+
+- Endpoint compatibility:
+  - existing manager/vm-window/vm-details calls remain green
+  - new connection-auth/snapshots/jobs calls are green
+- DTO compatibility:
+  - Angular models deserialize without adapter hacks
+- Error compatibility:
+  - backend error codes map to deterministic UI messages/states
+
+### Minimum Test Matrix Requirements
+
+- At least one happy-path and one failure-path test per endpoint family:
+  - manager, vm-window, vm-details, connection-auth, snapshots, jobs
+- At least one parity case for each original flow cluster:
+  - connection/auth, host details, console, xml/os list, snapshots/async
+
+### Example Payloads
+
+- Backend integration test assertion sample
+
+```json
+{
+  "testId": "IT-SNAP-REVERT-001",
+  "endpoint": "POST /api/snapshots/{vmId}/{snapshotId}/revert",
+  "expectedStatus": 202,
+  "expectedBody": {
+    "accepted": true,
+    "jobId": "<non-empty>"
+  }
+}
+```
+
+- Angular parity case mapping sample
+
+```json
+{
+  "pythonCase": "test_snapshot_revert_refresh",
+  "angularCase": "snapshots.component.spec.ts::revertSelected_refreshes_list",
+  "status": "pass",
+  "notes": "UI list updates after job completion poll."
+}
+```
+
+### Java DTO Mapping
+
+- Test assertion payload: IntegrationTestAssertionDto
+- Parity mapping row: ParityMappingRowDto
+- Endpoint verification summary: EndpointVerificationSummaryDto
+- Error mapping verification row: ErrorMappingVerificationDto
+
+### UI Impact Checklist
+
+- [ ] Mapping table contains real test IDs/names, not placeholders
+- [ ] Documented deviations are explicit and approved
+- [ ] Evidence includes backend command output and frontend test/build output
+
 ## Evidence
 
 ### Backend Evidence
