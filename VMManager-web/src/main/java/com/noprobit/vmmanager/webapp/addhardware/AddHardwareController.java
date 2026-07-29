@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/add-hardware")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 public class AddHardwareController {
 
     private final AddHardwareService addHardwareService;

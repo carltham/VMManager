@@ -1,19 +1,38 @@
 <main class="manager-shell">
   <header class="hero">
     <h1>VM Manager</h1>
-    <p>Grouped views: manager workspace and VM wizards</p>
-    <nav class="top-nav">
-      <button type="button" [class.active]="showManagerPage()" (click)="setActivePage('manager')">Manager</button>
-      <button type="button" [class.active]="showCreateVmPage()" (click)="setActivePage('create-vm')">Create VM
-        Wizard</button>
-      <button type="button" [class.active]="showCloneVmPage()" (click)="setActivePage('clone-vm')">Clone VM
-        Wizard</button>
-      <button type="button" [class.active]="showCreateNetworkPage()" (click)="setActivePage('create-network')">Create
-        Network</button>
-      <button type="button" [class.active]="showHostNetworksPage()" (click)="setActivePage('host-networks')">Host
-        Networks</button>
-      <button type="button" [class.active]="showStoragePage()" (click)="setActivePage('storage')">Storage</button>
-    </nav>
+    <p>Menu-driven workspace modeled after virt-manager</p>
+
+    <section class="menu-bar" aria-label="Main menu">
+      <div class="menu-group">
+        <span>File</span>
+        <button type="button" (click)="menuAddConnection()">Add Connection</button>
+        <button type="button" (click)="menuNewVm()">New Virtual Machine</button>
+        <button type="button" (click)="menuNewNetwork()">New Network</button>
+      </div>
+
+      <div class="menu-group">
+        <span>Edit</span>
+        <button type="button" (click)="menuConnectionDetails()">Connection Details</button>
+        <button type="button" (click)="menuVmDetails()">Virtual Machine Details</button>
+        <button type="button" (click)="menuPreferences()">Preferences</button>
+      </div>
+
+      <div class="menu-group">
+        <span>View</span>
+        <button type="button" [class.active]="showView('machines')"
+          (click)="setActiveView('machines')">Machines</button>
+        <button type="button" [class.active]="showView('networks')"
+          (click)="setActiveView('networks')">Networks</button>
+        <button type="button" [class.active]="showView('storage')" (click)="setActiveView('storage')">Storage</button>
+        <button type="button" [class.active]="showView('tools')" (click)="setActiveView('tools')">Tools</button>
+      </div>
+
+      <div class="menu-group">
+        <span>Help</span>
+        <button type="button" (click)="menuAbout()">About</button>
+      </div>
+    </section>
   </header>
 
   @if (isLoading) {
@@ -28,11 +47,30 @@
   <section class="notice success">{{ infoMessage }}</section>
   }
 
-  @if (showManagerPage()) {
+  @if (showView('machines')) {
   <app-manager [overview]="overview" [initialConnectionId]="selectedConnectionId" (refresh)="refresh()"
-    (toggleStats)="toggleStats()" (addConnection)="addConnection($event)" (createVm)="createVm($event)"
-    (openVm)="openVm($event)" (runVm)="runVm($event)" (pauseVm)="pauseVm($event)" (shutdownVm)="shutdownVm($event)"
-    (migrateVm)="openMigrateVmDialog($event)" (deleteVm)="deleteVm($event)" />
+    (toggleStats)="toggleStats()" (addConnection)="addConnection($event)"
+    (openCreateVmWizard)="openCreateVmWizardFromManager($event)" (openCloneWizard)="openCloneVmDialogFromManager()"
+    (openCreateNetworkWizard)="openCreateNetworkWizardFromManager()" (openVm)="openVm($event)" (runVm)="runVm($event)"
+    (pauseVm)="pauseVm($event)" (shutdownVm)="shutdownVm($event)" (migrateVm)="openMigrateVmDialog($event)"
+    (deleteVm)="deleteVm($event)" />
+
+  <app-create-vm [connections]="overview?.connections ?? []" [wizard]="createVmWizard"
+    (openWizard)="openCreateVmWizard()" (closeWizard)="closeCreateVmWizard()" (back)="createVmBack()"
+    (next)="createVmNext()" (finish)="createVmFinish()" (changeConnection)="createVmChangeConnection($event)"
+    (changeInstallMethod)="createVmChangeInstallMethod($event)" (browseIso)="createVmBrowseIso($event)"
+    (browseUrl)="createVmBrowseUrl($event)" (browseImportSource)="createVmBrowseImportSource($event)"
+    (browseAppSource)="createVmBrowseAppSource($event)"
+    (browseOsContainerSource)="createVmBrowseOsContainerSource($event)"
+    (toggleDetectOs)="createVmToggleDetectOs($event)" (toggleStorage)="createVmToggleStorage($event)"
+    (changeArch)="createVmChangeArch($event)" (changeType)="createVmChangeType($event)"
+    (changeMachine)="createVmChangeMachine($event)" (editVmName)="createVmEditVmName($event)" />
+
+  <app-clone-vm [allVms]="allVms()" [dialog]="cloneVmDialog" (openDialog)="openCloneVmDialog()"
+    (closeDialog)="closeCloneVmDialog()" (selectSourceVm)="selectCloneSourceVm($event)"
+    (chooseCloneMode)="chooseCloneMode($event)" (browseDestination)="browseCloneDestination($event)"
+    (changeDiskOptions)="changeCloneDiskOptions($event)" (editCloneName)="editCloneName($event)"
+    (confirmClone)="confirmClone()" />
 
   <app-migrate-vm [dialog]="migrateVmDialog" (closeDialog)="closeMigrateVmDialog()"
     (chooseDestination)="updateMigrationText('destination', $event)"
@@ -44,61 +82,9 @@
     (toggleRemoveStorage)="toggleDeleteVmStorage($event)" (confirmDelete)="confirmDeleteVm()"
     (cancelDelete)="cancelDeleteVm()" />
 
-  <app-create-connection />
-  <app-connection-auth />
-  <app-host-details />
-  <app-preferences />
-  <app-about />
-  <app-async-job />
-  <app-console />
-  <app-xml-editor />
-  <app-os-list />
-  <app-snapshots />
-  <app-snapshot-new />
-  }
-
-  @if (showCreateVmPage()) {
-  <app-create-vm [connections]="overview?.connections ?? []" [wizard]="createVmWizard"
-    (openWizard)="openCreateVmWizard()" (closeWizard)="closeCreateVmWizard()" (back)="createVmBack()"
-    (next)="createVmNext()" (finish)="createVmFinish()" (changeConnection)="createVmChangeConnection($event)"
-    (changeInstallMethod)="createVmChangeInstallMethod($event)" (browseIso)="createVmBrowseIso($event)"
-    (browseUrl)="createVmBrowseUrl($event)" (browseImportSource)="createVmBrowseImportSource($event)"
-    (browseAppSource)="createVmBrowseAppSource($event)"
-    (browseOsContainerSource)="createVmBrowseOsContainerSource($event)"
-    (toggleDetectOs)="createVmToggleDetectOs($event)" (toggleStorage)="createVmToggleStorage($event)"
-    (changeArch)="createVmChangeArch($event)" (changeType)="createVmChangeType($event)"
-    (changeMachine)="createVmChangeMachine($event)" (editVmName)="createVmEditVmName($event)" />
-  }
-
-  @if (showCloneVmPage()) {
-  <app-clone-vm [allVms]="allVms()" [dialog]="cloneVmDialog" (openDialog)="openCloneVmDialog()"
-    (closeDialog)="closeCloneVmDialog()" (selectSourceVm)="selectCloneSourceVm($event)"
-    (chooseCloneMode)="chooseCloneMode($event)" (browseDestination)="browseCloneDestination($event)"
-    (changeDiskOptions)="changeCloneDiskOptions($event)" (editCloneName)="editCloneName($event)"
-    (confirmClone)="confirmClone()" />
-  }
-  @if (showCreateNetworkPage()) {
-  <app-create-network [wizard]="createNetworkWizard" (openWizard)="openCreateNetworkWizard()"
-    (closeWizard)="runCreateNetworkAction('close')" (back)="runCreateNetworkAction('back')"
-    (next)="runCreateNetworkAction('next')" (configureNetwork)="configureNetwork($event)"
-    (setAddressRange)="setNetworkAddressRange($event)" (review)="runCreateNetworkAction('review')"
-    (create)="runCreateNetworkAction('create')" (cancel)="runCreateNetworkAction('cancel')" />
-  }
-  @if (showHostNetworksPage()) { <app-host-networks /> }
-  @if (showStoragePage()) {
-  <app-storage-management />
-  <app-host-storage />
-  <app-create-pool />
-  <app-create-volume />
-  <app-storage-browse />
-  }
-
-  @if (showManagerPage()) {
   <app-vm-window [vmWindow]="vmWindow" (closeWindow)="closeVmWindow()" (switchTab)="switchVmWindowTab($event)"
     (action)="runVmWindowActionFromUi($event)" />
-  }
 
-  @if (showManagerPage()) {
   <app-vm-details [allVms]="allVms()" [vmDetails]="vmDetails" (open)="openVmDetails($event)"
     (refresh)="refreshVmDetails()" (selectHardware)="selectDetailsHardware($event)"
     (editGeneral)="editGeneralSettings($event)" (editCpu)="editCpuSettings($event)"
@@ -137,5 +123,36 @@
   <app-network-list [dialog]="networkListDialog" (closeDialog)="runNetworkListAction('close')"
     (selectNetwork)="selectNetwork($event)" (confirmSource)="runNetworkListAction('confirm')"
     (cancel)="runNetworkListAction('cancel')" />
+  }
+
+  @if (showView('networks')) {
+  <app-create-network [wizard]="createNetworkWizard" (openWizard)="openCreateNetworkWizard()"
+    (closeWizard)="runCreateNetworkAction('close')" (back)="runCreateNetworkAction('back')"
+    (next)="runCreateNetworkAction('next')" (configureNetwork)="configureNetwork($event)"
+    (setAddressRange)="setNetworkAddressRange($event)" (review)="runCreateNetworkAction('review')"
+    (create)="runCreateNetworkAction('create')" (cancel)="runCreateNetworkAction('cancel')" />
+  <app-host-networks />
+  }
+
+  @if (showView('storage')) {
+  <app-storage-management />
+  <app-host-storage />
+  <app-create-pool />
+  <app-create-volume />
+  <app-storage-browse />
+  }
+
+  @if (showView('tools')) {
+  <app-create-connection />
+  <app-connection-auth />
+  <app-host-details />
+  <app-preferences />
+  <app-about />
+  <app-async-job />
+  <app-console />
+  <app-xml-editor />
+  <app-os-list />
+  <app-snapshots />
+  <app-snapshot-new />
   }
 </main>

@@ -64,6 +64,8 @@ import { VsockDetailsComponent } from './vsock-details/vsock-details.component';
 import { VsockDetailsDialogView } from './vsock-details/vsock-details.models';
 import { XmlEditorComponent } from './xml-editor/xml-editor.component';
 
+type AppView = 'machines' | 'networks' | 'storage' | 'tools';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -141,43 +143,52 @@ export class App implements OnInit {
   migrateVmDialog: MigrateVmDialogView | null = null;
   vmWindow: VmWindowView | null = null;
   vmDetails: VmDetailsView | null = null;
-  activePage:
-    | 'manager'
-    | 'create-vm'
-    | 'clone-vm'
-    | 'create-network'
-    | 'host-networks'
-    | 'storage' = 'manager';
+  activeView: AppView = 'machines';
 
   ngOnInit(): void {
     this.refresh();
   }
 
-  setActivePage(
-    page: 'manager' | 'create-vm' | 'clone-vm' | 'create-network' | 'host-networks' | 'storage',
-  ): void {
-    this.activePage = page;
+  setActiveView(view: AppView): void {
+    this.activeView = view;
   }
 
-  showManagerPage(): boolean {
-    return this.activePage === 'manager';
+  showView(view: AppView): boolean {
+    return this.activeView === view;
   }
 
-  showCreateVmPage(): boolean {
-    return this.activePage === 'create-vm';
+  menuAddConnection(): void {
+    this.setActiveView('machines');
   }
 
-  showCloneVmPage(): boolean {
-    return this.activePage === 'clone-vm';
+  menuNewVm(): void {
+    this.setActiveView('machines');
+    this.openCreateVmWizard(this.selectedConnectionId ?? undefined);
   }
-  showCreateNetworkPage(): boolean {
-    return this.activePage === 'create-network';
+
+  menuNewNetwork(): void {
+    this.setActiveView('networks');
+    this.openCreateNetworkWizard();
   }
-  showHostNetworksPage(): boolean {
-    return this.activePage === 'host-networks';
+
+  menuConnectionDetails(): void {
+    this.setActiveView('tools');
   }
-  showStoragePage(): boolean {
-    return this.activePage === 'storage';
+
+  menuVmDetails(): void {
+    this.setActiveView('machines');
+    const vm = this.allVms()[0];
+    if (vm) {
+      this.openVmDetails(vm.id);
+    }
+  }
+
+  menuPreferences(): void {
+    this.setActiveView('tools');
+  }
+
+  menuAbout(): void {
+    this.setActiveView('tools');
   }
 
   refresh(): void {
@@ -240,16 +251,34 @@ export class App implements OnInit {
     });
   }
 
-  openCreateVmWizard(): void {
+  openCreateVmWizard(defaultConnectionId?: number): void {
     this.createVmApi.open().subscribe({
       next: (wizard) => {
         this.createVmWizard = wizard;
         this.infoMessage = wizard.statusMessage;
+        if (defaultConnectionId != null && defaultConnectionId !== wizard.connectionId) {
+          this.createVmChangeConnection(defaultConnectionId);
+        }
       },
       error: () => {
         this.error = 'Failed to open create VM wizard.';
       },
     });
+  }
+
+  openCreateVmWizardFromManager(connectionId: number): void {
+    this.setActiveView('machines');
+    this.openCreateVmWizard(connectionId);
+  }
+
+  openCloneVmDialogFromManager(): void {
+    this.setActiveView('machines');
+    this.openCloneVmDialog();
+  }
+
+  openCreateNetworkWizardFromManager(): void {
+    this.setActiveView('networks');
+    this.openCreateNetworkWizard();
   }
 
   closeCreateVmWizard(): void {

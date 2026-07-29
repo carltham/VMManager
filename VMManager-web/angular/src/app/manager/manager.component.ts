@@ -18,17 +18,18 @@ export class ManagerComponent implements OnChanges {
   @Output() refresh = new EventEmitter<void>();
   @Output() toggleStats = new EventEmitter<void>();
   @Output() addConnection = new EventEmitter<{ name: string; uri: string }>();
-  @Output() createVm = new EventEmitter<{ connectionId: number; name: string }>();
+  @Output() openCreateVmWizard = new EventEmitter<number>();
   @Output() openVm = new EventEmitter<VmItem>();
   @Output() runVm = new EventEmitter<VmItem>();
   @Output() pauseVm = new EventEmitter<VmItem>();
   @Output() shutdownVm = new EventEmitter<VmItem>();
   @Output() migrateVm = new EventEmitter<VmItem>();
   @Output() deleteVm = new EventEmitter<VmItem>();
+  @Output() openCloneWizard = new EventEmitter<void>();
+  @Output() openCreateNetworkWizard = new EventEmitter<void>();
 
   connectionName = '';
   connectionUri = 'qemu:///system';
-  vmName = '';
   selectedConnectionId: number | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,8 +51,15 @@ export class ManagerComponent implements OnChanges {
     if (this.selectedConnectionId == null) {
       return;
     }
-    this.createVm.emit({ connectionId: this.selectedConnectionId, name: this.vmName });
-    this.vmName = '';
+    this.openCreateVmWizard.emit(this.selectedConnectionId);
+  }
+
+  onOpenCloneWizard(): void {
+    this.openCloneWizard.emit();
+  }
+
+  onOpenCreateNetworkWizard(): void {
+    this.openCreateNetworkWizard.emit();
   }
 
   vmCount(vms: VmItem[]): number {

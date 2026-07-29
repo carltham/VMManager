@@ -16,7 +16,7 @@ import com.noprobit.vmmanager.webapp.manager.dto.ManagerPreferencesDto;
 
 @RestController
 @RequestMapping("/api/manager")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 public class ManagerController {
 
     private final ManagerService managerService;

@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/host-networks")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 public class HostNetworksController {
     private final HostNetworksService service;
     public HostNetworksController(HostNetworksService service) { this.service = service; }

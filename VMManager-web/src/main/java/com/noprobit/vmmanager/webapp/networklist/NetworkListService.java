@@ -1,70 +1,71 @@
 package com.noprobit.vmmanager.webapp.networklist;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.noprobit.vmmanager.webapp.network.repository.NetworkRepository;
+import com.noprobit.vmmanager.webapp.networklist.entity.NetworkListDialogEntity;
+import com.noprobit.vmmanager.webapp.networklist.repository.NetworkListDialogRepository;
 
 @Service
 public class NetworkListService {
 
+    private final NetworkListDialogRepository dialogRepository;
     private final NetworkRepository networkRepository;
-    private final AtomicLong dialogSeq = new AtomicLong(0);
-    private final Map<Long, NetworkListState> dialogs = new LinkedHashMap<>();
 
-    public NetworkListService(NetworkRepository networkRepository) {
+    public NetworkListService(
+            NetworkListDialogRepository dialogRepository,
+            NetworkRepository networkRepository) {
+        this.dialogRepository = dialogRepository;
         this.networkRepository = networkRepository;
     }
 
+    @Transactional
     public synchronized NetworkListDto open() {
-        long dialogId = dialogSeq.incrementAndGet();
-        NetworkListState state = new NetworkListState();
-        state.open = true;
-        state.availableNetworks = availableNetworks();
-        state.statusMessage = "Network list opened";
-        dialogs.put(dialogId, state);
-        return toDto(dialogId, state);
+        String defaultSelection = availableNetworks().stream().findFirst().orElse("default");
+        NetworkListDialogEntity dialog = dialogRepository.save(
+                new NetworkListDialogEntity(true, defaultSelection, "Network list opened"));
+        return toDto(dialog);
     }
 
+    @Transactional
     public synchronized NetworkListDto close(long dialogId) {
-        NetworkListState state = getState(dialogId);
-        state.open = false;
-        state.statusMessage = "Network list closed";
-        return toDto(dialogId, state);
+        NetworkListDialogEntity dialog = getState(dialogId);
+        dialog.setOpen(false);
+        dialog.setStatusMessage("Network list closed");
+        return toDto(dialogRepository.save(dialog));
     }
 
+    @Transactional
     public synchronized NetworkListDto selectNetwork(long dialogId, String network) {
-        NetworkListState state = getState(dialogId);
-        state.selectedNetwork = textOrDefault(network, state.selectedNetwork);
-        state.statusMessage = "Network selected";
-        return toDto(dialogId, state);
+        NetworkListDialogEntity dialog = getState(dialogId);
+        dialog.setSelectedNetwork(textOrDefault(network, dialog.getSelectedNetwork()));
+        dialog.setStatusMessage("Network selected");
+        return toDto(dialogRepository.save(dialog));
     }
 
+    @Transactional
     public synchronized NetworkListDto confirmSource(long dialogId) {
-        NetworkListState state = getState(dialogId);
-        state.open = false;
-        state.statusMessage = "Network source confirmed: " + state.selectedNetwork;
-        return toDto(dialogId, state);
+        NetworkListDialogEntity dialog = getState(dialogId);
+        dialog.setOpen(false);
+        dialog.setStatusMessage("Network source confirmed: " + dialog.getSelectedNetwork());
+        return toDto(dialogRepository.save(dialog));
     }
 
+    @Transactional
     public synchronized NetworkListDto cancel(long dialogId) {
-        NetworkListState state = getState(dialogId);
-        state.open = false;
-        state.statusMessage = "Network selection canceled";
-        return toDto(dialogId, state);
+        NetworkListDialogEntity dialog = getState(dialogId);
+        dialog.setOpen(false);
+        dialog.setStatusMessage("Network selection canceled");
+        return toDto(dialogRepository.save(dialog));
     }
 
-    private NetworkListState getState(long dialogId) {
-        NetworkListState state = dialogs.get(dialogId);
-        if (state == null) {
-            throw new IllegalArgumentException("Network list dialog not found");
-        }
-        return state;
+    private NetworkListDialogEntity getState(long dialogId) {
+        return dialogRepository.findById(dialogId)
+                .orElseThrow(() -> new IllegalArgumentException("Network list dialog not found"));
     }
 
     private String textOrDefault(String value, String fallback) {
@@ -80,20 +81,13 @@ public class NetworkListService {
         return networks;
     }
 
-    private NetworkListDto toDto(long dialogId, NetworkListState state) {
+    private NetworkListDto toDto(NetworkListDialogEntity dialog) {
         return new NetworkListDto(
-                dialogId,
-                state.open,
-                state.selectedNetwork,
-                state.availableNetworks,
-                state.statusMessage
+                dialog.getId(),
+                dialog.isOpen(),
+                dialog.getSelectedNetwork(),
+                availableNetworks(),
+                dialog.getStatusMessage()
         );
-    }
-
-    private static final class NetworkListState {
-        private boolean open;
-        private String selectedNetwork = "default";
-        private List<String> availableNetworks = List.of();
-        private String statusMessage = "Network list ready";
     }
 }

@@ -13,7 +13,7 @@ import com.noprobit.vmmanager.webapp.createvm.CreateVmWizardDto;
 
 @RestController
 @RequestMapping("/api/create-vm")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 public class CreateVmController {
 
     private final CreateVmService createVmService;

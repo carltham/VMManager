@@ -4,6 +4,8 @@
     <button type="button" (click)="toggleStats.emit()">
       Toggle Stats: {{ overview?.statsEnabled ? 'ON' : 'OFF' }}
     </button>
+    <button type="button" (click)="onOpenCloneWizard()">Open Clone Wizard</button>
+    <button type="button" (click)="onOpenCreateNetworkWizard()">Open Create Network Wizard</button>
   </header>
 
   <section class="forms-grid">
@@ -21,55 +23,51 @@
     </form>
 
     <form class="panel" (ngSubmit)="onCreateVm()">
-      <h2>Create VM</h2>
+      <h2>New VM Wizard</h2>
       <label>
         Connection
         <select name="selectedConnectionId" [(ngModel)]="selectedConnectionId" required>
           @for (connection of overview?.connections ?? []; track connection.id) {
-            <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
+          <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
           }
         </select>
       </label>
-      <label>
-        VM name
-        <input name="vmName" [(ngModel)]="vmName" placeholder="new-vm" required />
-      </label>
-      <button type="submit">Create VM</button>
+      <button type="submit">Open Wizard</button>
     </form>
   </section>
 
   <section class="connections">
     @for (connection of overview?.connections ?? []; track connection.id) {
-      <article class="connection-card">
-        <header>
-          <h3>{{ connection.name }}</h3>
-          <p>{{ connection.uri }}</p>
-          <span class="badge">{{ vmCount(connection.vms) }} VM(s)</span>
-        </header>
+    <article class="connection-card">
+      <header>
+        <h3>{{ connection.name }}</h3>
+        <p>{{ connection.uri }}</p>
+        <span class="badge">{{ vmCount(connection.vms) }} VM(s)</span>
+      </header>
 
-        <div class="vm-list">
-          @if (connection.vms.length === 0) {
-            <p class="empty">No VMs yet.</p>
-          }
+      <div class="vm-list">
+        @if (connection.vms.length === 0) {
+        <p class="empty">No VMs yet.</p>
+        }
 
-          @for (vm of connection.vms; track vm.id) {
-            <div class="vm-row">
-              <div>
-                <strong>{{ vm.name }}</strong>
-                <p>State: {{ vm.state }} | Opened: {{ vm.opened ? 'yes' : 'no' }}</p>
-              </div>
-              <div class="vm-actions">
-                <button type="button" (click)="openVm.emit(vm)">Open</button>
-                <button type="button" (click)="runVm.emit(vm)">Run</button>
-                <button type="button" (click)="pauseVm.emit(vm)">Pause</button>
-                <button type="button" (click)="shutdownVm.emit(vm)">Shutdown</button>
-                <button type="button" (click)="migrateVm.emit(vm)">Migrate</button>
-                <button type="button" class="danger" (click)="deleteVm.emit(vm)">Delete</button>
-              </div>
-            </div>
-          }
+        @for (vm of connection.vms; track vm.id) {
+        <div class="vm-row">
+          <div>
+            <strong>{{ vm.name }}</strong>
+            <p>State: {{ vm.state }} | Opened: {{ vm.opened ? 'yes' : 'no' }}</p>
+          </div>
+          <div class="vm-actions">
+            <button type="button" (click)="openVm.emit(vm)">Open</button>
+            <button type="button" (click)="runVm.emit(vm)">Run</button>
+            <button type="button" (click)="pauseVm.emit(vm)">Pause</button>
+            <button type="button" (click)="shutdownVm.emit(vm)">Shutdown</button>
+            <button type="button" (click)="migrateVm.emit(vm)">Migrate</button>
+            <button type="button" class="danger" (click)="deleteVm.emit(vm)">Delete</button>
+          </div>
         </div>
-      </article>
+        }
+      </div>
+    </article>
     }
   </section>
 </section>

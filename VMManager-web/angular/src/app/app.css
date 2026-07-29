@@ -33,24 +33,42 @@
   color: #486581;
 }
 
-.top-nav {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.menu-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
 }
 
-.top-nav button {
+.menu-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.menu-group span {
+  font-weight: 700;
+  color: #334e68;
+  margin-right: 4px;
+}
+
+.menu-group button {
+  display: flex;
   color: #0b4570;
-  font-weight: 600;
+  font-weight: 500;
   border: 1px solid #bcccdc;
   border-radius: 999px;
   padding: 6px 12px;
   background: #fff;
   cursor: pointer;
-  font: inherit;
+  font-family: inherit;
 }
 
-.top-nav button.active {
+.menu-group button.active {
   background: #0b4570;
   color: #fff;
   border-color: #0b4570;

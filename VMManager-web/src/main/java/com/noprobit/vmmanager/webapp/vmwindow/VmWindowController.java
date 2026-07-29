@@ -14,7 +14,7 @@ import com.noprobit.vmmanager.webapp.vmwindow.VmWindowTab;
 
 @RestController
 @RequestMapping("/api/vm-window")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 public class VmWindowController {
 
     private final VmWindowService vmWindowService;
