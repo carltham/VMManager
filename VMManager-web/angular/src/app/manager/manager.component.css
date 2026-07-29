@@ -1,28 +1,42 @@
-.hero-actions {
+.manager-toolbar {
   display: flex;
-  gap: 10px;
+  gap: 2px;
   flex-wrap: wrap;
+  padding: 6px;
+  border-bottom: 1px solid #d2d2d2;
+  background: #f5f5f5;
 }
 
-.forms-grid {
-  margin-top: 18px;
+.manager-toolbar button {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 6px 10px;
+  background: transparent;
+  color: #2a2a2a;
+}
+
+.manager-toolbar button:hover,
+.manager-toolbar button:focus-visible {
+  border-color: #b8b8b8;
+  background: #fff;
+  outline: none;
+}
+
+.connection-form,
+.new-vm-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
+  grid-template-columns: minmax(150px, 1fr) minmax(180px, 1.5fr) auto;
+  gap: 8px;
+  align-items: end;
+  padding: 8px;
+  border-bottom: 1px solid #d2d2d2;
+  background: #fafafa;
 }
 
-.panel {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid #d9e2ec;
-  border-radius: 14px;
-  padding: 16px;
-  display: grid;
-  gap: 10px;
-}
-
-.panel h2 {
-  margin: 0 0 6px;
-  font-size: 1.1rem;
+.new-vm-form {
+  grid-template-columns: minmax(220px, 340px) auto;
+  border-top: 1px solid #d2d2d2;
+  border-bottom: 0;
 }
 
 label {
@@ -40,18 +54,18 @@ button {
 
 input,
 select {
-  border: 1px solid #bcccdc;
-  border-radius: 8px;
-  padding: 9px 10px;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+  padding: 6px 8px;
   background: #fff;
 }
 
 button {
-  border: none;
-  border-radius: 9px;
-  padding: 9px 12px;
-  background: #127fbf;
-  color: #fff;
+  border: 1px solid #b8b8b8;
+  border-radius: 3px;
+  padding: 6px 10px;
+  background: #f5f5f5;
+  color: #2a2a2a;
   cursor: pointer;
 }
 
@@ -59,71 +73,121 @@ button:hover {
   filter: brightness(0.95);
 }
 
-.connections {
-  margin-top: 18px;
+.connection-tree {
+  min-height: 420px;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.tree-header,
+.tree-row {
   display: grid;
-  gap: 14px;
+  grid-template-columns: minmax(260px, 1fr) 140px 140px minmax(290px, auto);
+  align-items: center;
+  min-height: 28px;
 }
 
-.connection-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #d9e2ec;
-  border-radius: 14px;
-  padding: 16px;
-}
-
-.connection-card header h3 {
-  margin: 0;
-}
-
-.connection-card header p {
-  margin: 4px 0 8px;
-  color: #486581;
-}
-
-.badge {
-  background: #d9f7ec;
-  color: #0d6b59;
-  border-radius: 999px;
-  padding: 4px 10px;
+.tree-header {
+  border-bottom: 1px solid #bdbdbd;
+  background: #f1f1f1;
+  color: #444;
   font-size: 0.85rem;
   font-weight: 700;
 }
 
-.vm-list {
-  margin-top: 10px;
-  display: grid;
-  gap: 10px;
+.tree-header span,
+.tree-row > * {
+  min-height: 28px;
+  padding: 5px 8px;
+  border-right: 1px solid #d5d5d5;
+  box-sizing: border-box;
+}
+
+.connection-row {
+  background: #2d9cdb;
+  color: #fff;
+  cursor: context-menu;
+}
+
+.connection-row small {
+  color: inherit;
+  font-weight: 400;
+}
+
+.connection-row:focus-visible {
+  outline: 2px solid #1e6e9d;
+  outline-offset: -2px;
 }
 
 .vm-row {
-  border: 1px solid #e1e8f0;
-  border-radius: 10px;
-  padding: 10px;
+  border-bottom: 1px solid #eeeeee;
+  cursor: context-menu;
+}
+
+.vm-row:focus-visible {
+  outline: 2px solid #2d9cdb;
+  outline-offset: -2px;
+}
+
+.vm-row > div:first-child {
+  padding-left: 28px;
+}
+
+.vm-row small {
+  display: block;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.empty-row {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.context-hint {
+  color: #777;
+  font-size: 0.78rem;
+}
+
+.vm-context-menu,
+.connection-context-menu {
+  position: fixed;
+  z-index: 50;
   display: grid;
-  gap: 8px;
+  min-width: 160px;
+  padding: 4px;
+  border: 1px solid #a9a9a9;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
 }
 
-.vm-row p {
-  margin: 4px 0 0;
-  color: #486581;
+.vm-context-menu button,
+.connection-context-menu button {
+  border: 0;
+  border-radius: 2px;
+  padding: 6px 10px;
+  background: transparent;
+  color: #2a2a2a;
+  text-align: left;
 }
 
-.vm-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.vm-context-menu button:hover,
+.vm-context-menu button:focus-visible,
+.connection-context-menu button:hover,
+.connection-context-menu button:focus-visible {
+  background: #dcecf7;
+  outline: none;
 }
 
-.vm-actions button {
-  background: #0f6a9f;
+.vm-context-menu hr,
+.connection-context-menu hr {
+  width: 100%;
+  margin: 4px 0;
+  border: 0;
+  border-top: 1px solid #ddd;
 }
 
-.vm-actions .danger {
-  background: #b42318;
-}
-
-.empty {
-  color: #486581;
-  margin: 0;
+.vm-context-menu .danger,
+.connection-context-menu .danger {
+  color: #9e1f1f;
 }

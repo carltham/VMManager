@@ -1,73 +1,89 @@
 <section class="manager-panel">
-  <header class="hero-actions">
-    <button type="button" (click)="refresh.emit()">Refresh</button>
-    <button type="button" (click)="toggleStats.emit()">
-      Toggle Stats: {{ overview?.statsEnabled ? 'ON' : 'OFF' }}
+  <header class="manager-toolbar" aria-label="Manager toolbar">
+    <button type="button" title="Add connection" (click)="showConnectionForm = !showConnectionForm">Add
+      Connection</button>
+    <button type="button" title="Create a new virtual machine" (click)="onCreateVm()">New VM</button>
+    <button type="button" title="Refresh connections" (click)="refresh.emit()">Refresh</button>
+    <button type="button" title="Toggle statistics columns" (click)="toggleStats.emit()">
+      Stats: {{ overview?.statsEnabled ? 'ON' : 'OFF' }}
     </button>
-    <button type="button" (click)="onOpenCloneWizard()">Open Clone Wizard</button>
-    <button type="button" (click)="onOpenCreateNetworkWizard()">Open Create Network Wizard</button>
+    <button type="button" title="Clone virtual machine" (click)="onOpenCloneWizard()">Clone</button>
+    <button type="button" title="Create virtual network" (click)="onOpenCreateNetworkWizard()">New Network</button>
   </header>
 
-  <section class="forms-grid">
-    <form class="panel" (ngSubmit)="onAddConnection()">
-      <h2>Add Connection</h2>
-      <label>
-        Name
-        <input name="connectionName" [(ngModel)]="connectionName" placeholder="Lab Host" required />
-      </label>
-      <label>
-        URI
-        <input name="connectionUri" [(ngModel)]="connectionUri" placeholder="qemu:///system" required />
-      </label>
-      <button type="submit">Add Connection</button>
-    </form>
+  @if (showConnectionForm) {
+  <form class="connection-form" (ngSubmit)="onAddConnection()">
+    <label>Name<input name="connectionName" [(ngModel)]="connectionName" placeholder="QEMU/KVM" required /></label>
+    <label>URI<input name="connectionUri" [(ngModel)]="connectionUri" placeholder="qemu:///system" required /></label>
+    <button type="submit">Connect</button>
+  </form>
+  }
 
-    <form class="panel" (ngSubmit)="onCreateVm()">
-      <h2>New VM Wizard</h2>
-      <label>
-        Connection
-        <select name="selectedConnectionId" [(ngModel)]="selectedConnectionId" required>
-          @for (connection of overview?.connections ?? []; track connection.id) {
-          <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
-          }
-        </select>
-      </label>
-      <button type="submit">Open Wizard</button>
-    </form>
-  </section>
-
-  <section class="connections">
+  <section class="connection-tree" aria-label="Virtual machine connections">
+    <div class="tree-header" role="row">
+      <span role="columnheader">Name</span>
+      <span role="columnheader">CPU usage</span>
+      <span role="columnheader">Host CPU usage</span>
+    </div>
     @for (connection of overview?.connections ?? []; track connection.id) {
-    <article class="connection-card">
-      <header>
-        <h3>{{ connection.name }}</h3>
-        <p>{{ connection.uri }}</p>
-        <span class="badge">{{ vmCount(connection.vms) }} VM(s)</span>
-      </header>
-
-      <div class="vm-list">
-        @if (connection.vms.length === 0) {
-        <p class="empty">No VMs yet.</p>
-        }
-
-        @for (vm of connection.vms; track vm.id) {
-        <div class="vm-row">
-          <div>
-            <strong>{{ vm.name }}</strong>
-            <p>State: {{ vm.state }} | Opened: {{ vm.opened ? 'yes' : 'no' }}</p>
-          </div>
-          <div class="vm-actions">
-            <button type="button" (click)="openVm.emit(vm)">Open</button>
-            <button type="button" (click)="runVm.emit(vm)">Run</button>
-            <button type="button" (click)="pauseVm.emit(vm)">Pause</button>
-            <button type="button" (click)="shutdownVm.emit(vm)">Shutdown</button>
-            <button type="button" (click)="migrateVm.emit(vm)">Migrate</button>
-            <button type="button" class="danger" (click)="deleteVm.emit(vm)">Delete</button>
-          </div>
-        </div>
-        }
+    <article class="connection-node">
+      <div class="tree-row connection-row" role="row" tabindex="0"
+        (contextmenu)="openConnectionContextMenu($event, connection)">
+        <strong role="cell">{{ connection.name }} <small>({{ connection.uri }})</small></strong>
+        <span role="cell"></span>
+        <span role="cell"></span>
       </div>
+      @if (connection.vms.length === 0) {
+      <div class="tree-row empty-row"><span>No virtual machines</span><span></span><span></span></div>
+      }
+      @for (vm of connection.vms; track vm.id) {
+      <div class="tree-row vm-row" role="row" tabindex="0" (contextmenu)="openVmContextMenu($event, vm)">
+        <div role="cell">
+          <strong>{{ vm.name }}</strong>
+          <small>{{ vm.state }}</small>
+        </div>
+        <span role="cell">{{ overview?.statsEnabled ? 'Available' : '-' }}</span>
+        <span role="cell">{{ overview?.statsEnabled ? 'Available' : '-' }}</span>
+        <span class="context-hint" role="cell">Right-click for actions</span>
+      </div>
+      }
     </article>
     }
   </section>
+
+  <form class="new-vm-form" (ngSubmit)="onCreateVm()">
+    <label>Connection
+      <select name="selectedConnectionId" [(ngModel)]="selectedConnectionId" required>
+        @for (connection of overview?.connections ?? []; track connection.id) {
+        <option [ngValue]="connection.id">{{ connection.name }} ({{ connection.uri }})</option>
+        }
+      </select>
+    </label>
+    <button type="submit">Open VM Wizard</button>
+  </form>
+
+  @if (contextMenu; as menu) {
+  <div class="vm-context-menu" role="menu" aria-label="Virtual machine actions" [style.left.px]="menu.x"
+    [style.top.px]="menu.y" (click)="$event.stopPropagation()">
+    <button type="button" role="menuitem" (click)="runContextAction('open')">Open</button>
+    <button type="button" role="menuitem" (click)="runContextAction('run')">Run</button>
+    <button type="button" role="menuitem" (click)="runContextAction('pause')">Pause</button>
+    <button type="button" role="menuitem" (click)="runContextAction('shutdown')">Shutdown</button>
+    <hr />
+    <button type="button" role="menuitem" (click)="runContextAction('clone')">Clone</button>
+    <button type="button" role="menuitem" (click)="runContextAction('migrate')">Migrate</button>
+    <button type="button" role="menuitem" class="danger" (click)="runContextAction('delete')">Delete</button>
+  </div>
+  }
+
+  @if (connectionContextMenu; as menu) {
+  <div class="connection-context-menu" role="menu" aria-label="Connection actions" [style.left.px]="menu.x"
+    [style.top.px]="menu.y" (click)="$event.stopPropagation()">
+    <button type="button" role="menuitem" (click)="runConnectionContextAction('new')">New Virtual Machine</button>
+    <button type="button" role="menuitem" (click)="runConnectionContextAction('connect')">Connect</button>
+    <hr />
+    <button type="button" role="menuitem" class="danger"
+      (click)="runConnectionContextAction('disconnect')">Disconnect</button>
+  </div>
+  }
 </section>

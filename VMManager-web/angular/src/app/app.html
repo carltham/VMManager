@@ -1,38 +1,59 @@
 <main class="manager-shell">
   <header class="hero">
-    <h1>VM Manager</h1>
-    <p>Menu-driven workspace modeled after virt-manager</p>
+    <h1>Virtual Machine Manager</h1>
 
-    <section class="menu-bar" aria-label="Main menu">
+    <nav class="menu-bar" aria-label="Main menu">
       <div class="menu-group">
-        <span>File</span>
-        <button type="button" (click)="menuAddConnection()">Add Connection</button>
-        <button type="button" (click)="menuNewVm()">New Virtual Machine</button>
-        <button type="button" (click)="menuNewNetwork()">New Network</button>
+        <button type="button" class="menu-trigger" aria-haspopup="menu" [attr.aria-expanded]="isMenuOpen('file')"
+          (click)="toggleMenu('file')">File</button>
+        @if (isMenuOpen('file')) {
+        <div class="menu-dropdown" role="menu" aria-label="File">
+          <button type="button" role="menuitem" (click)="menuAddConnection()">Add Connection</button>
+          <button type="button" role="menuitem" (click)="menuNewVm()">New Virtual Machine</button>
+          <button type="button" role="menuitem" (click)="menuNewNetwork()">New Network</button>
+        </div>
+        }
       </div>
 
       <div class="menu-group">
-        <span>Edit</span>
-        <button type="button" (click)="menuConnectionDetails()">Connection Details</button>
-        <button type="button" (click)="menuVmDetails()">Virtual Machine Details</button>
-        <button type="button" (click)="menuPreferences()">Preferences</button>
+        <button type="button" class="menu-trigger" aria-haspopup="menu" [attr.aria-expanded]="isMenuOpen('edit')"
+          (click)="toggleMenu('edit')">Edit</button>
+        @if (isMenuOpen('edit')) {
+        <div class="menu-dropdown" role="menu" aria-label="Edit">
+          <button type="button" role="menuitem" (click)="menuConnectionDetails()">Connection Details</button>
+          <button type="button" role="menuitem" (click)="menuVmDetails()">Virtual Machine Details</button>
+          <button type="button" role="menuitem" (click)="menuPreferences()">Preferences</button>
+        </div>
+        }
       </div>
 
       <div class="menu-group">
-        <span>View</span>
-        <button type="button" [class.active]="showView('machines')"
-          (click)="setActiveView('machines')">Machines</button>
-        <button type="button" [class.active]="showView('networks')"
-          (click)="setActiveView('networks')">Networks</button>
-        <button type="button" [class.active]="showView('storage')" (click)="setActiveView('storage')">Storage</button>
-        <button type="button" [class.active]="showView('tools')" (click)="setActiveView('tools')">Tools</button>
+        <button type="button" class="menu-trigger" aria-haspopup="menu" [attr.aria-expanded]="isMenuOpen('view')"
+          (click)="toggleMenu('view')">View</button>
+        @if (isMenuOpen('view')) {
+        <div class="menu-dropdown" role="menu" aria-label="View">
+          <button type="button" role="menuitem" [class.active]="showView('machines')"
+            (click)="setActiveView('machines')">Machines</button>
+          <button type="button" role="menuitem" [class.active]="showView('networks')"
+            (click)="setActiveView('networks')">Networks</button>
+          <button type="button" role="menuitem" [class.active]="showView('storage')"
+            (click)="setActiveView('storage')">Storage</button>
+          <button type="button" role="menuitem" [class.active]="showView('tools')"
+            (click)="setActiveView('tools')">Tools</button>
+        </div>
+        }
       </div>
 
       <div class="menu-group">
-        <span>Help</span>
-        <button type="button" (click)="menuAbout()">About</button>
+        <button type="button" class="menu-trigger" aria-haspopup="menu" [attr.aria-expanded]="isMenuOpen('help')"
+          (click)="toggleMenu('help')">Help</button>
+        @if (isMenuOpen('help')) {
+        <div class="menu-dropdown" role="menu" aria-label="Help">
+          <button type="button" role="menuitem" (click)="menuAbout()">About</button>
+        </div>
+        }
       </div>
-    </section>
+    </nav>
   </header>
 
   @if (isLoading) {
@@ -53,8 +74,10 @@
     (openCreateVmWizard)="openCreateVmWizardFromManager($event)" (openCloneWizard)="openCloneVmDialogFromManager()"
     (openCreateNetworkWizard)="openCreateNetworkWizardFromManager()" (openVm)="openVm($event)" (runVm)="runVm($event)"
     (pauseVm)="pauseVm($event)" (shutdownVm)="shutdownVm($event)" (migrateVm)="openMigrateVmDialog($event)"
-    (deleteVm)="deleteVm($event)" />
+    (deleteVm)="deleteVm($event)" (connectConnection)="refresh()"
+    (disconnectConnection)="disconnectConnection($event)" />
 
+  @if (createVmWizard?.open) {
   <app-create-vm [connections]="overview?.connections ?? []" [wizard]="createVmWizard"
     (openWizard)="openCreateVmWizard()" (closeWizard)="closeCreateVmWizard()" (back)="createVmBack()"
     (next)="createVmNext()" (finish)="createVmFinish()" (changeConnection)="createVmChangeConnection($event)"
@@ -65,12 +88,15 @@
     (toggleDetectOs)="createVmToggleDetectOs($event)" (toggleStorage)="createVmToggleStorage($event)"
     (changeArch)="createVmChangeArch($event)" (changeType)="createVmChangeType($event)"
     (changeMachine)="createVmChangeMachine($event)" (editVmName)="createVmEditVmName($event)" />
+  }
 
+  @if (cloneVmDialog?.open) {
   <app-clone-vm [allVms]="allVms()" [dialog]="cloneVmDialog" (openDialog)="openCloneVmDialog()"
     (closeDialog)="closeCloneVmDialog()" (selectSourceVm)="selectCloneSourceVm($event)"
     (chooseCloneMode)="chooseCloneMode($event)" (browseDestination)="browseCloneDestination($event)"
     (changeDiskOptions)="changeCloneDiskOptions($event)" (editCloneName)="editCloneName($event)"
     (confirmClone)="confirmClone()" />
+  }
 
   <app-migrate-vm [dialog]="migrateVmDialog" (closeDialog)="closeMigrateVmDialog()"
     (chooseDestination)="updateMigrationText('destination', $event)"
@@ -82,9 +108,12 @@
     (toggleRemoveStorage)="toggleDeleteVmStorage($event)" (confirmDelete)="confirmDeleteVm()"
     (cancelDelete)="cancelDeleteVm()" />
 
+  @if (vmWindow) {
   <app-vm-window [vmWindow]="vmWindow" (closeWindow)="closeVmWindow()" (switchTab)="switchVmWindowTab($event)"
     (action)="runVmWindowActionFromUi($event)" />
+  }
 
+  @if (vmDetails) {
   <app-vm-details [allVms]="allVms()" [vmDetails]="vmDetails" (open)="openVmDetails($event)"
     (refresh)="refreshVmDetails()" (selectHardware)="selectDetailsHardware($event)"
     (editGeneral)="editGeneralSettings($event)" (editCpu)="editCpuSettings($event)"
@@ -97,6 +126,7 @@
     (editNetwork)="editNetwork($event)" (editGraphics)="editGraphics($event)" (editTpm)="editTpm($event)"
     (editVsock)="editVsock($event)" (launchXml)="launchXmlEditor()" (launchStorageBrowser)="launchStorageBrowser()"
     (launchOsList)="launchOsList()" (applyChanges)="applyDetailsChanges()" />
+  }
 
   <app-add-hardware [dialog]="addHardwareDialog" (closeDialog)="runAddHardwareAction('close')"
     (selectDeviceType)="updateAddHardware('type', $event)"

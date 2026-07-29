@@ -1,13 +1,13 @@
 <section class="create-vm panel">
   <header class="create-vm-header">
-    <h2>Create VM Module (Task 04)</h2>
+    <h2>Create a new virtual machine</h2>
     @if (wizard) {
     <p>Step {{ wizard.step }} of 5 | {{ wizard.statusMessage }}</p>
     }
   </header>
 
   @if (!wizard || !wizard.open) {
-  <button type="button" (click)="openWizard.emit()">Open Create VM Wizard</button>
+  <button type="button" (click)="openWizard.emit()">New Virtual Machine</button>
   }
 
   @if (wizard && wizard.open) {

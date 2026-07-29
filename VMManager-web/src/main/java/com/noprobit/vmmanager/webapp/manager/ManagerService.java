@@ -49,6 +49,13 @@ public class ManagerService {
     }
 
     @Transactional
+    public synchronized void disconnectConnection(long connectionId) {
+        ConnectionEntity connection = connectionRepository.findById(connectionId)
+                .orElseThrow(() -> new IllegalArgumentException("Connection not found"));
+        connectionRepository.delete(connection);
+    }
+
+    @Transactional
     public synchronized ManagerVmDto createVm(long connectionId, String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("VM name is required");

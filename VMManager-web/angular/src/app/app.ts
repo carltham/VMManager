@@ -64,6 +64,8 @@ import { VsockDetailsComponent } from './vsock-details/vsock-details.component';
 import { VsockDetailsDialogView } from './vsock-details/vsock-details.models';
 import { XmlEditorComponent } from './xml-editor/xml-editor.component';
 
+type MenuName = 'file' | 'edit' | 'view' | 'help';
+
 type AppView = 'machines' | 'networks' | 'storage' | 'tools';
 
 @Component({
@@ -144,6 +146,7 @@ export class App implements OnInit {
   vmWindow: VmWindowView | null = null;
   vmDetails: VmDetailsView | null = null;
   activeView: AppView = 'machines';
+  openMenu: MenuName | null = null;
 
   ngOnInit(): void {
     this.refresh();
@@ -151,10 +154,23 @@ export class App implements OnInit {
 
   setActiveView(view: AppView): void {
     this.activeView = view;
+    this.closeMenus();
   }
 
   showView(view: AppView): boolean {
     return this.activeView === view;
+  }
+
+  toggleMenu(menu: MenuName): void {
+    this.openMenu = this.openMenu === menu ? null : menu;
+  }
+
+  isMenuOpen(menu: MenuName): boolean {
+    return this.openMenu === menu;
+  }
+
+  closeMenus(): void {
+    this.openMenu = null;
   }
 
   menuAddConnection(): void {
@@ -235,6 +251,22 @@ export class App implements OnInit {
       },
       error: (err) => {
         this.error = err?.error?.message ?? 'Failed to add connection.';
+      },
+    });
+  }
+
+  disconnectConnection(connectionId: number): void {
+    this.error = '';
+    this.api.disconnectConnection(connectionId).subscribe({
+      next: (result) => {
+        this.infoMessage = result.message;
+        if (this.selectedConnectionId === connectionId) {
+          this.selectedConnectionId = null;
+        }
+        this.refresh();
+      },
+      error: (err) => {
+        this.error = err?.error?.message ?? 'Failed to disconnect connection.';
       },
     });
   }

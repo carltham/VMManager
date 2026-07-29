@@ -1,13 +1,13 @@
 <section class="clone-vm panel">
   <header class="clone-header">
-    <h2>Clone VM Module (Task 05)</h2>
+    <h2>Clone Virtual Machine</h2>
     @if (dialog) {
     <p>{{ dialog.statusMessage }}</p>
     }
   </header>
 
   @if (!dialog || !dialog.open) {
-  <button type="button" (click)="openDialog.emit()">Open Clone Dialog</button>
+  <button type="button" (click)="openDialog.emit()">Clone Virtual Machine</button>
   }
 
   @if (dialog && dialog.open) {

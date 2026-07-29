@@ -1,45 +1,45 @@
 <section class="vm-window panel">
   <header class="vm-window-header">
     <div>
-      <h2>VM Window Module (Task 02)</h2>
+      <h2>Virtual Machine</h2>
       @if (vmWindow) {
-        <p>Active VM: {{ vmWindow.vm.name }} ({{ vmWindow.vm.state }})</p>
+      <p>Active VM: {{ vmWindow.vm.name }} ({{ vmWindow.vm.state }})</p>
       } @else {
-        <p>Open a VM from the manager list to instantiate vm-window.</p>
+      <p>Select a virtual machine to open its console.</p>
       }
     </div>
     @if (vmWindow) {
-      <button type="button" class="secondary" (click)="closeWindow.emit()">Close Window</button>
+    <button type="button" class="secondary" (click)="closeWindow.emit()">Close Window</button>
     }
   </header>
 
   @if (vmWindow) {
-    <div class="vm-window-tabs">
-      <button type="button" [class.active-tab]="vmWindow.activeTab === 'CONSOLE'" (click)="switchTab.emit('CONSOLE')">
-        Console
-      </button>
-      <button type="button" [class.active-tab]="vmWindow.activeTab === 'DETAILS'" (click)="switchTab.emit('DETAILS')">
-        Details
-      </button>
-    </div>
+  <div class="vm-window-tabs">
+    <button type="button" [class.active-tab]="vmWindow.activeTab === 'CONSOLE'" (click)="switchTab.emit('CONSOLE')">
+      Console
+    </button>
+    <button type="button" [class.active-tab]="vmWindow.activeTab === 'DETAILS'" (click)="switchTab.emit('DETAILS')">
+      Details
+    </button>
+  </div>
 
-    <div class="vm-window-toolbar">
-      <button type="button" (click)="action.emit('start')">Start</button>
-      <button type="button" (click)="action.emit('pause')">Pause</button>
-      <button type="button" (click)="action.emit('reset')">Reset</button>
-      <button type="button" (click)="action.emit('reboot')">Reboot</button>
-      <button type="button" (click)="action.emit('shutdown')">Shutdown</button>
-      <button type="button" (click)="action.emit('save')">Save</button>
-      <button type="button" class="secondary" (click)="action.emit('status')">Update Status</button>
-    </div>
+  <div class="vm-window-toolbar">
+    <button type="button" (click)="action.emit('start')">Start</button>
+    <button type="button" (click)="action.emit('pause')">Pause</button>
+    <button type="button" (click)="action.emit('reset')">Reset</button>
+    <button type="button" (click)="action.emit('reboot')">Reboot</button>
+    <button type="button" (click)="action.emit('shutdown')">Shutdown</button>
+    <button type="button" (click)="action.emit('save')">Save</button>
+    <button type="button" class="secondary" (click)="action.emit('status')">Update Status</button>
+  </div>
 
-    <div class="vm-window-body">
-      @if (vmWindow.activeTab === 'CONSOLE') {
-        <pre>{{ vmWindow.consoleText }}</pre>
-      }
-      @if (vmWindow.activeTab === 'DETAILS') {
-        <pre>{{ vmWindow.detailsText }}</pre>
-      }
-    </div>
+  <div class="vm-window-body">
+    @if (vmWindow.activeTab === 'CONSOLE') {
+    <pre>{{ vmWindow.consoleText }}</pre>
+    }
+    @if (vmWindow.activeTab === 'DETAILS') {
+    <pre>{{ vmWindow.detailsText }}</pre>
+    }
+  </div>
   }
 </section>

@@ -45,6 +45,16 @@ public class ManagerController {
         }
     }
 
+    @DeleteMapping("/connections/{connectionId}")
+    public ManagerActionResultDto disconnectConnection(@PathVariable long connectionId) {
+        try {
+            managerService.disconnectConnection(connectionId);
+            return new ManagerActionResultDto("disconnect connection", "Connection disconnected");
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
+    }
+
     @PostMapping("/vms")
     public ManagerVmDto createVm(@RequestBody CreateVmRequest request) {
         try {

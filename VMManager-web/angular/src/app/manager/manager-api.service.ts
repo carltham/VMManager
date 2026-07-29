@@ -22,6 +22,10 @@ export class ManagerApiService {
     return this.http.post<ConnectionItem>(`${this.baseUrl}/connections`, { name, uri });
   }
 
+  disconnectConnection(connectionId: number): Observable<ActionResult> {
+    return this.http.delete<ActionResult>(`${this.baseUrl}/connections/${connectionId}`);
+  }
+
   createVm(connectionId: number, name: string): Observable<VmItem> {
     return this.http.post<VmItem>(`${this.baseUrl}/vms`, { connectionId, name });
   }

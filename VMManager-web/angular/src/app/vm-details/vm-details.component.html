@@ -1,8 +1,8 @@
 <section class="vm-details panel">
   <header class="vm-details-header">
-    <h2>VM Details Module (Task 03)</h2>
+    <h2>Virtual Machine Details</h2>
     <div class="actions">
-      <button type="button" (click)="openDetails()">Open Details</button>
+      <button type="button" (click)="openDetails()">Open</button>
       <button type="button" class="secondary" (click)="refresh.emit()" [disabled]="!vmDetails">Refresh</button>
     </div>
   </header>
@@ -11,81 +11,81 @@
     VM
     <select name="selectedVmId" [(ngModel)]="selectedVmId">
       @for (vm of allVms; track vm.id) {
-        <option [ngValue]="vm.id">{{ vm.name }} ({{ vm.state }})</option>
+      <option [ngValue]="vm.id">{{ vm.name }} ({{ vm.state }})</option>
       }
     </select>
   </label>
 
   @if (vmDetails) {
-    <p class="status">{{ vmDetails.statusMessage }}</p>
+  <p class="status">{{ vmDetails.statusMessage }}</p>
 
-    <div class="grid">
-      <div class="field">
-        <label>
-          Hardware
-          <input name="selectedHardware" [(ngModel)]="selectedHardware" />
-        </label>
-        <button type="button" (click)="selectHardware.emit(selectedHardware)">Select Hardware</button>
-      </div>
-
-      <div class="field">
-        <label>
-          General Settings
-          <input name="generalSettings" [(ngModel)]="generalSettings" />
-        </label>
-        <button type="button" (click)="editGeneral.emit(generalSettings)">Edit General</button>
-      </div>
-
-      <div class="field">
-        <label>
-          CPU
-          <input type="number" name="cpuCount" [(ngModel)]="cpuCount" min="1" />
-        </label>
-        <button type="button" (click)="editCpu.emit(cpuCount)">Edit CPU</button>
-      </div>
-
-      <div class="field">
-        <label>
-          Memory (MB)
-          <input type="number" name="memoryMb" [(ngModel)]="memoryMb" min="512" />
-        </label>
-        <button type="button" (click)="editMemory.emit(memoryMb)">Edit Memory</button>
-      </div>
-
-      <div class="field">
-        <label>
-          Boot Order
-          <input name="bootOrder" [(ngModel)]="bootOrder" />
-        </label>
-        <button type="button" (click)="editBoot.emit(bootOrder)">Edit Boot</button>
-      </div>
-
-      <div class="field">
-        <label>
-          Value
-          <input name="editValue" [(ngModel)]="editValue" placeholder="device or setting value" />
-        </label>
-        <div class="row-actions">
-          <button type="button" (click)="openAddHardware.emit()">Add HW</button>
-          <button type="button" (click)="openAddStorage.emit()">Add Storage</button>
-          <button type="button" (click)="openFilesystemDetails.emit()">Filesystem</button>
-          <button type="button" (click)="removeHardware.emit(editValue || selectedHardware)">Remove HW</button>
-          <button type="button" (click)="editStorage.emit(editValue)">Storage</button>
-          <button type="button" (click)="openNetworkList.emit()">Network</button>
-          <button type="button" (click)="openGraphicsDetails.emit()">Graphics</button>
-          <button type="button" (click)="openTpmDetails.emit()">TPM</button>
-          <button type="button" (click)="openVsockDetails.emit()">VSOCK</button>
-        </div>
-      </div>
+  <div class="grid">
+    <div class="field">
+      <label>
+        Hardware
+        <input name="selectedHardware" [(ngModel)]="selectedHardware" />
+      </label>
+      <button type="button" (click)="selectHardware.emit(selectedHardware)">Select Hardware</button>
     </div>
 
-    <div class="module-actions">
-      <button type="button" (click)="launchXml.emit()">Launch XML Editor</button>
-      <button type="button" (click)="launchStorageBrowser.emit()">Launch Storage Browser</button>
-      <button type="button" (click)="launchOsList.emit()">Launch OS List</button>
-      <button type="button" class="secondary" (click)="applyChanges.emit()">Apply Changes</button>
+    <div class="field">
+      <label>
+        General Settings
+        <input name="generalSettings" [(ngModel)]="generalSettings" />
+      </label>
+      <button type="button" (click)="editGeneral.emit(generalSettings)">Edit General</button>
     </div>
 
-    <p class="devices">Devices: {{ vmDetails.hardwareDevices.join(', ') }}</p>
+    <div class="field">
+      <label>
+        CPU
+        <input type="number" name="cpuCount" [(ngModel)]="cpuCount" min="1" />
+      </label>
+      <button type="button" (click)="editCpu.emit(cpuCount)">Edit CPU</button>
+    </div>
+
+    <div class="field">
+      <label>
+        Memory (MB)
+        <input type="number" name="memoryMb" [(ngModel)]="memoryMb" min="512" />
+      </label>
+      <button type="button" (click)="editMemory.emit(memoryMb)">Edit Memory</button>
+    </div>
+
+    <div class="field">
+      <label>
+        Boot Order
+        <input name="bootOrder" [(ngModel)]="bootOrder" />
+      </label>
+      <button type="button" (click)="editBoot.emit(bootOrder)">Edit Boot</button>
+    </div>
+
+    <div class="field">
+      <label>
+        Value
+        <input name="editValue" [(ngModel)]="editValue" placeholder="device or setting value" />
+      </label>
+      <div class="row-actions">
+        <button type="button" (click)="openAddHardware.emit()">Add HW</button>
+        <button type="button" (click)="openAddStorage.emit()">Add Storage</button>
+        <button type="button" (click)="openFilesystemDetails.emit()">Filesystem</button>
+        <button type="button" (click)="removeHardware.emit(editValue || selectedHardware)">Remove HW</button>
+        <button type="button" (click)="editStorage.emit(editValue)">Storage</button>
+        <button type="button" (click)="openNetworkList.emit()">Network</button>
+        <button type="button" (click)="openGraphicsDetails.emit()">Graphics</button>
+        <button type="button" (click)="openTpmDetails.emit()">TPM</button>
+        <button type="button" (click)="openVsockDetails.emit()">VSOCK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="module-actions">
+    <button type="button" (click)="launchXml.emit()">Launch XML Editor</button>
+    <button type="button" (click)="launchStorageBrowser.emit()">Launch Storage Browser</button>
+    <button type="button" (click)="launchOsList.emit()">Launch OS List</button>
+    <button type="button" class="secondary" (click)="applyChanges.emit()">Apply Changes</button>
+  </div>
+
+  <p class="devices">Devices: {{ vmDetails.hardwareDevices.join(', ') }}</p>
   }
 </section>
