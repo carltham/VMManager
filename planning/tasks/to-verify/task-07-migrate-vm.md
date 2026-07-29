@@ -5,7 +5,6 @@
 - Conversion Progress: [####################] 100%
 - Verification Progress: [################....] 80%
 - TDD UI Integration Test Progress: [....................] 0%
-- Overall Progress: [############........] 60%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/migrate.py, ui/migrate.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/object/domain.py, virtManager/xmleditor.py, virtManager/lib/uiutil.py

@@ -5,7 +5,6 @@
 - Conversion Progress: [....................] 0%
 - Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
-- Overall Progress: [....................] 0%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createconn.py, virtManager/lib/connectauth.py
 - Flow Classes: vmmCreateConn -> _vmmConnectAuth

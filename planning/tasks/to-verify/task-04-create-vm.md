@@ -5,7 +5,6 @@
 - Conversion Progress: [####################] 100%
 - Verification Progress: [################....] 80%
 - TDD UI Integration Test Progress: [....................] 0%
-- Overall Progress: [############........] 60%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createvm.py, ui/createvm.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/device/addstorage.py, virtManager/device/mediacombo.py, virtManager/device/netlist.py, virtManager/engine.py, virtManager/object/domain.py, virtManager/oslist.py, virtManager/storagebrowse.py, virtManager/vmwindow.py

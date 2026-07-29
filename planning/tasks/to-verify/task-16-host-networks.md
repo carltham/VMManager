@@ -5,7 +5,6 @@
 - Conversion Progress: [################....] 80%
 - Verification Progress: [############........] 60%
 - TDD UI Integration Test Progress: [....................] 0%
-- Overall Progress: [#########...........] 47%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/hostnets.py, ui/hostnets.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/lib/uiutil.py
