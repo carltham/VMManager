@@ -5,6 +5,7 @@
 - Conversion Progress: [....................] 0%
 - Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
+- Overall Progress: [....................] 0%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createconn.py, virtManager/host.py, virtManager/details/console.py, virtManager/xmleditor.py, virtManager/oslist.py, virtManager/details/snapshots.py
 - Flow Classes: vmmCreateConn -> vmmHost -> vmmConsolePages -> vmmXMLEditor -> vmmOSList -> vmmSnapshotPage

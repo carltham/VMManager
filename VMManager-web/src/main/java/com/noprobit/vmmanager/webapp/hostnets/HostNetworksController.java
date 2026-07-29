@@ -3,6 +3,7 @@ package com.noprobit.vmmanager.webapp.hostnets;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +24,10 @@ public class HostNetworksController {
     @PostMapping("/{id}/start") public HostNetworkDto start(@PathVariable long id) { return execute(() -> service.start(id)); }
     @PostMapping("/{id}/stop") public HostNetworkDto stop(@PathVariable long id) { return execute(() -> service.stop(id)); }
     @PostMapping("/{id}/apply") public HostNetworkDto apply(@PathVariable long id, @RequestBody EditRequest request) { return execute(() -> service.update(id, null, request.name(), request.autostart())); }
-    @DeleteMapping("/{id}") public void delete(@PathVariable long id) { execute(() -> { service.delete(id); return null; }); }
+    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable long id) { executeVoid(() -> service.delete(id)); return ResponseEntity.noContent().build(); }
     private <T> T execute(Operation<T> operation) { try { return operation.run(); } catch (IllegalArgumentException exception) { throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage(), exception); } }
+    private void executeVoid(VoidOperation operation) { try { operation.run(); } catch (IllegalArgumentException exception) { throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage(), exception); } }
     @FunctionalInterface private interface Operation<T> { T run(); }
+    @FunctionalInterface private interface VoidOperation { void run(); }
     public record EditRequest(String name, Boolean autostart) { }
 }

@@ -1,7 +1,5 @@
 package com.noprobit.vmmanager.webapp.manager;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.noprobit.vmmanager.webapp.manager.ManagerActionResultDto;
-import com.noprobit.vmmanager.webapp.manager.ManagerConnectionDto;
-import com.noprobit.vmmanager.webapp.manager.ManagerVmDto;
+import com.noprobit.vmmanager.webapp.manager.dto.ManagerHostDetailsDto;
+import com.noprobit.vmmanager.webapp.manager.dto.ManagerPreferencesDto;
 
 @RestController
 @RequestMapping("/api/manager")
@@ -88,7 +85,7 @@ public class ManagerController {
     }
 
     @GetMapping("/host/{connectionId}")
-    public Map<String, Object> hostDetails(@PathVariable long connectionId) {
+    public ManagerHostDetailsDto hostDetails(@PathVariable long connectionId) {
         try {
             return managerService.hostDetails(connectionId);
         } catch (IllegalArgumentException ex) {
@@ -97,12 +94,12 @@ public class ManagerController {
     }
 
     @GetMapping("/preferences")
-    public Map<String, String> preferences() {
+    public ManagerPreferencesDto preferences() {
         return managerService.preferences();
     }
 
     @GetMapping("/about")
-    public Map<String, String> about() {
+    public ManagerAboutDto about() {
         return managerService.about();
     }
 

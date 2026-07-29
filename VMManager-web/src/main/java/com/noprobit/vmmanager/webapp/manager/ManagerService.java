@@ -1,35 +1,33 @@
 package com.noprobit.vmmanager.webapp.manager;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.noprobit.vmmanager.webapp.manager.dto.ManagerHostDetailsDto;
+import com.noprobit.vmmanager.webapp.manager.dto.ManagerPreferencesDto;
+import com.noprobit.vmmanager.webapp.manager.entity.ConnectionEntity;
+import com.noprobit.vmmanager.webapp.manager.entity.VmEntity;
+import com.noprobit.vmmanager.webapp.manager.repository.ConnectionRepository;
+import com.noprobit.vmmanager.webapp.manager.repository.VmRepository;
 
 @Service
 public class ManagerService {
 
-    private final AtomicLong connectionSeq = new AtomicLong(2);
-    private final AtomicLong vmSeq = new AtomicLong(3);
-    private final Map<Long, ConnectionEntity> connections = new LinkedHashMap<>();
+    private final ConnectionRepository connectionRepository;
+    private final VmRepository vmRepository;
     private boolean statsEnabled = true;
 
-    public ManagerService() {
-        var local = new ConnectionEntity(1L, "Local QEMU", "qemu:///system");
-        local.vms.add(new VmEntity(1L, 1L, "dev-fedora", ManagerVmState.RUNNING, false));
-        local.vms.add(new VmEntity(2L, 1L, "ci-ubuntu", ManagerVmState.PAUSED, false));
-
-        var remote = new ConnectionEntity(2L, "Remote Host", "qemu+ssh://admin@lab/system");
-        remote.vms.add(new VmEntity(3L, 2L, "win11-test", ManagerVmState.SHUTOFF, false));
-
-        connections.put(local.id, local);
-        connections.put(remote.id, remote);
+    public ManagerService(ConnectionRepository connectionRepository, VmRepository vmRepository) {
+        this.connectionRepository = connectionRepository;
+        this.vmRepository = vmRepository;
     }
 
+    @Transactional(readOnly = true)
     public synchronized ManagerOverviewDto getOverview() {
-        return new ManagerOverviewDto(statsEnabled, toConnectionDtos());
+        return new ManagerOverviewDto(statsEnabled, toConnectionDtos(connectionRepository.findAllByOrderByIdAsc()));
     }
 
     public synchronized boolean toggleStats() {
@@ -37,6 +35,7 @@ public class ManagerService {
         return statsEnabled;
     }
 
+    @Transactional
     public synchronized ManagerConnectionDto addConnection(String name, String uri) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Connection name is required");
@@ -45,134 +44,123 @@ public class ManagerService {
             throw new IllegalArgumentException("Connection URI is required");
         }
 
-        long id = connectionSeq.incrementAndGet();
-        ConnectionEntity conn = new ConnectionEntity(id, name.trim(), uri.trim());
-        connections.put(id, conn);
-        return toConnectionDto(conn);
+        ConnectionEntity connection = connectionRepository.save(new ConnectionEntity(name.trim(), uri.trim()));
+        return toConnectionDto(connection);
     }
 
+    @Transactional
     public synchronized ManagerVmDto createVm(long connectionId, String name) {
-        ConnectionEntity conn = connections.get(connectionId);
-        if (conn == null) {
+        if (!connectionRepository.existsById(connectionId)) {
             throw new IllegalArgumentException("Connection not found");
         }
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("VM name is required");
         }
 
-        long vmId = vmSeq.incrementAndGet();
-        VmEntity vm = new VmEntity(vmId, connectionId, name.trim(), ManagerVmState.SHUTOFF, false);
-        conn.vms.add(vm);
+        VmEntity vm = vmRepository.save(new VmEntity(connectionId, name.trim(), ManagerVmState.SHUTOFF, false));
         return toVmDto(vm);
     }
 
+    @Transactional
     public synchronized ManagerVmDto openVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.opened = true;
-        return toVmDto(vm);
+        vm.setOpened(true);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional
     public synchronized ManagerVmDto runVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.state = ManagerVmState.RUNNING;
-        return toVmDto(vm);
+        vm.setState(ManagerVmState.RUNNING);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional
     public synchronized ManagerVmDto pauseVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.state = ManagerVmState.PAUSED;
-        return toVmDto(vm);
+        vm.setState(ManagerVmState.PAUSED);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional
     public synchronized ManagerVmDto shutdownVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.state = ManagerVmState.SHUTOFF;
-        vm.opened = false;
-        return toVmDto(vm);
+        vm.setState(ManagerVmState.SHUTOFF);
+        vm.setOpened(false);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional
     public synchronized ManagerVmDto resetVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.state = ManagerVmState.RUNNING;
-        vm.opened = true;
-        return toVmDto(vm);
+        vm.setState(ManagerVmState.RUNNING);
+        vm.setOpened(true);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional
     public synchronized ManagerVmDto rebootVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.state = ManagerVmState.RUNNING;
-        vm.opened = true;
-        return toVmDto(vm);
+        vm.setState(ManagerVmState.RUNNING);
+        vm.setOpened(false);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional
     public synchronized ManagerVmDto saveVm(long vmId) {
         VmEntity vm = findVm(vmId);
-        vm.state = ManagerVmState.SAVED;
-        vm.opened = false;
-        return toVmDto(vm);
+        vm.setState(ManagerVmState.SAVED);
+        vm.setOpened(false);
+        return toVmDto(vmRepository.save(vm));
     }
 
+    @Transactional(readOnly = true)
     public synchronized ManagerVmDto getVm(long vmId) {
         return toVmDto(findVm(vmId));
     }
 
+    @Transactional(readOnly = true)
     public synchronized List<ManagerVmDto> allVms() {
         List<ManagerVmDto> vms = new ArrayList<>();
-        for (ConnectionEntity connection : connections.values()) {
-            for (VmEntity vm : connection.vms) {
+        for (ConnectionEntity connection : connectionRepository.findAllByOrderByIdAsc()) {
+            for (VmEntity vm : vmRepository.findAllByConnectionIdOrderByIdAsc(connection.getId())) {
                 vms.add(toVmDto(vm));
             }
         }
         return vms;
     }
 
+    @Transactional
     public synchronized void deleteVm(long vmId) {
-        for (ConnectionEntity connection : connections.values()) {
-            for (int i = 0; i < connection.vms.size(); i++) {
-                if (connection.vms.get(i).id == vmId) {
-                    connection.vms.remove(i);
-                    return;
-                }
-            }
-        }
-        throw new IllegalArgumentException("VM not found");
+        VmEntity vm = findVm(vmId);
+        vmRepository.delete(vm);
     }
 
-    public synchronized Map<String, Object> hostDetails(long connectionId) {
-        ConnectionEntity conn = connections.get(connectionId);
-        if (conn == null) {
-            throw new IllegalArgumentException("Connection not found");
-        }
+    @Transactional(readOnly = true)
+    public synchronized ManagerHostDetailsDto hostDetails(long connectionId) {
+        ConnectionEntity connection = connectionRepository.findById(connectionId)
+                .orElseThrow(() -> new IllegalArgumentException("Connection not found"));
 
-        Map<String, Object> details = new LinkedHashMap<>();
-        details.put("connectionId", conn.id);
-        details.put("connectionName", conn.name);
-        details.put("uri", conn.uri);
-        details.put("cpuUsage", 38);
-        details.put("memoryUsageMb", 4096);
-        details.put("vmCount", conn.vms.size());
-        return details;
+        return new ManagerHostDetailsDto(
+                connection.getId(),
+                connection.getName(),
+                connection.getUri(),
+                38,
+                4096,
+            (int) vmRepository.countByConnectionId(connectionId));
     }
 
-    public Map<String, String> preferences() {
-        Map<String, String> details = new LinkedHashMap<>();
-        details.put("theme", "system");
-        details.put("defaultConnectionUri", "qemu:///system");
-        details.put("autoConnect", "true");
-        return details;
+    public ManagerPreferencesDto preferences() {
+        return new ManagerPreferencesDto("system", "qemu:///system", "true");
     }
 
-    public Map<String, String> about() {
-        Map<String, String> details = new LinkedHashMap<>();
-        details.put("name", "VMManager-web");
-        details.put("module", "manager");
-        details.put("version", "0.0.1-SNAPSHOT");
-        return details;
+    public ManagerAboutDto about() {
+        return new ManagerAboutDto("VMManager-web", "manager", "0.0.1-SNAPSHOT");
     }
 
-    private List<ManagerConnectionDto> toConnectionDtos() {
+    private List<ManagerConnectionDto> toConnectionDtos(List<ConnectionEntity> connections) {
         List<ManagerConnectionDto> result = new ArrayList<>();
-        for (ConnectionEntity connection : connections.values()) {
+        for (ConnectionEntity connection : connections) {
             result.add(toConnectionDto(connection));
         }
         return result;
@@ -180,53 +168,18 @@ public class ManagerService {
 
     private ManagerConnectionDto toConnectionDto(ConnectionEntity connection) {
         List<ManagerVmDto> vms = new ArrayList<>();
-        for (VmEntity vm : connection.vms) {
+        for (VmEntity vm : vmRepository.findAllByConnectionIdOrderByIdAsc(connection.getId())) {
             vms.add(toVmDto(vm));
         }
-        return new ManagerConnectionDto(connection.id, connection.name, connection.uri, vms);
+        return new ManagerConnectionDto(connection.getId(), connection.getName(), connection.getUri(), vms);
     }
 
     private ManagerVmDto toVmDto(VmEntity vm) {
-        return new ManagerVmDto(vm.id, vm.connectionId, vm.name, vm.state, vm.opened);
+        return new ManagerVmDto(vm.getId(), vm.getConnectionId(), vm.getName(), vm.getState(), vm.isOpened());
     }
 
     private VmEntity findVm(long vmId) {
-        for (ConnectionEntity connection : connections.values()) {
-            for (VmEntity vm : connection.vms) {
-                if (vm.id == vmId) {
-                    return vm;
-                }
-            }
-        }
-        throw new IllegalArgumentException("VM not found");
-    }
-
-    private static final class ConnectionEntity {
-        private final long id;
-        private final String name;
-        private final String uri;
-        private final List<VmEntity> vms = new ArrayList<>();
-
-        private ConnectionEntity(long id, String name, String uri) {
-            this.id = id;
-            this.name = name;
-            this.uri = uri;
-        }
-    }
-
-    private static final class VmEntity {
-        private final long id;
-        private final long connectionId;
-        private final String name;
-        private ManagerVmState state;
-        private boolean opened;
-
-        private VmEntity(long id, long connectionId, String name, ManagerVmState state, boolean opened) {
-            this.id = id;
-            this.connectionId = connectionId;
-            this.name = name;
-            this.state = state;
-            this.opened = opened;
-        }
+        return vmRepository.findById(vmId)
+                .orElseThrow(() -> new IllegalArgumentException("VM not found"));
     }
 }
