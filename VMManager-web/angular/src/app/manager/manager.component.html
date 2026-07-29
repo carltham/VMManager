@@ -29,7 +29,8 @@
     <article class="connection-node">
       <div class="tree-row connection-row" role="row" tabindex="0"
         (contextmenu)="openConnectionContextMenu($event, connection)">
-        <strong role="cell">{{ connection.name }} <small>({{ connection.uri }})</small></strong>
+        <strong role="cell"><span class="connection-expander" aria-hidden="true"></span>{{ connection.name }} <small>({{
+            connection.uri }})</small></strong>
         <span role="cell"></span>
         <span role="cell"></span>
       </div>
@@ -37,14 +38,18 @@
       <div class="tree-row empty-row"><span>No virtual machines</span><span></span><span></span></div>
       }
       @for (vm of connection.vms; track vm.id) {
-      <div class="tree-row vm-row" role="row" tabindex="0" (contextmenu)="openVmContextMenu($event, vm)">
+      <div class="tree-row vm-row" role="row" tabindex="0" [class.selected]="selectedVmId === vm.id"
+        [class.running]="vm.state === 'RUNNING'" (click)="selectVm(vm)" (contextmenu)="openVmContextMenu($event, vm)">
         <div role="cell">
-          <strong>{{ vm.name }}</strong>
-          <small>{{ vm.state }}</small>
+          <span class="vm-monitor-icon" aria-hidden="true"><span></span></span>
+          <span><strong>{{ vm.name }}</strong><small>{{ vm.state === 'RUNNING' ? 'Running' : vm.state }}</small></span>
         </div>
-        <span role="cell">{{ overview?.statsEnabled ? 'Available' : '-' }}</span>
-        <span role="cell">{{ overview?.statsEnabled ? 'Available' : '-' }}</span>
-        <span class="context-hint" role="cell">Right-click for actions</span>
+        <span role="cell" class="usage-cell">@if (overview?.statsEnabled && vm.state === 'RUNNING') {<span
+            class="usage-trace" aria-label="CPU activity"><i></i><i></i><i></i><i></i><i></i></span>} @else {-}</span>
+        <span role="cell" class="usage-cell">@if (overview?.statsEnabled && vm.state === 'RUNNING') {<span
+            class="usage-trace host" aria-label="Host CPU activity"><i></i><i></i><i></i><i></i><i></i></span>} @else
+          {-}</span>
+        <span role="cell"></span>
       </div>
       }
     </article>

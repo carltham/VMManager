@@ -1,11 +1,12 @@
 # Task 04 - create-vm
 
-- Status: in-progress
-- Verify: 80%
+- Status: completed
+- Verify: 100%
 - Conversion Progress: [####################] 100%
-- Verification Progress: [################....] 80%
-- TDD UI Integration Test Progress: [....................] 0%
+- Verification Progress: [####################] 100%
+- TDD UI Integration Test Progress: [####################] 100%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- UI evidence: testing/playwright/tests/machines.spec.mjs - Create VM workflow passes through wizard open, field updates, Back, Next, Finish, and Close.
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createvm.py, ui/createvm.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/device/addstorage.py, virtManager/device/mediacombo.py, virtManager/device/netlist.py, virtManager/engine.py, virtManager/object/domain.py, virtManager/oslist.py, virtManager/storagebrowse.py, virtManager/vmwindow.py
 - Flow Classes: vmmCreateVM, vmmAddStorage, vmmMediaCombo, vmmNetworkList, vmmStorageBrowser, vmmOSList, vmmAsyncJob, vmmVMWindow

@@ -103,8 +103,8 @@ button:hover {
 }
 
 .connection-row {
-  background: #2d9cdb;
-  color: #fff;
+  background: #fff;
+  color: #2f5874;
   cursor: context-menu;
 }
 
@@ -123,12 +123,24 @@ button:hover {
   cursor: context-menu;
 }
 
+.vm-row.selected {
+  background: #2a9fd6;
+  color: #fff;
+}
+
+.vm-row.selected small {
+  color: #eaf7ff;
+}
+
 .vm-row:focus-visible {
   outline: 2px solid #2d9cdb;
   outline-offset: -2px;
 }
 
 .vm-row > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding-left: 28px;
 }
 
@@ -143,10 +155,75 @@ button:hover {
   font-size: 0.85rem;
 }
 
-.context-hint {
-  color: #777;
-  font-size: 0.78rem;
+.connection-expander {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-right: 7px;
+  border-top: 5px solid #7b8790;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  vertical-align: middle;
 }
+
+.vm-monitor-icon {
+  position: relative;
+  display: inline-grid;
+  width: 26px;
+  height: 19px;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 1px;
+}
+
+.vm-monitor-icon::after {
+  position: absolute;
+  bottom: -5px;
+  width: 12px;
+  border-bottom: 2px solid currentColor;
+  content: '';
+}
+
+.vm-monitor-icon span {
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}
+
+.usage-cell {
+  display: grid;
+  place-items: end stretch;
+  color: #777;
+}
+
+.usage-trace {
+  display: flex;
+  height: 16px;
+  align-items: end;
+  gap: 1px;
+  border-bottom: 1px solid #6eaecd;
+}
+
+.usage-trace i {
+  display: block;
+  width: 20%;
+  background: #d9eef8;
+  border-top: 2px solid #66a8c8;
+}
+
+.usage-trace i:nth-child(1) { height: 3px; }
+.usage-trace i:nth-child(2) { height: 4px; }
+.usage-trace i:nth-child(3) { height: 5px; }
+.usage-trace i:nth-child(4) { height: 13px; }
+.usage-trace i:nth-child(5) { height: 8px; }
+.usage-trace.host i:nth-child(1) { height: 2px; }
+.usage-trace.host i:nth-child(2) { height: 3px; }
+.usage-trace.host i:nth-child(3) { height: 4px; }
+.usage-trace.host i:nth-child(4) { height: 10px; }
+.usage-trace.host i:nth-child(5) { height: 7px; }
 
 .vm-context-menu,
 .connection-context-menu {

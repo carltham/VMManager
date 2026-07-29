@@ -41,6 +41,7 @@ export class ManagerComponent implements OnChanges {
   connectionName = '';
   connectionUri = 'qemu:///system';
   selectedConnectionId: number | null = null;
+  selectedVmId: number | null = null;
   showConnectionForm = false;
   contextMenu: { vm: VmItem; x: number; y: number } | null = null;
   connectionContextMenu: { connection: ConnectionItem; x: number; y: number } | null = null;
@@ -76,8 +77,13 @@ export class ManagerComponent implements OnChanges {
     this.openCreateNetworkWizard.emit();
   }
 
+  selectVm(vm: VmItem): void {
+    this.selectedVmId = vm.id;
+  }
+
   openVmContextMenu(event: MouseEvent, vm: VmItem): void {
     event.preventDefault();
+    this.selectedVmId = vm.id;
     this.connectionContextMenu = null;
     this.contextMenu = { vm, x: event.clientX, y: event.clientY };
   }
