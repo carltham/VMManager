@@ -1,15 +1,18 @@
 package com.noprobit.vmmanager.webapp.manager.entity;
 
+import com.noprobit.vmmanager.webapp.manager.ManagerVmState;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import com.noprobit.vmmanager.webapp.manager.ManagerVmState;
 
 @Entity
 @Table(name = "vms")
@@ -19,8 +22,9 @@ public class VmEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private long connectionId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "connection_id", nullable = false)
+    private ConnectionEntity connection;
 
     @Column(nullable = false)
     private String name;
@@ -35,8 +39,8 @@ public class VmEntity {
     protected VmEntity() {
     }
 
-    public VmEntity(long connectionId, String name, ManagerVmState state, boolean opened) {
-        this.connectionId = connectionId;
+    public VmEntity(ConnectionEntity connection, String name, ManagerVmState state, boolean opened) {
+        this.connection = connection;
         this.name = name;
         this.state = state;
         this.opened = opened;
@@ -47,7 +51,11 @@ public class VmEntity {
     }
 
     public long getConnectionId() {
-        return connectionId;
+        return connection.getId();
+    }
+
+    public ConnectionEntity getConnection() {
+        return connection;
     }
 
     public String getName() {

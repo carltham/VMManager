@@ -1,10 +1,15 @@
 package com.noprobit.vmmanager.webapp.manager.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +25,9 @@ public class ConnectionEntity {
 
     @Column(nullable = false)
     private String uri;
+
+    @OneToMany(mappedBy = "connection", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<VmEntity> vms = new ArrayList<>();
 
     protected ConnectionEntity() {
     }
@@ -39,5 +47,9 @@ public class ConnectionEntity {
 
     public String getUri() {
         return uri;
+    }
+
+    public List<VmEntity> getVms() {
+        return vms;
     }
 }

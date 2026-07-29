@@ -50,14 +50,14 @@ public class ManagerService {
 
     @Transactional
     public synchronized ManagerVmDto createVm(long connectionId, String name) {
-        if (!connectionRepository.existsById(connectionId)) {
-            throw new IllegalArgumentException("Connection not found");
-        }
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("VM name is required");
         }
 
-        VmEntity vm = vmRepository.save(new VmEntity(connectionId, name.trim(), ManagerVmState.SHUTOFF, false));
+        ConnectionEntity connection = connectionRepository.findById(connectionId)
+                .orElseThrow(() -> new IllegalArgumentException("Connection not found"));
+
+        VmEntity vm = vmRepository.save(new VmEntity(connection, name.trim(), ManagerVmState.SHUTOFF, false));
         return toVmDto(vm);
     }
 
@@ -123,7 +123,7 @@ public class ManagerService {
     public synchronized List<ManagerVmDto> allVms() {
         List<ManagerVmDto> vms = new ArrayList<>();
         for (ConnectionEntity connection : connectionRepository.findAllByOrderByIdAsc()) {
-            for (VmEntity vm : vmRepository.findAllByConnectionIdOrderByIdAsc(connection.getId())) {
+            for (VmEntity vm : vmRepository.findAllByConnection_IdOrderByIdAsc(connection.getId())) {
                 vms.add(toVmDto(vm));
             }
         }
@@ -147,7 +147,7 @@ public class ManagerService {
                 connection.getUri(),
                 38,
                 4096,
-            (int) vmRepository.countByConnectionId(connectionId));
+            (int) vmRepository.countByConnection_Id(connectionId));
     }
 
     public ManagerPreferencesDto preferences() {
@@ -168,7 +168,7 @@ public class ManagerService {
 
     private ManagerConnectionDto toConnectionDto(ConnectionEntity connection) {
         List<ManagerVmDto> vms = new ArrayList<>();
-        for (VmEntity vm : vmRepository.findAllByConnectionIdOrderByIdAsc(connection.getId())) {
+        for (VmEntity vm : vmRepository.findAllByConnection_IdOrderByIdAsc(connection.getId())) {
             vms.add(toVmDto(vm));
         }
         return new ManagerConnectionDto(connection.getId(), connection.getName(), connection.getUri(), vms);

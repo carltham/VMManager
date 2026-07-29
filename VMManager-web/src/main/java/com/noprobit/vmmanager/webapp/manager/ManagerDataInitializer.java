@@ -28,8 +28,8 @@ public class ManagerDataInitializer implements CommandLineRunner {
         ConnectionEntity local = connectionRepository.save(new ConnectionEntity("Local QEMU", "qemu:///system"));
         ConnectionEntity remote = connectionRepository.save(new ConnectionEntity("Remote Host", "qemu+ssh://admin@lab/system"));
 
-        vmRepository.save(new VmEntity(local.getId(), "dev-fedora", ManagerVmState.RUNNING, false));
-        vmRepository.save(new VmEntity(local.getId(), "ci-ubuntu", ManagerVmState.PAUSED, false));
-        vmRepository.save(new VmEntity(remote.getId(), "win11-test", ManagerVmState.SHUTOFF, false));
+        vmRepository.save(new VmEntity(local, "dev-fedora", ManagerVmState.RUNNING, false));
+        vmRepository.save(new VmEntity(local, "ci-ubuntu", ManagerVmState.PAUSED, false));
+        vmRepository.save(new VmEntity(remote, "win11-test", ManagerVmState.SHUTOFF, false));
     }
 }
