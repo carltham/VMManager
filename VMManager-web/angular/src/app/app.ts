@@ -663,6 +663,15 @@ export class App implements OnInit {
       },
     });
   }
+  browseFilesystemSource(value: string): void {
+    if (!this.filesystemDetailsDialog) return;
+    this.filesystemDetailsApi.browseSource(this.filesystemDetailsDialog.dialogId, value).subscribe({
+      next: (dialog) => this.setFilesystemDetailsDialog(dialog),
+      error: () => {
+        this.error = 'Failed to browse filesystem source.';
+      },
+    });
+  }
   updateFilesystemDetails(action: 'path' | 'target', value: string): void {
     if (!this.filesystemDetailsDialog) return;
     const id = this.filesystemDetailsDialog.dialogId;

@@ -31,6 +31,11 @@ public class FilesystemDetailsController {
         return execute(() -> filesystemDetailsService.close(dialogId));
     }
 
+    @PostMapping("/{dialogId}/browse-source")
+    public FilesystemDetailsDto browseSource(@PathVariable long dialogId, @RequestBody TextRequest request) {
+        return execute(() -> filesystemDetailsService.browseSource(dialogId, request.value()));
+    }
+
     @PostMapping("/{dialogId}/edit-filesystem-path")
     public FilesystemDetailsDto editFilesystemPath(@PathVariable long dialogId, @RequestBody TextRequest request) {
         return execute(() -> filesystemDetailsService.editFilesystemPath(dialogId, request.value()));

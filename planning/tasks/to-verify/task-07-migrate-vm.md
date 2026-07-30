@@ -1,11 +1,12 @@
 # Task 07 - migrate-vm
 
 - Status: in-progress
-- Verify: 80%
+- Verify: 0%
 - Conversion Progress: [####################] 100%
-- Verification Progress: [################....] 80%
+- Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Web implementation evidence: testing/playwright/tests/machines.spec.mjs - Migration flow opens, configures destination, mode, address, port, and XML preview, closes and reopens the dialog, and starts migration. The same suite covers cancellation. This is not reference verification.
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/migrate.py, ui/migrate.ui, virtManager/asyncjob.py, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/object/domain.py, virtManager/xmleditor.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmMigrateDialog, vmmXMLEditor, vmmConnectionManager, vmmDomain, vmmAsyncJob

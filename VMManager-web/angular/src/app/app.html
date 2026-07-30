@@ -137,7 +137,7 @@
     (changeFormat)="updateAddStorage('format', $event)" (changeSize)="updateAddStorage('size', $event)"
     (attachStorage)="runAddStorageAction('attach')" (cancel)="runAddStorageAction('cancel')" />
   <app-filesystem-details [dialog]="filesystemDetailsDialog" (closeDialog)="runFilesystemDetailsAction('close')"
-    (editFilesystemPath)="updateFilesystemDetails('path', $event)"
+    (browseSource)="browseFilesystemSource($event)" (editFilesystemPath)="updateFilesystemDetails('path', $event)"
     (editTarget)="updateFilesystemDetails('target', $event)" (apply)="runFilesystemDetailsAction('apply')"
     (cancel)="runFilesystemDetailsAction('cancel')" />
   <app-graphics-details [dialog]="graphicsDetailsDialog" (closeDialog)="runGraphicsDetailsAction('close')"

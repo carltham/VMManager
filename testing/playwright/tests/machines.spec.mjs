@@ -78,4 +78,176 @@ test.describe.serial( 'machine workflows',() => {
     await expect( page.getByRole( 'dialog' ) ).toBeVisible();
     await page.getByRole( 'dialog' ).getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
   } );
+
+  test( 'confirms VM deletion with associated storage removal',async ( { page } ) => {
+    const overview = await page.request.get( 'http://localhost:18080/api/manager' );
+    const { connections } = await overview.json();
+    const vmName = `Delete VM ${Date.now()}`;
+    await page.request.post( 'http://localhost:18080/api/manager/vms',{
+      data: { connectionId: connections[0].id,name: vmName },
+    } );
+
+    await machineView( page );
+    const vmRow = page.locator( 'app-manager .vm-row' ).filter( { hasText: vmName } );
+    await expect( vmRow ).toBeVisible();
+    await vmRow.click( { button: 'right' } );
+    await page.getByRole( 'menu',{ name: 'Virtual machine actions' } )
+      .getByRole( 'menuitem',{ name: 'Delete',exact: true } ).click();
+
+    const dialog = page.getByRole( 'dialog' );
+    const removeStorage = dialog.getByLabel( 'Remove associated storage' );
+    await expect( dialog ).toBeVisible();
+    await removeStorage.setChecked( !( await removeStorage.isChecked() ) );
+    await removeStorage.setChecked( true );
+    await dialog.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await vmRow.click( { button: 'right' } );
+    await page.getByRole( 'menu',{ name: 'Virtual machine actions' } )
+      .getByRole( 'menuitem',{ name: 'Delete',exact: true } ).click();
+    await expect( dialog ).toBeVisible();
+    await dialog.getByRole( 'button',{ name: 'Delete VM',exact: true } ).click();
+
+    await expect( dialog ).toBeHidden();
+    await expect( vmRow ).toBeHidden();
+  } );
+
+  test( 'completes VM migration with all migration settings',async ( { page } ) => {
+    const overview = await page.request.get( 'http://localhost:18080/api/manager' );
+    const { connections } = await overview.json();
+    const vmName = `Migrate VM ${Date.now()}`;
+    await page.request.post( 'http://localhost:18080/api/manager/vms',{
+      data: { connectionId: connections[0].id,name: vmName },
+    } );
+
+    await machineView( page );
+    const vmRow = page.locator( 'app-manager .vm-row' ).filter( { hasText: vmName } );
+    await expect( vmRow ).toBeVisible();
+    const openMigration = async () => {
+      await vmRow.click( { button: 'right' } );
+      await page.getByRole( 'menu',{ name: 'Virtual machine actions' } )
+        .getByRole( 'menuitem',{ name: 'Migrate',exact: true } ).click();
+    };
+
+    await openMigration();
+    const dialog = page.getByRole( 'dialog' );
+    await expect( dialog ).toBeVisible();
+    await dialog.getByLabel( 'Destination' ).fill( 'qemu+ssh://target/system' );
+    await dialog.getByLabel( 'Migration mode' ).selectOption( 'tunnelled' );
+    const address = dialog.getByLabel( 'Set address' );
+    const port = dialog.getByLabel( 'Set port' );
+    await address.setChecked( !( await address.isChecked() ) );
+    await port.setChecked( !( await port.isChecked() ) );
+    await dialog.getByLabel( 'XML preview' ).fill( '<domain><name>migrated</name></domain>' );
+    await dialog.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openMigration();
+    await expect( dialog ).toBeVisible();
+    await dialog.getByRole( 'button',{ name: 'Start Migration',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
+
+  test( 'configures, validates, cancels, applies, and closes add hardware',async ( { page } ) => {
+    await machineView( page );
+    await page.getByRole( 'button',{ name: 'Edit',exact: true } ).click();
+    await page.getByRole( 'menu',{ name: 'Edit',exact: true } )
+      .getByRole( 'menuitem',{ name: 'Virtual Machine Details',exact: true } ).click();
+
+    const details = page.locator( 'app-vm-details' );
+    const dialog = page.getByRole( 'dialog' );
+    const openHardware = async () => {
+      await details.getByRole( 'button',{ name: 'Add HW',exact: true } ).click();
+      await expect( dialog ).toBeVisible();
+    };
+    const configureAndValidate = async ( deviceType,configuration ) => {
+      await dialog.getByLabel( 'Device type' ).selectOption( deviceType );
+      await dialog.getByLabel( 'Configuration' ).fill( configuration );
+      await dialog.getByRole( 'button',{ name: 'Validate',exact: true } ).click();
+      await expect( dialog.getByText( 'Configuration valid',{ exact: true } ) ).toBeVisible();
+      await expect( dialog.getByRole( 'button',{ name: 'Apply',exact: true } ) ).toBeEnabled();
+    };
+
+    await openHardware();
+    await configureAndValidate( 'network','model=virtio' );
+    await dialog.getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openHardware();
+    await configureAndValidate( 'graphics','type=spice' );
+    await dialog.getByRole( 'button',{ name: 'Apply',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openHardware();
+    await dialog.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
+
+  test( 'configures, cancels, attaches, and closes add storage',async ( { page } ) => {
+    await machineView( page );
+    await page.getByRole( 'button',{ name: 'Edit',exact: true } ).click();
+    await page.getByRole( 'menu',{ name: 'Edit',exact: true } )
+      .getByRole( 'menuitem',{ name: 'Virtual Machine Details',exact: true } ).click();
+
+    const details = page.locator( 'app-vm-details' );
+    const dialog = page.getByRole( 'dialog' );
+    const openStorage = async () => {
+      await details.getByRole( 'button',{ name: 'Add Storage',exact: true } ).click();
+      await expect( dialog ).toBeVisible();
+    };
+    const configureStorage = async ( source,path,size ) => {
+      await dialog.getByLabel( 'Source' ).fill( source );
+      await dialog.getByLabel( 'Storage path' ).fill( path );
+      await dialog.getByLabel( 'Format' ).selectOption( 'raw' );
+      await dialog.getByLabel( 'Size (GB)' ).fill( size );
+    };
+
+    await openStorage();
+    await configureStorage( '/tmp/cancel.qcow2','/var/lib/libvirt/images/cancel.qcow2','16' );
+    await dialog.getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openStorage();
+    await configureStorage( '/tmp/attach.raw','/var/lib/libvirt/images/attach.raw','24' );
+    await dialog.getByRole( 'button',{ name: 'Attach Storage',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openStorage();
+    await dialog.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
+
+  test( 'browses, edits, cancels, applies, and closes filesystem details',async ( { page } ) => {
+    await machineView( page );
+    await page.getByRole( 'button',{ name: 'Edit',exact: true } ).click();
+    await page.getByRole( 'menu',{ name: 'Edit',exact: true } )
+      .getByRole( 'menuitem',{ name: 'Virtual Machine Details',exact: true } ).click();
+
+    const details = page.locator( 'app-vm-details' );
+    const dialog = page.getByRole( 'dialog' );
+    const openFilesystem = async () => {
+      await details.getByRole( 'button',{ name: 'Filesystem',exact: true } ).click();
+      await expect( dialog ).toBeVisible();
+    };
+    const configureFilesystem = async ( path,target ) => {
+      await dialog.getByLabel( 'Filesystem path' ).fill( path );
+      await dialog.getByRole( 'button',{ name: 'Browse source',exact: true } ).click();
+      await expect( dialog.getByText( 'Filesystem source selected',{ exact: true } ) ).toBeVisible();
+      await dialog.getByLabel( 'Target mount' ).fill( target );
+    };
+
+    await openFilesystem();
+    await configureFilesystem( '/srv/cancel','/mnt/cancel' );
+    await dialog.getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openFilesystem();
+    await configureFilesystem( '/srv/apply','/mnt/apply' );
+    await dialog.getByRole( 'button',{ name: 'Apply',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openFilesystem();
+    await dialog.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
 } );

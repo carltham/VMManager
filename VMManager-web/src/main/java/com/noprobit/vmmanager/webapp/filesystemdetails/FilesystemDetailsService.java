@@ -36,6 +36,13 @@ public class FilesystemDetailsService {
         return toDto(dialogId, state);
     }
 
+    public synchronized FilesystemDetailsDto browseSource(long dialogId, String value) {
+        FilesystemState state = getState(dialogId);
+        state.filesystemPath = textOrDefault(value, state.filesystemPath);
+        state.statusMessage = "Filesystem source selected";
+        return toDto(dialogId, state);
+    }
+
     public synchronized FilesystemDetailsDto editFilesystemPath(long dialogId, String value) {
         FilesystemState state = getState(dialogId);
         state.filesystemPath = textOrDefault(value, state.filesystemPath);

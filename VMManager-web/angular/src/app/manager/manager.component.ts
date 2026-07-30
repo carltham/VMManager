@@ -85,13 +85,13 @@ export class ManagerComponent implements OnChanges {
     event.preventDefault();
     this.selectedVmId = vm.id;
     this.connectionContextMenu = null;
-    this.contextMenu = { vm, x: event.clientX, y: event.clientY };
+    this.contextMenu = { vm, ...this.contextMenuPosition(event, 180, 245) };
   }
 
   openConnectionContextMenu(event: MouseEvent, connection: ConnectionItem): void {
     event.preventDefault();
     this.contextMenu = null;
-    this.connectionContextMenu = { connection, x: event.clientX, y: event.clientY };
+    this.connectionContextMenu = { connection, ...this.contextMenuPosition(event, 180, 130) };
   }
 
   runConnectionContextAction(action: 'new' | 'connect' | 'disconnect'): void {
@@ -159,5 +159,16 @@ export class ManagerComponent implements OnChanges {
 
   vmCount(vms: VmItem[]): number {
     return vms.length;
+  }
+
+  private contextMenuPosition(
+    event: MouseEvent,
+    menuWidth: number,
+    menuHeight: number,
+  ): { x: number; y: number } {
+    return {
+      x: Math.max(0, Math.min(event.clientX, window.innerWidth - menuWidth)),
+      y: Math.max(0, Math.min(event.clientY, window.innerHeight - menuHeight)),
+    };
   }
 }
