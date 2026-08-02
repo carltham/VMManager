@@ -1,11 +1,12 @@
 # Task 14 - create-network
 
 - Status: in-progress
-- Verify: 80%
+- Verify: 0%
 - Conversion Progress: [####################] 100%
-- Verification Progress: [################....] 80%
+- Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Web implementation evidence (Angular Playwright only; not reference verification): testing/playwright/tests/network-storage.spec.mjs (wizard configure/review/cancel/create/close + host-networks)
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createnet.py, ui/createnet.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmCreateNetwork

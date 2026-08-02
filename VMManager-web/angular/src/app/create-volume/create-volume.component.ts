@@ -68,7 +68,9 @@ export class CreateVolumeComponent {
       })
       .subscribe({
         next: (result) => {
-          this.view.statusMessage = `Volume ${result.name} created in pool ${result.pool}.`;
+          const name = result?.name || this.view.name;
+          const pool = result?.pool || this.view.pool;
+          this.view.statusMessage = `Volume ${name} created in pool ${pool}.`;
         },
         error: (err) => {
           this.view.errorMessage = err?.error?.message ?? 'Failed to create volume.';

@@ -37,3 +37,35 @@ Implemented dedicated component logic with supporting `models` and `api service`
 ## Integration-Test Parity
 
 No matched Python UI integration baseline + Angular integration/e2e mapping exists yet for tasks 21-31. TDD UI Integration Test Progress remains 0% for all tasks in this set.
+
+## Angular Playwright web evidence (not reference verification)
+
+Updated: 2026-08-01
+
+Command (from `testing/playwright`, `NODE_OPTIONS` cleared):
+
+```bash
+npx playwright test tests/tools.spec.mjs --reporter=list
+```
+
+Result: **6 passed**.
+
+| Task | Component | Web evidence in `tests/tools.spec.mjs` |
+| --- | --- | --- |
+| 21 | create-connection | refresh, add connection, known-connections list status |
+| 22 | connection-auth | validation error, remember/session authenticate success |
+| 23 | host-details | refresh connections, load details (URI/CPU/memory/VM count) |
+| 24 | preferences | refresh + Preferences loaded + theme/URI/auto-connect |
+| 25 | about | refresh + About data loaded + name/module/version |
+| 26 | async-job | start, progress, cancel, complete to 100% |
+| 27 | console | refresh VMs, open, status, run, pause |
+| 28 | xml-editor | open editor, apply XML |
+| 29 | os-list | open list, apply OS |
+| 30 | snapshots | refresh, list, revert, delete |
+| 31 | snapshot-new | required-name error, create emit into snapshots |
+
+Notes:
+- Verify / Fully Verified / TDD remain **0%** until Python virt-manager reference Playwright exists.
+- Angular PW is web implementation evidence only.
+- `VMManager-web/bin/` is IDE compile junk; never commit; delete if it reappears.
+

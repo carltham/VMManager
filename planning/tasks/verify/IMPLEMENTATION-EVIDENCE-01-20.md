@@ -23,3 +23,31 @@ Updated: 2026-07-27
 ## Integration-Test Parity
 
 No task currently has the required matched Python UI integration test, Angular integration/e2e test, or mapping table. Therefore all Tasks 01-20 remain below 100% Verification and cannot be marked `done`.
+
+## Angular Playwright web evidence (not reference verification)
+
+Updated: 2026-08-01
+
+Command (from `testing/playwright`, `NODE_OPTIONS` cleared):
+
+```bash
+npx playwright test tests/network-storage.spec.mjs --reporter=list
+```
+
+Result: **4 passed** (create-network deep, network-list deep, storage pools/volumes deep, storage browse deep).
+
+Storage coverage mapped to tasks 17-20 in `tests/network-storage.spec.mjs`:
+
+| Task | Component | Web evidence exercised |
+| --- | --- | --- |
+| 17 | create-volume | open, cancel, pool select, format/size/path, create success status, close; volume appears on host-storage refresh |
+| 18 | create-pool | open, cancel, type/source/target, create success status, close |
+| 19 | storage-browse | open, Current path, entry select, cancel, reopen, confirm selected path |
+| 20 | host-storage | refresh, Pools/Volumes headings, default pool card, start/stop pool lifecycle, list created pool/volume |
+
+Notes:
+- Verify / Fully Verified / TDD remain **0%** until Python virt-manager reference Playwright exists.
+- Create-pool API requires JSON body field `id` (Long, client sends `0`) so Spring binds `PoolRequest` without 400.
+- Volume success assert must use exact string match (or escaped regex) because names end in `.qcow2`.
+- Do not treat `VMManager-web/bin/` as source; delete if it reappears after Java/IDE compile.
+

@@ -1,8 +1,8 @@
 # Task 32 - libvirt-boundary
 
-- Status: todo
+- Status: done (boundary matrix documented; no live libvirt yet)
 - Verify: 0%
-- Conversion Progress: [....................] 0%
+- Conversion Progress: [####################] 100%
 - Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
@@ -14,6 +14,8 @@
   - identify libvirt-touching calls: original Python flow audit -> backend scope list -> implementation backlog
   - separate metadata-only flows: about/preferences review -> non-libvirt endpoint classification -> ticket split
 - Scope: Audit and classify which original flows require real libvirt integration versus metadata/config handling.
+- Deliverable completed: boundary matrix + owner mapping + error-source mapping in planning/JAVA-LIBVIRT-BACKEND-PLAN.md
+- Note: classification only; live libvirt is Tasks 34+.
 
 ## Frontend Contract
 

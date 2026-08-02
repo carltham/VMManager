@@ -47,7 +47,7 @@ export class CreatePoolComponent {
           this.view.statusMessage = `Pool ${this.view.name} created.`;
         },
         error: (err) => {
-          this.view.errorMessage = err?.error?.message ?? 'Failed to create pool.';
+          this.view.errorMessage = err?.error?.message ?? err?.message ?? 'Failed to create pool.';
         },
       });
   }

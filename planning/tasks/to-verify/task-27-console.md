@@ -1,11 +1,13 @@
 # Task 27 - console
 
-- Status: in-progress
-- Verify: 50%
-- Conversion Progress: [################....] 80%
-- Verification Progress: [##########..........] 50%
+- Status: conversion-complete (web evidence green; verify 0%)
+- Verify: 0%
+- Conversion Progress: [####################] 100%
+- Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-21-31.md
+- Last web PW run: tools.spec.mjs **6 passed**.
+- Web implementation evidence (Angular Playwright only; not reference verification): testing/playwright/tests/tools.spec.mjs (console open/status/run/pause)
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/details/console.py, ui/console.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py, virtManager/lib/graphwidgets.py
 - Flow Classes: vmmConsolePages -> _ConsoleMenu -> vmmOverlayToolbar -> _TimedRevealer

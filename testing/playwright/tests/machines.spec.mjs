@@ -250,4 +250,114 @@ test.describe.serial( 'machine workflows',() => {
     await dialog.getByRole( 'button',{ name: 'Close',exact: true } ).click();
     await expect( dialog ).toBeHidden();
   } );
+
+  test( 'configures, cancels, applies, and closes graphics details',async ( { page } ) => {
+    await machineView( page );
+    await page.getByRole( 'button',{ name: 'Edit',exact: true } ).click();
+    await page.getByRole( 'menu',{ name: 'Edit',exact: true } )
+      .getByRole( 'menuitem',{ name: 'Virtual Machine Details',exact: true } ).click();
+
+    const details = page.locator( 'app-vm-details' );
+    const dialog = page.getByRole( 'dialog' );
+    const graphics = page.locator( 'app-graphics-details' );
+    const openGraphics = async () => {
+      await details.getByRole( 'button',{ name: 'Graphics',exact: true } ).click();
+      await expect( dialog ).toBeVisible();
+      await expect( graphics.getByRole( 'heading',{ name: 'Graphics details' } ) ).toBeVisible();
+      await expect( graphics.getByText( /Graphics details opened/ ) ).toBeVisible();
+    };
+
+    await openGraphics();
+    await graphics.getByRole( 'combobox' ).selectOption( 'vnc' );
+    await expect( graphics.getByText( /Graphics type changed/ ) ).toBeVisible();
+    await graphics.getByRole( 'textbox' ).nth( 0 ).fill( '127.0.0.1' );
+    await graphics.getByRole( 'spinbutton' ).fill( '5901' );
+    await graphics.getByRole( 'textbox' ).nth( 1 ).fill( 'sv' );
+    await graphics.getByRole( 'textbox' ).nth( 1 ).press( 'Tab' );
+    await expect( graphics.getByText( /Graphics options updated/ ) ).toBeVisible();
+    await graphics.getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openGraphics();
+    await graphics.getByRole( 'combobox' ).selectOption( 'spice' );
+    await graphics.getByRole( 'button',{ name: 'Apply',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openGraphics();
+    await graphics.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
+
+  test( 'configures, cancels, applies, and closes TPM details',async ( { page } ) => {
+    await machineView( page );
+    await page.getByRole( 'button',{ name: 'Edit',exact: true } ).click();
+    await page.getByRole( 'menu',{ name: 'Edit',exact: true } )
+      .getByRole( 'menuitem',{ name: 'Virtual Machine Details',exact: true } ).click();
+
+    const details = page.locator( 'app-vm-details' );
+    const dialog = page.getByRole( 'dialog' );
+    const tpm = page.locator( 'app-tpm-details' );
+    const openTpm = async () => {
+      await details.getByRole( 'button',{ name: 'TPM',exact: true } ).click();
+      await expect( dialog ).toBeVisible();
+      await expect( tpm.getByRole( 'heading',{ name: 'TPM details' } ) ).toBeVisible();
+      await expect( tpm.getByText( /TPM details opened/ ) ).toBeVisible();
+    };
+
+    await openTpm();
+    await tpm.getByRole( 'combobox' ).nth( 0 ).selectOption( 'tpm-crb' );
+    await expect( tpm.getByText( /TPM model changed/ ) ).toBeVisible();
+    await tpm.getByRole( 'combobox' ).nth( 1 ).selectOption( '1.2' );
+    await expect( tpm.getByText( /TPM version changed/ ) ).toBeVisible();
+    await tpm.getByRole( 'textbox' ).fill( '/dev/tpmrm0' );
+    await expect( tpm.getByText( /TPM device path changed/ ) ).toBeVisible();
+    await tpm.getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openTpm();
+    await tpm.getByRole( 'combobox' ).nth( 0 ).selectOption( 'tpm-tis' );
+    await tpm.getByRole( 'button',{ name: 'Apply',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openTpm();
+    await tpm.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
+
+  test( 'configures, cancels, applies, and closes VSock details',async ( { page } ) => {
+    await machineView( page );
+    await page.getByRole( 'button',{ name: 'Edit',exact: true } ).click();
+    await page.getByRole( 'menu',{ name: 'Edit',exact: true } )
+      .getByRole( 'menuitem',{ name: 'Virtual Machine Details',exact: true } ).click();
+
+    const details = page.locator( 'app-vm-details' );
+    const dialog = page.getByRole( 'dialog' );
+    const vsock = page.locator( 'app-vsock-details' );
+    const openVsock = async () => {
+      await details.getByRole( 'button',{ name: 'VSOCK',exact: true } ).click();
+      await expect( dialog ).toBeVisible();
+      await expect( vsock.getByRole( 'heading',{ name: 'VSock details' } ) ).toBeVisible();
+      await expect( vsock.getByText( /VSock details opened/ ) ).toBeVisible();
+    };
+
+    await openVsock();
+    const autoCid = vsock.getByLabel( 'Assign CID automatically' );
+    // Default is enabled; toggle off then on to exercise both status paths.
+    await autoCid.setChecked( false );
+    await expect( vsock.getByText( /Auto CID disabled/ ) ).toBeVisible();
+    await vsock.getByRole( 'spinbutton' ).fill( '7' );
+    await expect( vsock.getByText( /CID updated/ ) ).toBeVisible();
+    await autoCid.setChecked( true );
+    await expect( vsock.getByText( /Auto CID enabled/ ) ).toBeVisible();
+    await vsock.getByRole( 'button',{ name: 'Cancel',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openVsock();
+    await vsock.getByRole( 'button',{ name: 'Apply',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+
+    await openVsock();
+    await vsock.getByRole( 'button',{ name: 'Close',exact: true } ).click();
+    await expect( dialog ).toBeHidden();
+  } );
 } );

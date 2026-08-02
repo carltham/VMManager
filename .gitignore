@@ -1,0 +1,13 @@
+# IDE / Java Language Support compile output (never commit)
+VMManager-web/bin/
+
+# Maven build (local)
+VMManager-web/target/
+
+# Playwright artifacts
+testing/playwright/playwright-report/
+testing/playwright/test-results/
+testing/playwright/blob-report/
+
+# Node
+**/node_modules/

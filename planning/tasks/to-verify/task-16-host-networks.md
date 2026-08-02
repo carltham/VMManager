@@ -1,11 +1,12 @@
 # Task 16 - host-networks
 
 - Status: in-progress
-- Verify: 60%
-- Conversion Progress: [################....] 80%
-- Verification Progress: [############........] 60%
+- Verify: 0%
+- Conversion Progress: [####################] 100%
+- Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Web implementation evidence (Angular Playwright only; not reference verification): testing/playwright/tests/network-storage.spec.mjs (refresh/select/apply/start/stop)
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/hostnets.py, ui/hostnets.ui, virtManager/baseclass.py, virtManager/connmanager.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmHostNets -> vmmConnectionManager

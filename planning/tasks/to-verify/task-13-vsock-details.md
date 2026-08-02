@@ -1,11 +1,12 @@
 # Task 13 - vsock-details
 
 - Status: in-progress
-- Verify: 80%
+- Verify: 0%
 - Conversion Progress: [####################] 100%
-- Verification Progress: [################....] 80%
+- Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Web implementation evidence (Angular Playwright only; not reference verification): testing/playwright/tests/machines.spec.mjs (vsock toggle/cancel/apply/close)
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/device/vsockdetails.py, ui/vsockdetails.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmVsockDetails

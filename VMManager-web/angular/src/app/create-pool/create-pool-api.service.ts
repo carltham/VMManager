@@ -16,6 +16,12 @@ export class CreatePoolApiService {
     source: string;
     target: string;
   }): Observable<CreatePoolView> {
-    return this.http.post<CreatePoolView>(`${this.baseUrl}/create`, payload);
+    return this.http.post<CreatePoolView>(`${this.baseUrl}/create`, {
+      id: 0,
+      name: payload.name,
+      type: payload.type,
+      source: payload.source,
+      target: payload.target,
+    });
   }
 }

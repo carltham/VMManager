@@ -1,11 +1,13 @@
 # Task 17 - create-volume
 
-- Status: in-progress
-- Verify: 60%
-- Conversion Progress: [################....] 80%
-- Verification Progress: [############........] 60%
+- Status: conversion-complete (web evidence green; verify 0%)
+- Verify: 0%
+- Conversion Progress: [####################] 100%
+- Verification Progress: [....................] 0%
 - TDD UI Integration Test Progress: [....................] 0%
 - Evidence: planning/tasks/verify/IMPLEMENTATION-EVIDENCE-01-20.md
+- Last web PW run: network-storage.spec.mjs **4 passed** (storage deep paths green).
+- Web implementation evidence (Angular Playwright only; not reference verification): testing/playwright/tests/network-storage.spec.mjs (create-volume cancel/create + host list)
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/createvol.py, ui/createvol.ui, virtManager/baseclass.py, virtManager/lib/uiutil.py, virtManager/storagebrowse.py
 - Flow Classes: vmmCreateVolume -> vmmStorageBrowser
