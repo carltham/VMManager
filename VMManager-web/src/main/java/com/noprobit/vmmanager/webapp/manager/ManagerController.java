@@ -30,6 +30,11 @@ public class ManagerController {
         return managerService.getOverview();
     }
 
+    @GetMapping("/overview")
+    public ManagerOverviewDto getOverviewAlias() {
+        return managerService.getOverview();
+    }
+
     @PostMapping("/stats/toggle")
     public ManagerActionResultDto toggleStats() {
         boolean enabled = managerService.toggleStats();

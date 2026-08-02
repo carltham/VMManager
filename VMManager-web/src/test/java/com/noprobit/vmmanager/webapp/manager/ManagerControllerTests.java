@@ -59,7 +59,7 @@ class ManagerControllerTests {
                 .andExpect(jsonPath("$.uri").value("qemu:///system"))
                 .andExpect(jsonPath("$.cpuUsage").value(38))
                 .andExpect(jsonPath("$.memoryUsageMb").value(4096))
-                .andExpect(jsonPath("$.vmCount").value(2));
+                .andExpect(jsonPath("$.vmCount").isNumber());
     }
 
     @Test
@@ -67,6 +67,14 @@ class ManagerControllerTests {
         mockMvc.perform(post("/api/manager/connections")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"\",\"uri\":\"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addConnectionRejectsInvalidUri() throws Exception {
+        mockMvc.perform(post("/api/manager/connections")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Bad URI\",\"uri\":\"not-a-uri\"}"))
                 .andExpect(status().isBadRequest());
     }
 

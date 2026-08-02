@@ -1,6 +1,7 @@
 <section class="workspace">
   <header><h2>Connection Authentication</h2></header>
   <div class="form-grid">
+    <label>Connection ID<input type="number" [(ngModel)]="view.connectionId" min="1" /></label>
     <label>Username<input [(ngModel)]="view.username" /></label>
     <label>Password<input type="password" [(ngModel)]="view.password" /></label>
     <label><input type="checkbox" [(ngModel)]="view.remember" /> Remember credentials</label>

@@ -17,6 +17,7 @@
 
 ## Concrete Sprint Tasks
 
+- [ ] Execute UI/API verification in mock mode only for this phase (no real OS/libvirt side effects required).
 - [ ] Define endpoint family test matrix with at least one happy path and one failure path per family.
 - [ ] Add backend integration tests for manager, vm-window, vm-details, connection-auth, snapshots, and jobs.
 - [ ] Add or update Angular integration/e2e tests for mapped equivalent flows.
@@ -33,6 +34,12 @@ cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular 
 cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm test -- --watch=false --browsers=ChromeHeadless
 cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test --reporter=list
 ```
+
+### Verification Mode
+
+- Mock-only verification is accepted for this stage.
+- Do not require real OS/libvirt execution paths for task completion in this phase.
+- Record clearly in evidence that Playwright validates app + backend mock behavior, not host OS operations.
 
 ## Frontend Contract
 

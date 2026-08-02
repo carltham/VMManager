@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { ConnectionAuthApiService } from './connection-auth-api.service';
@@ -16,6 +17,7 @@ export class ConnectionAuthComponent {
   private readonly api = inject(ConnectionAuthApiService);
 
   view: ConnectionAuthView = {
+    connectionId: 1,
     username: '',
     password: '',
     remember: false,
@@ -27,9 +29,17 @@ export class ConnectionAuthComponent {
   authenticate(): void {
     this.view.statusMessage = '';
     this.view.errorMessage = '';
+
+    if (!this.view.username.trim() || !this.view.password.trim()) {
+      this.view.errorMessage = 'Username and password are required.';
+      return;
+    }
+
     this.view.isSubmitting = true;
 
-    this.api.authenticate(this.view.username, this.view.password, this.view.remember).subscribe({
+    this.api
+      .authenticate(this.view.connectionId, this.view.username, this.view.password, this.view.remember)
+      .subscribe({
       next: (result) => {
         this.view.isSubmitting = false;
         if (result.success) {
@@ -39,9 +49,12 @@ export class ConnectionAuthComponent {
           this.view.errorMessage = result.message;
         }
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
         this.view.isSubmitting = false;
-        this.view.errorMessage = 'Authentication request failed.';
+        this.view.errorMessage =
+          (error.error as { detail?: string; message?: string } | null)?.detail ||
+          (error.error as { detail?: string; message?: string } | null)?.message ||
+          'Authentication request failed.';
       },
     });
   }

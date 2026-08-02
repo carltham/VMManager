@@ -43,6 +43,9 @@ public class ManagerService {
         if (uri == null || uri.isBlank()) {
             throw new IllegalArgumentException("Connection URI is required");
         }
+        if (!isLikelyLibvirtUri(uri)) {
+            throw new IllegalArgumentException("Connection URI is invalid");
+        }
 
         ConnectionEntity connection = connectionRepository.save(new ConnectionEntity(name.trim(), uri.trim()));
         return toConnectionDto(connection);
@@ -188,5 +191,10 @@ public class ManagerService {
     private VmEntity findVm(long vmId) {
         return vmRepository.findById(vmId)
                 .orElseThrow(() -> new IllegalArgumentException("VM not found"));
+    }
+
+    private boolean isLikelyLibvirtUri(String uri) {
+        String value = uri.trim();
+        return value.contains("://") && value.indexOf("://") > 0;
     }
 }
