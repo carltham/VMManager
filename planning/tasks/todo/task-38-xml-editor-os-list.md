@@ -16,6 +16,24 @@
   - filter/select OS: search/filter input -> backend-supported OS choices -> selection callback
 - Scope: Backend support for XML editing and OS selection flows exposed from VM details.
 
+## Concrete Sprint Tasks
+
+- [ ] Implement POST `/api/vm-details/{vmId}/xml/validate` with deterministic validation error list.
+- [ ] Implement GET `/api/vm-details/{vmId}/os-list` and query filtering support.
+- [ ] Ensure existing launch-xml-editor, launch-os-list, and apply endpoints stay backward-compatible.
+- [ ] Replace Angular hardcoded OS list with backend-driven options and preserve fallback behavior.
+- [ ] Render XML validation errors before apply in Angular xml-editor flow.
+- [ ] Add backend tests for XML valid/invalid and OS list query filtering behavior.
+- [ ] Add frontend tests for validation-error rendering and OS list selection flow.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test tests/tools.spec.mjs --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

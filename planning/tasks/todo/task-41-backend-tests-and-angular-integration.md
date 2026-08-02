@@ -15,6 +15,25 @@
   - mapping table: Python flow case -> Angular test case -> documented result
 - Scope: Verification ticket for proving the Java libvirt backend and Angular wiring behave like the original virt-manager flows.
 
+## Concrete Sprint Tasks
+
+- [ ] Define endpoint family test matrix with at least one happy path and one failure path per family.
+- [ ] Add backend integration tests for manager, vm-window, vm-details, connection-auth, snapshots, and jobs.
+- [ ] Add or update Angular integration/e2e tests for mapped equivalent flows.
+- [ ] Build mapping table: Python test case -> Angular test case -> pass/fail result.
+- [ ] Record parity deviations and explicit approvals for each accepted difference.
+- [ ] Update evidence blocks in tasks 33-40 with final test outputs and links.
+- [ ] Enforce done criteria only when conversion, verification, and verify fields reach 100 by evidence.
+
+### Final Verification Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm test -- --watch=false --browsers=ChromeHeadless
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

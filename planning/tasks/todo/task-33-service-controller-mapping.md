@@ -15,6 +15,23 @@
   - preserve patterns: manager/vm-details/vm-window code review -> reuse decisions -> implementation standards
 - Scope: Create the Java service/controller mapping plan that translates original Python controllers into Spring packages.
 
+## Concrete Sprint Tasks
+
+- [ ] Create endpoint family matrix for manager, vm-window, vm-details, connection-auth, snapshots, and jobs.
+- [ ] Define Java package layout for each family (controller, service, dto, mapper, error).
+- [ ] Document request/response DTOs for all new endpoints referenced in tasks 35-41.
+- [ ] Define and document shared error payload contract `{ code, message, details?, retryable, correlationId }`.
+- [ ] Verify backward compatibility of existing manager/vm-window/vm-details endpoints consumed by Angular.
+- [ ] Produce mapping artifact updates in planning/JAVA-LIBVIRT-BACKEND-PLAN.md and link task IDs.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm test -- --watch=false --browsers=ChromeHeadless
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

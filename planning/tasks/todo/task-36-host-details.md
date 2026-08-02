@@ -16,6 +16,24 @@
   - open host subpanes: host details page -> networks/storage panes -> nested module entry
 - Scope: Java backend support for host-level details and connection-scoped metrics/actions.
 
+## Concrete Sprint Tasks
+
+- [ ] Implement GET `/api/manager/host/{connectionId}` using integration-layer host metrics.
+- [ ] Implement PATCH `/api/manager/connections/{connectionId}/autoconnect` and persistence update.
+- [ ] Return backend error codes for not-found, libvirt unavailable, and permission denied cases.
+- [ ] Wire Angular host-details component to render autoconnect status and update response state.
+- [ ] Add backend tests for metrics load and autoconnect update success/failure cases.
+- [ ] Add frontend tests for refresh path and error banner behavior.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm test -- --watch=false --browsers=ChromeHeadless
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test tests/tools.spec.mjs --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

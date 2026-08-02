@@ -15,6 +15,24 @@
   - delete/revert snapshot: snapshot page action -> backend operation -> refresh snapshot list
 - Scope: Java async job handling for snapshot operations and snapshot lifecycle endpoints.
 
+## Concrete Sprint Tasks
+
+- [ ] Implement snapshot endpoints: list, create, delete, and revert with async job acceptance responses.
+- [ ] Implement jobs endpoints: GET status and POST cancel with stable state model.
+- [ ] Replace in-memory Angular snapshots API with HttpClient calls to `/api/snapshots/*`.
+- [ ] Replace timer-based Angular async-job simulation with polling `/api/jobs/{jobId}`.
+- [ ] Ensure snapshot list refreshes automatically on create/delete/revert job completion.
+- [ ] Add backend tests for accepted job responses, running/completed/canceled states, and failure mapping.
+- [ ] Add frontend tests for polling loop, cancel flow, and snapshot refresh behavior.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test tests/tools.spec.mjs tests/network-storage.spec.mjs --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

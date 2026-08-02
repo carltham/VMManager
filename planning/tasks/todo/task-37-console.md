@@ -16,6 +16,24 @@
   - toggle fullscreen: view toggle -> toolbar state -> window state transition
 - Scope: Java backend state and operations for VM console/viewer actions behind the VM window flows.
 
+## Concrete Sprint Tasks
+
+- [ ] Keep existing vm-window open/status/pause/start endpoints behavior unchanged.
+- [ ] Add console endpoints: connect-viewer, fullscreen toggle, and send-keys.
+- [ ] Extend vm-window response DTO with optional console fields and preserve compatibility.
+- [ ] Map `VIEWER_UNAVAILABLE`, `CONSOLE_DISCONNECTED`, and `VM_NOT_RUNNING` to stable error payload.
+- [ ] Wire Angular console component to new console endpoints and render updated status message.
+- [ ] Add backend tests for each console endpoint plus unsupported-viewer error path.
+- [ ] Add frontend tests for connect-viewer/fullscreen/send-keys flow state updates.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test tests/machines.spec.mjs tests/tools.spec.mjs --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

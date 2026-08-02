@@ -16,6 +16,25 @@
   - remember connection: auth failure recovery -> remember choice -> persisted connection behavior
 - Scope: Real backend endpoints and service logic for creating and authenticating libvirt connections.
 
+## Concrete Sprint Tasks
+
+- [ ] Implement POST `/api/manager/connections` with URI validation and deterministic error codes.
+- [ ] Implement POST `/api/connection-auth/sessions` and DELETE `/api/connection-auth/sessions/{sessionId}`.
+- [ ] Persist remember-connection behavior and session expiration handling in service layer.
+- [ ] Replace simulated Angular connection-auth API calls with HttpClient endpoint calls.
+- [ ] Add UI handling for `AUTH_REQUIRED`, `AUTH_FAILED`, `INVALID_URI`, and `HOST_UNREACHABLE`.
+- [ ] Add backend tests for success, invalid URI, auth failure, and host unreachable.
+- [ ] Add frontend tests for auth form validation and error state rendering.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm test -- --watch=false --browsers=ChromeHeadless
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test tests/tools.spec.mjs --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

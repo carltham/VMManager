@@ -15,6 +15,22 @@
   - snapshot plumbing: snapshot request -> async job wrapper -> libvirt call sequence
 - Scope: Central Java integration layer that hides libvirt APIs behind services used by all backend tickets.
 
+## Concrete Sprint Tasks
+
+- [ ] Implement integration-layer interfaces for connection, host, vm, and snapshot operations.
+- [ ] Add libvirt adapter implementations and normalize exception mapping to stable API error codes.
+- [ ] Implement connection/session lifecycle helpers used by tasks 35-36.
+- [ ] Implement long-running operation helper returning operation state and job identifiers used by task 39.
+- [ ] Add unit tests for adapter success/failure translation and operation state transitions.
+- [ ] Add integration smoke test proving controller -> service -> integration layer call path.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points

@@ -15,6 +15,22 @@
   - expose non-libvirt settings: settings/config service -> endpoint contract -> Angular binding
 - Scope: Thin Java endpoints for application metadata and preferences, intentionally without libvirt calls.
 
+## Concrete Sprint Tasks
+
+- [ ] Implement GET `/api/manager/about` with lightweight metadata payload.
+- [ ] Implement GET `/api/manager/preferences` with existing key names used by Angular.
+- [ ] Keep non-libvirt classification explicit in service and task evidence notes.
+- [ ] Add backend tests for payload shape and error mapping behavior.
+- [ ] Confirm Angular about/preferences consumers require no adapter changes.
+
+### Validation Gate Commands
+
+```bash
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q test
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build
+cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS npx playwright test tests/tools.spec.mjs --reporter=list
+```
+
 ## Frontend Contract
 
 ### Angular Integration Points
