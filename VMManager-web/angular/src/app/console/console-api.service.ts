@@ -32,4 +32,16 @@ export class ConsoleApiService {
   run(vmId: number): Observable<VmWindowView> {
     return this.vmWindowApi.start(vmId);
   }
+
+  connectViewer(vmId: number, viewer: 'graphics' | 'serial'): Observable<VmWindowView> {
+    return this.vmWindowApi.connectViewer(vmId, viewer);
+  }
+
+  setFullscreen(vmId: number, enabled: boolean): Observable<VmWindowView> {
+    return this.vmWindowApi.setFullscreen(vmId, enabled);
+  }
+
+  sendKeys(vmId: number, combo: string): Observable<VmWindowView> {
+    return this.vmWindowApi.sendKeys(vmId, combo);
+  }
 }

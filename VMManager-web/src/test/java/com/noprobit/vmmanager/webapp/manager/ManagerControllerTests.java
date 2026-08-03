@@ -2,6 +2,7 @@ package com.noprobit.vmmanager.webapp.manager;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,10 +58,33 @@ class ManagerControllerTests {
                 .andExpect(jsonPath("$.connectionId").value(1))
                 .andExpect(jsonPath("$.connectionName").value("Local QEMU"))
                 .andExpect(jsonPath("$.uri").value("qemu:///system"))
+            .andExpect(jsonPath("$.autoConnect").value(false))
                 .andExpect(jsonPath("$.cpuUsage").value(38))
                 .andExpect(jsonPath("$.memoryUsageMb").value(4096))
                 .andExpect(jsonPath("$.vmCount").isNumber());
     }
+
+        @Test
+        void updateAutoconnectPersistsState() throws Exception {
+        mockMvc.perform(patch("/api/manager/connections/1/autoconnect")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"enabled\":true}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.connectionId").value(1))
+            .andExpect(jsonPath("$.autoConnect").value(true));
+
+        mockMvc.perform(get("/api/manager/host/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.autoConnect").value(true));
+        }
+
+        @Test
+        void updateAutoconnectRejectsUnknownConnection() throws Exception {
+        mockMvc.perform(patch("/api/manager/connections/999/autoconnect")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"enabled\":true}"))
+            .andExpect(status().isNotFound());
+        }
 
     @Test
     void addConnectionRejectsBlankInput() throws Exception {

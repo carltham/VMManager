@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,6 +74,30 @@ public class VmWindowController {
         return execute(() -> vmWindowService.updateStatus(vmId));
     }
 
+    @PostMapping("/{vmId}/console/connect-viewer")
+    public VmWindowDto connectViewer(@PathVariable long vmId, @RequestBody ViewerRequest request) {
+        if (request == null || request.viewer() == null || request.viewer().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Viewer is required");
+        }
+        return executeConsole(() -> vmWindowService.connectViewer(vmId, request.viewer()));
+    }
+
+    @PostMapping("/{vmId}/console/fullscreen")
+    public VmWindowDto fullscreen(@PathVariable long vmId, @RequestBody FullscreenRequest request) {
+        if (request == null || request.enabled() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Enabled flag is required");
+        }
+        return executeConsole(() -> vmWindowService.setFullscreen(vmId, request.enabled()));
+    }
+
+    @PostMapping("/{vmId}/console/send-keys")
+    public VmWindowDto sendKeys(@PathVariable long vmId, @RequestBody KeyComboRequest request) {
+        if (request == null || request.combo() == null || request.combo().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Key combo is required");
+        }
+        return executeConsole(() -> vmWindowService.sendKeys(vmId, request.combo()));
+    }
+
     private VmWindowDto execute(VmWindowOperation op) {
         try {
             return op.execute();
@@ -81,8 +106,27 @@ public class VmWindowController {
         }
     }
 
+    private VmWindowDto executeConsole(VmWindowOperation op) {
+        try {
+            return op.execute();
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+        } catch (IllegalStateException ex) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
+        }
+    }
+
     @FunctionalInterface
     private interface VmWindowOperation {
         VmWindowDto execute();
+    }
+
+    public record ViewerRequest(String viewer) {
+    }
+
+    public record FullscreenRequest(Boolean enabled) {
+    }
+
+    public record KeyComboRequest(String combo) {
     }
 }

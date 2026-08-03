@@ -13,12 +13,17 @@
       </select>
     </label>
     <button type="button" (click)="loadDetails()">Load host details</button>
+    <label>
+      <input type="checkbox" [(ngModel)]="view.autoConnectEnabled" /> Autoconnect
+    </label>
+    <button type="button" (click)="applyAutoconnect()">Apply autoconnect</button>
   </div>
 
   @if (view.details) {
   <article>
     <h3>{{ view.details.connectionName }}</h3>
     <p>URI: {{ view.details.uri }}</p>
+    <p>Autoconnect: {{ view.details.autoConnect ? 'enabled' : 'disabled' }}</p>
     <p>CPU usage: {{ view.details.cpuUsage }}%</p>
     <p>Memory usage: {{ view.details.memoryUsageMb }} MB</p>
     <p>VM count: {{ view.details.vmCount }}</p>

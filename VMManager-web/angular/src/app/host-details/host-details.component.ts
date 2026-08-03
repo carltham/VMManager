@@ -19,6 +19,7 @@ export class HostDetailsComponent implements OnInit {
     connections: [],
     selectedConnectionId: null,
     details: null,
+    autoConnectEnabled: false,
     statusMessage: '',
     errorMessage: '',
   };
@@ -51,10 +52,33 @@ export class HostDetailsComponent implements OnInit {
     this.api.loadDetails(this.view.selectedConnectionId).subscribe({
       next: (details) => {
         this.view.details = details;
+        this.view.autoConnectEnabled = details.autoConnect;
         this.view.statusMessage = `Loaded host details for ${details.connectionName}.`;
       },
       error: () => {
         this.view.errorMessage = 'Failed to load host details.';
+      },
+    });
+  }
+
+  applyAutoconnect(): void {
+    if (this.view.selectedConnectionId == null) {
+      return;
+    }
+
+    this.view.errorMessage = '';
+    this.api.updateAutoconnect(this.view.selectedConnectionId, this.view.autoConnectEnabled).subscribe({
+      next: (result) => {
+        this.view.statusMessage = result.statusMessage;
+        if (this.view.details) {
+          this.view.details = {
+            ...this.view.details,
+            autoConnect: result.autoConnect,
+          };
+        }
+      },
+      error: () => {
+        this.view.errorMessage = 'Failed to update autoconnect setting.';
       },
     });
   }

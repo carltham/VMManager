@@ -5,7 +5,7 @@ import { Observable, map } from 'rxjs';
 import { API_BASE } from '../api-base';
 import { ManagerApiService } from '../manager/manager-api.service';
 import { ConnectionItem } from '../manager/manager.models';
-import { HostDetailsData } from './host-details.models';
+import { HostAutoconnectUpdate, HostDetailsData } from './host-details.models';
 
 @Injectable({ providedIn: 'root' })
 export class HostDetailsApiService {
@@ -18,5 +18,12 @@ export class HostDetailsApiService {
 
   loadDetails(connectionId: number): Observable<HostDetailsData> {
     return this.http.get<HostDetailsData>(`${API_BASE}/manager/host/${connectionId}`);
+  }
+
+  updateAutoconnect(connectionId: number, enabled: boolean): Observable<HostAutoconnectUpdate> {
+    return this.http.patch<HostAutoconnectUpdate>(
+      `${API_BASE}/manager/connections/${connectionId}/autoconnect`,
+      { enabled },
+    );
   }
 }

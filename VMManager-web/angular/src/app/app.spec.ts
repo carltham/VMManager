@@ -35,6 +35,10 @@ describe('App', () => {
         statusMessage: 'VM window opened',
         consoleText: 'Console connected',
         detailsText: 'State=RUNNING',
+        consoleConnected: true,
+        viewerType: 'graphics',
+        fullscreen: false,
+        keyboardGrabbed: false,
       }),
   };
 

@@ -1,11 +1,11 @@
 # Task 37 - console
 
 
-- Status: todo
-- Verify: 0%
-- Conversion Progress: [....................] 0%
-- Verification Progress: [....................] 0%
-- TDD UI Integration Test Progress: [....................] 0%
+- Status: in-progress
+- Verify: 90%
+- Conversion Progress: [##################..] 90%
+- Verification Progress: [##################..] 90%
+- TDD UI Integration Test Progress: [##################..] 90%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/details/console.py, virtManager/details/viewers.py, virtManager/details/serialcon.py, virtManager/details/sshtunnels.py
 - Flow Classes: vmmConsolePages -> _ConsoleMenu -> vmmOverlayToolbar -> _TimedRevealer
@@ -19,13 +19,13 @@
 
 ## Concrete Sprint Tasks
 
-- [ ] Keep existing vm-window open/status/pause/start endpoints behavior unchanged.
-- [ ] Add console endpoints: connect-viewer, fullscreen toggle, and send-keys.
-- [ ] Extend vm-window response DTO with optional console fields and preserve compatibility.
-- [ ] Map `VIEWER_UNAVAILABLE`, `CONSOLE_DISCONNECTED`, and `VM_NOT_RUNNING` to stable error payload.
-- [ ] Wire Angular console component to new console endpoints and render updated status message.
-- [ ] Add backend tests for each console endpoint plus unsupported-viewer error path.
-- [ ] Add frontend tests for connect-viewer/fullscreen/send-keys flow state updates.
+- [x] Keep existing vm-window open/status/pause/start endpoints behavior unchanged.
+- [x] Add console endpoints: connect-viewer, fullscreen toggle, and send-keys.
+- [x] Extend vm-window response DTO with optional console fields and preserve compatibility.
+- [x] Map `VIEWER_UNAVAILABLE`, `CONSOLE_DISCONNECTED`, and `VM_NOT_RUNNING` to stable error payload.
+- [x] Wire Angular console component to new console endpoints and render updated status message.
+- [x] Add backend tests for each console endpoint plus unsupported-viewer error path.
+- [x] Add frontend tests for connect-viewer/fullscreen/send-keys flow state updates.
 
 ### Validation Gate Commands
 
@@ -124,26 +124,26 @@ cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && 
 
 ### Backend Evidence
 
-- Files changed: <controller/service/dto/test files>
-- Command: <backend test/build command>
-- Result: <pass/fail + key output>
+- Files changed: `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmwindow/VmWindowController.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmwindow/VmWindowService.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmwindow/VmWindowDto.java`, `VMManager-web/src/test/java/com/noprobit/vmmanager/webapp/vmwindow/VmWindowControllerTests.java`
+- Command: `cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q -Dtest=VmWindowControllerTests,ManagerControllerTests,ConnectionAuthControllerTests test`
+- Result: pass (vmwindow: 6 tests, 0 failures)
 
 ### Frontend Evidence
 
-- Files changed: <component/service/model/template/style files>
-- Command: <frontend build/test command>
-- Result: <pass/fail + key output>
+- Files changed: `VMManager-web/angular/src/app/vm-window/vm-window.models.ts`, `VMManager-web/angular/src/app/vm-window/vm-window-api.service.ts`, `VMManager-web/angular/src/app/console/console-api.service.ts`, `VMManager-web/angular/src/app/console/console.models.ts`, `VMManager-web/angular/src/app/console/console.component.ts`, `VMManager-web/angular/src/app/console/console.component.html`, `VMManager-web/angular/src/app/app.spec.ts`, `testing/playwright/tests/tools.spec.mjs`
+- Command: `cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build`
+- Result: pass
 
 ### Integration Evidence
 
-- Entry point: <how this flow is reached in app shell>
-- Executed actions: <which actions were exercised>
-- Result: <pass/fail + notes>
+- Entry point: App shell -> View -> Tools -> Console panel
+- Executed actions: Open, Status, Run, Pause, Connect Viewer, Apply Fullscreen, Send Keys
+- Result: pass (`testing/playwright/tests/tools.spec.mjs`)
 
 ### Parity Evidence
 
-- Covered original flows: <list>
-- Known deviations: <none or explicit differences>
+- Covered original flows: open console, switch viewer/connect viewer, fullscreen toggle, send key combo
+- Known deviations: mock backend behavior only; no host OS/libvirt side-effects executed
 
 ## Integration Test Evidence
 
@@ -155,15 +155,15 @@ cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && 
 
 ### Angular Integration or E2E Match
 
-- Test file(s): <angular integration/e2e test paths>
-- Cases: <case names>
-- Result: <pass/fail>
+- Test file(s): `testing/playwright/tests/tools.spec.mjs`
+- Cases: `opens console and runs viewer/fullscreen/send-keys actions`
+- Result: pass
 
 ### Mapping Table
 
 | Python test case | Angular test case | Status |
 | --- | --- | --- |
-| <python_case_1> | <angular_case_1> | <pass/fail> |
+| console viewer/fullscreen/send-keys flow | opens console and runs viewer/fullscreen/send-keys actions | pass |
 
 ### Notes
 

@@ -1,10 +1,10 @@
 # Task 36 - host-details
 
 
-- Status: todo
-- Verify: 0%
-- Conversion Progress: [....................] 0%
-- Verification Progress: [....................] 0%
+- Status: in-progress
+- Verify: 80%
+- Conversion Progress: [####################] 100%
+- Verification Progress: [################....] 80%
 - TDD UI Integration Test Progress: [....................] 0%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/host.py, virtManager/hostnets.py, virtManager/hoststorage.py
@@ -108,26 +108,26 @@ cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && 
 
 ### Backend Evidence
 
-- Files changed: <controller/service/dto/test files>
-- Command: <backend test/build command>
-- Result: <pass/fail + key output>
+- Files changed: `ManagerController`, `ManagerService`, `ConnectionEntity`, `ManagerHostDetailsDto`, `ManagerConnectionAutoconnectDto`, `ManagerControllerTests`.
+- Command: `cd VMManager-web && ./mvnw -Dtest=ManagerControllerTests,ConnectionAuthControllerTests test`
+- Result: pass (`Tests run: 12, Failures: 0, Errors: 0`, `BUILD SUCCESS`).
 
 ### Frontend Evidence
 
-- Files changed: <component/service/model/template/style files>
-- Command: <frontend build/test command>
-- Result: <pass/fail + key output>
+- Files changed: `host-details-api.service.ts`, `host-details.component.ts`, `host-details.component.html`, `host-details.models.ts`.
+- Command: `cd VMManager-web/angular && npm run build`
+- Result: pass (Angular build completed; dist output generated).
 
 ### Integration Evidence
 
-- Entry point: <how this flow is reached in app shell>
-- Executed actions: <which actions were exercised>
-- Result: <pass/fail + notes>
+- Entry point: Tools view -> Host Details module.
+- Executed actions: refresh connections, load host details, toggle autoconnect, apply autoconnect.
+- Result: pass (`cd testing/playwright && npx playwright test tests/tools.spec.mjs --reporter=list` -> `6 passed`).
 
 ### Parity Evidence
 
-- Covered original flows: <list>
-- Known deviations: <none or explicit differences>
+- Covered original flows: host details load and connection-scoped state update flow.
+- Known deviations: real libvirt-backed host metrics and Python reference parity mapping are still pending.
 
 ## Integration Test Evidence
 

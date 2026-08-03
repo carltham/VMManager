@@ -50,4 +50,16 @@ export class VmWindowApiService {
   status(vmId: number): Observable<VmWindowView> {
     return this.http.post<VmWindowView>(`${this.baseUrl}/${vmId}/status`, {});
   }
+
+  connectViewer(vmId: number, viewer: 'graphics' | 'serial'): Observable<VmWindowView> {
+    return this.http.post<VmWindowView>(`${this.baseUrl}/${vmId}/console/connect-viewer`, { viewer });
+  }
+
+  setFullscreen(vmId: number, enabled: boolean): Observable<VmWindowView> {
+    return this.http.post<VmWindowView>(`${this.baseUrl}/${vmId}/console/fullscreen`, { enabled });
+  }
+
+  sendKeys(vmId: number, combo: string): Observable<VmWindowView> {
+    return this.http.post<VmWindowView>(`${this.baseUrl}/${vmId}/console/send-keys`, { combo });
+  }
 }

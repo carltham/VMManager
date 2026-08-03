@@ -8,4 +8,8 @@ export interface VmWindowView {
   statusMessage: string;
   consoleText: string;
   detailsText: string;
+  consoleConnected: boolean;
+  viewerType: string;
+  fullscreen: boolean;
+  keyboardGrabbed: boolean;
 }

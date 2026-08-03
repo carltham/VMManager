@@ -18,6 +18,9 @@ export class ConsoleComponent implements OnInit {
   view: ConsoleView = {
     vms: [],
     selectedVmId: null,
+    selectedViewer: 'graphics',
+    fullscreenEnabled: false,
+    keyCombo: 'Ctrl+Alt+Del',
     window: null,
     statusMessage: '',
     errorMessage: '',
@@ -55,6 +58,54 @@ export class ConsoleComponent implements OnInit {
 
   pauseVm(): void {
     this.runAction('pause');
+  }
+
+  connectViewer(): void {
+    if (this.view.selectedVmId == null) {
+      return;
+    }
+    this.api.connectViewer(this.view.selectedVmId, this.view.selectedViewer).subscribe({
+      next: (windowView) => {
+        this.view.window = windowView;
+        this.view.statusMessage = windowView.statusMessage;
+        this.view.errorMessage = '';
+      },
+      error: () => {
+        this.view.errorMessage = 'Failed to connect viewer.';
+      },
+    });
+  }
+
+  toggleFullscreen(): void {
+    if (this.view.selectedVmId == null) {
+      return;
+    }
+    this.api.setFullscreen(this.view.selectedVmId, this.view.fullscreenEnabled).subscribe({
+      next: (windowView) => {
+        this.view.window = windowView;
+        this.view.statusMessage = windowView.statusMessage;
+        this.view.errorMessage = '';
+      },
+      error: () => {
+        this.view.errorMessage = 'Failed to toggle fullscreen.';
+      },
+    });
+  }
+
+  sendKeys(): void {
+    if (this.view.selectedVmId == null) {
+      return;
+    }
+    this.api.sendKeys(this.view.selectedVmId, this.view.keyCombo).subscribe({
+      next: (windowView) => {
+        this.view.window = windowView;
+        this.view.statusMessage = windowView.statusMessage;
+        this.view.errorMessage = '';
+      },
+      error: () => {
+        this.view.errorMessage = 'Failed to send key combo.';
+      },
+    });
   }
 
   private runAction(action: 'open' | 'status' | 'run' | 'pause'): void {

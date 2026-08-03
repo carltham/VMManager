@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.noprobit.vmmanager.webapp.manager.dto.ManagerConnectionAutoconnectDto;
 import com.noprobit.vmmanager.webapp.manager.dto.ManagerHostDetailsDto;
 import com.noprobit.vmmanager.webapp.manager.dto.ManagerPreferencesDto;
 import com.noprobit.vmmanager.webapp.manager.entity.ConnectionEntity;
@@ -155,10 +156,24 @@ public class ManagerService {
                 connection.getId(),
                 connection.getName(),
                 connection.getUri(),
+            connection.isAutoConnect(),
                 38,
                 4096,
             (int) vmRepository.countByConnection_Id(connectionId));
     }
+
+        @Transactional
+        public synchronized ManagerConnectionAutoconnectDto updateAutoconnect(long connectionId, boolean enabled) {
+        ConnectionEntity connection = connectionRepository.findById(connectionId)
+            .orElseThrow(() -> new IllegalArgumentException("Connection not found"));
+        connection.setAutoConnect(enabled);
+        connectionRepository.save(connection);
+
+        return new ManagerConnectionAutoconnectDto(
+            connection.getId(),
+            connection.isAutoConnect(),
+            "Autoconnect " + (enabled ? "enabled" : "disabled") + " for " + connection.getName() + ".");
+        }
 
     public ManagerPreferencesDto preferences() {
         return new ManagerPreferencesDto("system", "qemu:///system", "true");

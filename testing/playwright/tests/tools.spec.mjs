@@ -124,7 +124,7 @@ test.describe.serial( 'tools workflows', () => {
     await expect( job.getByText( 'Progress: 100%' ) ).toBeVisible();
   } );
 
-  test( 'opens console and cycles status run pause actions', async ( { page } ) => {
+  test( 'opens console and runs viewer/fullscreen/send-keys actions', async ( { page } ) => {
     await page.goto( '/' );
     await chooseView( page, 'Tools' );
 
@@ -145,6 +145,21 @@ test.describe.serial( 'tools workflows', () => {
 
     await consolePanel.getByRole( 'button', { name: 'Pause', exact: true } ).click();
     await expect( consolePanel.locator( '.notice.success' ) ).toBeVisible();
+
+    await consolePanel.locator( 'label', { hasText: /^Viewer/ } ).locator( 'select' ).selectOption( 'serial' );
+    await consolePanel.getByRole( 'button', { name: 'Connect Viewer', exact: true } ).click();
+    await expect( consolePanel.locator( '.notice.success' ) ).toBeVisible();
+    await expect( consolePanel.locator( 'pre' ) ).toContainText( 'viewer=serial' );
+    await expect( consolePanel.getByText( 'Console connected: true', { exact: true } ) ).toBeVisible();
+
+    await consolePanel.getByRole( 'checkbox', { name: 'Fullscreen', exact: true } ).check();
+    await consolePanel.getByRole( 'button', { name: 'Apply Fullscreen', exact: true } ).click();
+    await expect( consolePanel.getByText( 'Fullscreen enabled', { exact: true } ) ).toBeVisible();
+    await expect( consolePanel.getByText( 'Fullscreen: true', { exact: true } ) ).toBeVisible();
+
+    await consolePanel.locator( 'label', { hasText: /^Key combo/ } ).locator( 'input' ).fill( 'Ctrl+Alt+Del' );
+    await consolePanel.getByRole( 'button', { name: 'Send Keys', exact: true } ).click();
+    await expect( consolePanel.getByText( 'Sent key combo: Ctrl+Alt+Del', { exact: true } ) ).toBeVisible();
   } );
 
   test( 'opens xml editor and os list then applies changes', async ( { page } ) => {

@@ -7,6 +7,10 @@ public record VmWindowDto(
         VmWindowTab activeTab,
         String statusMessage,
         String consoleText,
-        String detailsText
+        String detailsText,
+        boolean consoleConnected,
+        String viewerType,
+        boolean fullscreen,
+        boolean keyboardGrabbed
 ) {
 }

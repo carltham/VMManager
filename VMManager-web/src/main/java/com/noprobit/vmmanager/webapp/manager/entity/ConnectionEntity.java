@@ -26,6 +26,9 @@ public class ConnectionEntity {
     @Column(nullable = false)
     private String uri;
 
+    @Column(nullable = false)
+    private boolean autoConnect;
+
     @OneToMany(mappedBy = "connection", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<VmEntity> vms = new ArrayList<>();
 
@@ -35,6 +38,7 @@ public class ConnectionEntity {
     public ConnectionEntity(String name, String uri) {
         this.name = name;
         this.uri = uri;
+        this.autoConnect = false;
     }
 
     public Long getId() {
@@ -47,6 +51,14 @@ public class ConnectionEntity {
 
     public String getUri() {
         return uri;
+    }
+
+    public boolean isAutoConnect() {
+        return autoConnect;
+    }
+
+    public void setAutoConnect(boolean autoConnect) {
+        this.autoConnect = autoConnect;
     }
 
     public List<VmEntity> getVms() {

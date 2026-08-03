@@ -12,17 +12,37 @@
         }
       </select>
     </label>
+    <label>Viewer
+      <select [(ngModel)]="view.selectedViewer">
+        <option value="graphics">Graphics</option>
+        <option value="serial">Serial</option>
+      </select>
+    </label>
+    <label>Key combo
+      <input type="text" [(ngModel)]="view.keyCombo" placeholder="Ctrl+Alt+Del" />
+    </label>
+    <label class="checkbox-label">
+      <input type="checkbox" [(ngModel)]="view.fullscreenEnabled" />
+      Fullscreen
+    </label>
     <div class="actions">
       <button type="button" (click)="openConsole()">Open</button>
       <button type="button" (click)="refreshConsole()">Status</button>
       <button type="button" (click)="runVm()">Run</button>
       <button type="button" (click)="pauseVm()">Pause</button>
+      <button type="button" (click)="connectViewer()">Connect Viewer</button>
+      <button type="button" (click)="toggleFullscreen()">Apply Fullscreen</button>
+      <button type="button" (click)="sendKeys()">Send Keys</button>
     </div>
   </div>
 
   @if (view.window) {
   <article>
     <h3>{{ view.window.vm.name }} / {{ view.window.activeTab }}</h3>
+    <p>Viewer: {{ view.window.viewerType }}</p>
+    <p>Console connected: {{ view.window.consoleConnected }}</p>
+    <p>Fullscreen: {{ view.window.fullscreen }}</p>
+    <p>Keyboard grabbed: {{ view.window.keyboardGrabbed }}</p>
     <pre>{{ view.window.consoleText }}</pre>
   </article>
   }

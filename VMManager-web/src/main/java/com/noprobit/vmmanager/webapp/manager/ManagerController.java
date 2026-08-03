@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.noprobit.vmmanager.webapp.manager.dto.ManagerHostDetailsDto;
 import com.noprobit.vmmanager.webapp.manager.dto.ManagerPreferencesDto;
+import com.noprobit.vmmanager.webapp.manager.dto.ManagerConnectionAutoconnectDto;
 
 @RestController
 @RequestMapping("/api/manager")
@@ -108,6 +110,20 @@ public class ManagerController {
         }
     }
 
+    @PatchMapping("/connections/{connectionId}/autoconnect")
+    public ManagerConnectionAutoconnectDto updateAutoconnect(
+            @PathVariable long connectionId,
+            @RequestBody AutoconnectRequest request) {
+        if (request == null || request.enabled() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Enabled flag is required");
+        }
+        try {
+            return managerService.updateAutoconnect(connectionId, request.enabled());
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
+    }
+
     @GetMapping("/preferences")
     public ManagerPreferencesDto preferences() {
         return managerService.preferences();
@@ -135,5 +151,8 @@ public class ManagerController {
     }
 
     public record CreateVmRequest(Long connectionId, String name) {
+    }
+
+    public record AutoconnectRequest(Boolean enabled) {
     }
 }
