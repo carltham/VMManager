@@ -1,5 +1,6 @@
 # Task 03 - vm-details
 
+
 ## Metadata
 
 - Status: in-progress

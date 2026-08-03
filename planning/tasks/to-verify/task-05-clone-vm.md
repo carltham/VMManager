@@ -1,5 +1,6 @@
 # Task 05 - clone-vm
 
+
 - Status: in-progress
 - Verify: 80%
 - Conversion Progress: [####################] 100%

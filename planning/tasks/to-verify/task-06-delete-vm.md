@@ -1,5 +1,6 @@
 # Task 06 - delete-vm
 
+
 - Status: in-progress
 - Verify: 0%
 - Conversion Progress: [####################] 100%
