@@ -21,6 +21,10 @@ export class OsListApiService {
     return this.vmDetailsApi.launchOsList(vmId);
   }
 
+  listChoices(vmId: number, query?: string) {
+    return this.vmDetailsApi.getOsList(vmId, query);
+  }
+
   choose(vmId: number, osName: string): Observable<VmDetailsView> {
     return this.vmDetailsApi.editGeneral(vmId, `os:${osName}`).pipe(switchMap(() => this.vmDetailsApi.apply(vmId)));
   }

@@ -174,6 +174,11 @@ test.describe.serial( 'tools workflows', () => {
     await expect( xml.getByText( 'Editor state: open', { exact: true } ) ).toBeVisible();
     await xml.locator( 'textarea' ).fill( '<domain type="kvm"><name>playwright</name></domain>' );
     await xml.getByRole( 'button', { name: 'Apply XML', exact: true } ).click();
+    await expect( xml.getByText( 'Validation errors:', { exact: true } ) ).toBeVisible();
+    await expect( xml.getByText( 'Missing memory element', { exact: true } ) ).toBeVisible();
+
+    await xml.locator( 'textarea' ).fill( '<domain type="kvm"><name>playwright</name><memory unit="MiB">4096</memory><devices/></domain>' );
+    await xml.getByRole( 'button', { name: 'Apply XML', exact: true } ).click();
     await expect( xml.getByText( 'Changes applied', { exact: true } ) ).toBeVisible();
 
     const osList = page.locator( 'app-os-list' );
@@ -182,6 +187,9 @@ test.describe.serial( 'tools workflows', () => {
     await osList.getByRole( 'button', { name: 'Open list', exact: true } ).click();
     await expect( osList.getByText( 'OS list launched', { exact: true } ) ).toBeVisible();
     await expect( osList.getByText( 'OS list state: open', { exact: true } ) ).toBeVisible();
+    await osList.locator( 'label', { hasText: /^Filter/ } ).locator( 'input' ).fill( 'ubuntu' );
+    await osList.getByRole( 'button', { name: 'Filter', exact: true } ).click();
+    await expect( osList.locator( 'label', { hasText: /Operating system/ } ).locator( 'select option' ) ).toHaveCount( 1 );
     await osList.locator( 'label', { hasText: /Operating system/ } ).locator( 'select' ).selectOption( 'Ubuntu 24.04' );
     await osList.getByRole( 'button', { name: 'Apply OS', exact: true } ).click();
     await expect( osList.locator( '.notice.success' ) ).toBeVisible();

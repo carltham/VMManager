@@ -81,4 +81,22 @@ export class VmDetailsApiService {
   apply(vmId: number): Observable<VmDetailsView> {
     return this.http.post<VmDetailsView>(`${this.baseUrl}/${vmId}/apply`, {});
   }
+
+  validateXml(vmId: number, xml: string): Observable<VmXmlValidationResult> {
+    return this.http.post<VmXmlValidationResult>(`${this.baseUrl}/${vmId}/xml/validate`, { value: xml });
+  }
+
+  getOsList(vmId: number, query?: string): Observable<VmOsListResult> {
+    const suffix = query ? `?query=${encodeURIComponent(query)}` : '';
+    return this.http.get<VmOsListResult>(`${this.baseUrl}/${vmId}/os-list${suffix}`);
+  }
+}
+
+export interface VmXmlValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
+export interface VmOsListResult {
+  items: Array<{ id: string; label: string; family: string }>;
 }

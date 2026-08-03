@@ -14,6 +14,12 @@ import com.noprobit.vmmanager.webapp.manager.ManagerVmDto;
 @Service
 public class VmDetailsService {
 
+    private static final List<VmOsListItemDto> DEFAULT_OS_CHOICES = List.of(
+            new VmOsListItemDto("fedora41", "Fedora 41", "linux"),
+            new VmOsListItemDto("ubuntu2404", "Ubuntu 24.04", "linux"),
+            new VmOsListItemDto("debian12", "Debian 12", "linux"),
+            new VmOsListItemDto("win11", "Windows 11", "windows"));
+
     private final ManagerService managerService;
     private final Map<Long, VmDetailsState> detailsByVm = new LinkedHashMap<>();
 
@@ -48,6 +54,7 @@ public class VmDetailsService {
         ManagerVmDto vm = managerService.getVm(vmId);
         VmDetailsState state = stateFor(vmId, vm);
         state.generalSettings = normalizeText(value, state.generalSettings);
+        state.validationErrors = List.of();
         state.statusMessage = "General settings updated";
         return build(vm, state);
     }
@@ -118,6 +125,7 @@ public class VmDetailsService {
         ManagerVmDto vm = managerService.getVm(vmId);
         VmDetailsState state = stateFor(vmId, vm);
         state.xmlEditorOpen = true;
+        state.validationErrors = List.of();
         state.statusMessage = "XML editor launched";
         return build(vm, state);
     }
@@ -134,8 +142,48 @@ public class VmDetailsService {
         ManagerVmDto vm = managerService.getVm(vmId);
         VmDetailsState state = stateFor(vmId, vm);
         state.osListOpen = true;
+        state.osChoices = DEFAULT_OS_CHOICES;
         state.statusMessage = "OS list launched";
         return build(vm, state);
+    }
+
+    public synchronized VmXmlValidationResponseDto validateXml(long vmId, String xml) {
+        ManagerVmDto vm = managerService.getVm(vmId);
+        VmDetailsState state = stateFor(vmId, vm);
+        List<String> errors = new ArrayList<>();
+        String value = xml == null ? "" : xml.trim();
+
+        if (value.isBlank() || !value.contains("<domain")) {
+            errors.add("Missing domain root element");
+        }
+        if (!value.contains("<memory")) {
+            errors.add("Missing memory element");
+        }
+
+        int nameIndex = value.indexOf("<name");
+        int devicesIndex = value.indexOf("<devices");
+        if (devicesIndex >= 0 && nameIndex >= 0 && devicesIndex < nameIndex) {
+            errors.add("Invalid devices ordering");
+        }
+
+        state.validationErrors = List.copyOf(errors);
+        state.statusMessage = errors.isEmpty() ? "XML validation passed" : "XML validation failed";
+        return new VmXmlValidationResponseDto(errors.isEmpty(), List.copyOf(errors));
+    }
+
+    public synchronized VmOsListResponseDto osList(long vmId, String query) {
+        managerService.getVm(vmId);
+        String normalizedQuery = query == null ? "" : query.trim().toLowerCase();
+        List<VmOsListItemDto> items = new ArrayList<>();
+        for (VmOsListItemDto item : DEFAULT_OS_CHOICES) {
+            if (normalizedQuery.isBlank()
+                    || item.label().toLowerCase().contains(normalizedQuery)
+                    || item.id().toLowerCase().contains(normalizedQuery)
+                    || item.family().toLowerCase().contains(normalizedQuery)) {
+                items.add(item);
+            }
+        }
+        return new VmOsListResponseDto(List.copyOf(items));
     }
 
     public synchronized VmDetailsDto applyChanges(long vmId) {
@@ -170,6 +218,8 @@ public class VmDetailsService {
         state.memoryMb = 4096;
         state.bootOrder = "disk,network";
         state.hardwareDevices = new ArrayList<>(List.of("disk", "network", "graphics"));
+        state.validationErrors = List.of();
+        state.osChoices = DEFAULT_OS_CHOICES;
         state.statusMessage = "Details ready";
         return state;
     }
@@ -187,7 +237,9 @@ public class VmDetailsService {
                 state.xmlEditorOpen,
                 state.storageBrowserOpen,
                 state.osListOpen,
-                state.statusMessage
+                state.statusMessage,
+                state.validationErrors,
+                state.osChoices
         );
     }
 
@@ -210,5 +262,7 @@ public class VmDetailsService {
         private boolean storageBrowserOpen;
         private boolean osListOpen;
         private String statusMessage;
+        private List<String> validationErrors;
+        private List<VmOsListItemDto> osChoices;
     }
 }

@@ -1,11 +1,11 @@
 # Task 38 - xml-editor-os-list
 
 
-- Status: todo
-- Verify: 0%
-- Conversion Progress: [....................] 0%
-- Verification Progress: [....................] 0%
-- TDD UI Integration Test Progress: [....................] 0%
+- Status: in-progress
+- Verify: 90%
+- Conversion Progress: [##################..] 90%
+- Verification Progress: [##################..] 90%
+- TDD UI Integration Test Progress: [##################..] 90%
 - Original project ROOT: /mnt/DATA/Projects/0.present-projects/Active/virt-manager/
 - UIModule: virtManager/xmleditor.py, virtManager/oslist.py, virtManager/lib/uiutil.py
 - Flow Classes: vmmXMLEditor -> vmmOSList
@@ -19,13 +19,13 @@
 
 ## Concrete Sprint Tasks
 
-- [ ] Implement POST `/api/vm-details/{vmId}/xml/validate` with deterministic validation error list.
-- [ ] Implement GET `/api/vm-details/{vmId}/os-list` and query filtering support.
-- [ ] Ensure existing launch-xml-editor, launch-os-list, and apply endpoints stay backward-compatible.
-- [ ] Replace Angular hardcoded OS list with backend-driven options and preserve fallback behavior.
-- [ ] Render XML validation errors before apply in Angular xml-editor flow.
-- [ ] Add backend tests for XML valid/invalid and OS list query filtering behavior.
-- [ ] Add frontend tests for validation-error rendering and OS list selection flow.
+- [x] Implement POST `/api/vm-details/{vmId}/xml/validate` with deterministic validation error list.
+- [x] Implement GET `/api/vm-details/{vmId}/os-list` and query filtering support.
+- [x] Ensure existing launch-xml-editor, launch-os-list, and apply endpoints stay backward-compatible.
+- [x] Replace Angular hardcoded OS list with backend-driven options and preserve fallback behavior.
+- [x] Render XML validation errors before apply in Angular xml-editor flow.
+- [x] Add backend tests for XML valid/invalid and OS list query filtering behavior.
+- [x] Add frontend tests for validation-error rendering and OS list selection flow.
 
 ### Validation Gate Commands
 
@@ -129,26 +129,26 @@ cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && 
 
 ### Backend Evidence
 
-- Files changed: <controller/service/dto/test files>
-- Command: <backend test/build command>
-- Result: <pass/fail + key output>
+- Files changed: `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmdetails/VmDetailsController.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmdetails/VmDetailsService.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmdetails/VmDetailsDto.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmdetails/VmXmlValidationResponseDto.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmdetails/VmOsListResponseDto.java`, `VMManager-web/src/main/java/com/noprobit/vmmanager/webapp/vmdetails/VmOsListItemDto.java`, `VMManager-web/src/test/java/com/noprobit/vmmanager/webapp/vmdetails/VmDetailsControllerTests.java`
+- Command: `cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web && ./mvnw -q -Dtest=VmDetailsControllerTests,VmWindowControllerTests,ManagerControllerTests,ConnectionAuthControllerTests test`
+- Result: pass (vm-details tests: 3 run, 0 failures)
 
 ### Frontend Evidence
 
-- Files changed: <component/service/model/template/style files>
-- Command: <frontend build/test command>
-- Result: <pass/fail + key output>
+- Files changed: `VMManager-web/angular/src/app/vm-details/vm-details-api.service.ts`, `VMManager-web/angular/src/app/vm-details/vm-details.models.ts`, `VMManager-web/angular/src/app/xml-editor/xml-editor-api.service.ts`, `VMManager-web/angular/src/app/xml-editor/xml-editor.component.ts`, `VMManager-web/angular/src/app/xml-editor/xml-editor.component.html`, `VMManager-web/angular/src/app/xml-editor/xml-editor.models.ts`, `VMManager-web/angular/src/app/os-list/os-list-api.service.ts`, `VMManager-web/angular/src/app/os-list/os-list.component.ts`, `VMManager-web/angular/src/app/os-list/os-list.component.html`, `VMManager-web/angular/src/app/os-list/os-list.models.ts`, `VMManager-web/angular/src/app/app.spec.ts`, `testing/playwright/tests/tools.spec.mjs`, `testing/playwright/tests/machines.spec.mjs`
+- Command: `cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/VMManager-web/angular && npm run build`
+- Result: pass
 
 ### Integration Evidence
 
-- Entry point: <how this flow is reached in app shell>
-- Executed actions: <which actions were exercised>
-- Result: <pass/fail + notes>
+- Entry point: App shell -> View -> Tools -> XML Editor and OS List panels
+- Executed actions: Open editor, apply invalid XML (show validation errors), apply valid XML, open OS list, filter by query, select/apply OS
+- Result: pass (`testing/playwright/tests/tools.spec.mjs`)
 
 ### Parity Evidence
 
-- Covered original flows: <list>
-- Known deviations: <none or explicit differences>
+- Covered original flows: open XML editor, edit/apply XML with validation, open OS list, filter OS entries, select/apply OS
+- Known deviations: backend uses deterministic mock validation/OS catalog; no real libvirt XML parse or host OS introspection
 
 ## Integration Test Evidence
 
@@ -160,15 +160,15 @@ cd /mnt/DATA/Projects/0.present-projects/Active/VMManager/testing/playwright && 
 
 ### Angular Integration or E2E Match
 
-- Test file(s): <angular integration/e2e test paths>
-- Cases: <case names>
-- Result: <pass/fail>
+- Test file(s): `testing/playwright/tests/tools.spec.mjs`
+- Cases: `opens xml editor and os list then applies changes`
+- Result: pass
 
 ### Mapping Table
 
 | Python test case | Angular test case | Status |
 | --- | --- | --- |
-| <python_case_1> | <angular_case_1> | <pass/fail> |
+| xml validation + os list selection flow | opens xml editor and os list then applies changes | pass |
 
 ### Notes
 

@@ -16,6 +16,8 @@ public record VmDetailsDto(
         boolean xmlEditorOpen,
         boolean storageBrowserOpen,
         boolean osListOpen,
-        String statusMessage
+        String statusMessage,
+        List<String> validationErrors,
+        List<VmOsListItemDto> osChoices
 ) {
 }

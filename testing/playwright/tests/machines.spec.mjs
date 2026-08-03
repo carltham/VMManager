@@ -22,10 +22,10 @@ test.describe.serial( 'machine workflows',() => {
     await inputs.nth( 4 ).fill( '/tmp/import.qcow2' );
     await inputs.nth( 5 ).fill( '/tmp/app' );
     await inputs.nth( 6 ).fill( '/tmp/container' );
-    const detectOs = inputs.nth( 7 );
-    const storageEnabled = inputs.nth( 8 );
-    await detectOs.setChecked( !( await detectOs.isChecked() ) );
-    await storageEnabled.setChecked( !( await storageEnabled.isChecked() ) );
+    const detectOs = wizard.getByLabel( 'Detect OS' );
+    const storageEnabled = wizard.getByLabel( 'Enable Storage' );
+    await detectOs.click();
+    await storageEnabled.click();
     await inputs.nth( 9 ).fill( 'x86_64' );
     await inputs.nth( 10 ).fill( 'kvm' );
     await inputs.nth( 11 ).fill( 'q35' );

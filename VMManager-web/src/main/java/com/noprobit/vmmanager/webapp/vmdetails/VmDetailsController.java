@@ -2,10 +2,12 @@ package com.noprobit.vmmanager.webapp.vmdetails;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -110,7 +112,36 @@ public class VmDetailsController {
         return execute(() -> vmDetailsService.applyChanges(vmId));
     }
 
+    @PostMapping("/{vmId}/xml/validate")
+    public VmXmlValidationResponseDto validateXml(@PathVariable long vmId, @RequestBody TextRequest request) {
+        if (request == null || request.value() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "xml payload is required");
+        }
+        return executeValidation(() -> vmDetailsService.validateXml(vmId, request.value()));
+    }
+
+    @GetMapping("/{vmId}/os-list")
+    public VmOsListResponseDto osList(@PathVariable long vmId, @RequestParam(required = false) String query) {
+        return executeList(() -> vmDetailsService.osList(vmId, query));
+    }
+
     private VmDetailsDto execute(VmDetailsOperation operation) {
+        try {
+            return operation.run();
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
+    }
+
+    private VmXmlValidationResponseDto executeValidation(VmValidationOperation operation) {
+        try {
+            return operation.run();
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
+    }
+
+    private VmOsListResponseDto executeList(VmOsListOperation operation) {
         try {
             return operation.run();
         } catch (IllegalArgumentException ex) {
@@ -121,6 +152,16 @@ public class VmDetailsController {
     @FunctionalInterface
     private interface VmDetailsOperation {
         VmDetailsDto run();
+    }
+
+    @FunctionalInterface
+    private interface VmValidationOperation {
+        VmXmlValidationResponseDto run();
+    }
+
+    @FunctionalInterface
+    private interface VmOsListOperation {
+        VmOsListResponseDto run();
     }
 
     public record TextRequest(String value) {

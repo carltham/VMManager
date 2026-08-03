@@ -21,6 +21,10 @@ export class XmlEditorApiService {
     return this.vmDetailsApi.launchXmlEditor(vmId);
   }
 
+  validate(vmId: number, xml: string) {
+    return this.vmDetailsApi.validateXml(vmId, xml);
+  }
+
   save(vmId: number, value: string): Observable<VmDetailsView> {
     return this.vmDetailsApi.editGeneral(vmId, value).pipe(switchMap(() => this.vmDetailsApi.apply(vmId)));
   }

@@ -5,6 +5,7 @@ export interface XmlEditorView {
   selectedVmId: number | null;
   xmlText: string;
   editorOpen: boolean;
+  validationErrors: string[];
   statusMessage: string;
   errorMessage: string;
 }

@@ -57,6 +57,8 @@ describe('App', () => {
         storageBrowserOpen: false,
         osListOpen: false,
         statusMessage: 'Details opened',
+        validationErrors: [],
+        osChoices: [],
       }),
   };
 

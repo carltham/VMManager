@@ -20,6 +20,7 @@ export class XmlEditorComponent implements OnInit {
     selectedVmId: null,
     xmlText: '<domain/>',
     editorOpen: false,
+    validationErrors: [],
     statusMessage: '',
     errorMessage: '',
   };
@@ -60,13 +61,28 @@ export class XmlEditorComponent implements OnInit {
       return;
     }
 
-    this.api.save(this.view.selectedVmId, this.view.xmlText).subscribe({
-      next: (details) => {
-        this.view.statusMessage = details.statusMessage;
-        this.view.errorMessage = '';
+    this.api.validate(this.view.selectedVmId, this.view.xmlText).subscribe({
+      next: (validation) => {
+        this.view.validationErrors = validation.errors;
+        if (!validation.valid) {
+          this.view.statusMessage = 'XML validation failed';
+          this.view.errorMessage = '';
+          return;
+        }
+
+        this.api.save(this.view.selectedVmId!, this.view.xmlText).subscribe({
+          next: (details) => {
+            this.view.validationErrors = details.validationErrors;
+            this.view.statusMessage = details.statusMessage;
+            this.view.errorMessage = '';
+          },
+          error: () => {
+            this.view.errorMessage = 'Failed to save XML changes.';
+          },
+        });
       },
       error: () => {
-        this.view.errorMessage = 'Failed to save XML changes.';
+        this.view.errorMessage = 'Failed to validate XML.';
       },
     });
   }

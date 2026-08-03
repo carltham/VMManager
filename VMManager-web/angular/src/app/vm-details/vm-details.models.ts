@@ -13,4 +13,12 @@ export interface VmDetailsView {
   storageBrowserOpen: boolean;
   osListOpen: boolean;
   statusMessage: string;
+  validationErrors: string[];
+  osChoices: VmDetailsOsChoice[];
+}
+
+export interface VmDetailsOsChoice {
+  id: string;
+  label: string;
+  family: string;
 }

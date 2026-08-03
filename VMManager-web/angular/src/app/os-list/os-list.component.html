@@ -10,14 +10,18 @@
       </select>
     </label>
     <label>Operating system
-      <select [(ngModel)]="view.selectedOs">
+      <select [(ngModel)]="view.selectedOsId">
         @for (os of view.osChoices; track os) {
-        <option [value]="os">{{ os }}</option>
+        <option [value]="os.id">{{ os.label }}</option>
         }
       </select>
     </label>
+    <label>Filter
+      <input type="text" [(ngModel)]="view.query" placeholder="fedora, ubuntu..." />
+    </label>
     <div class="actions">
       <button type="button" (click)="open()">Open list</button>
+      <button type="button" (click)="filter()">Filter</button>
       <button type="button" (click)="apply()">Apply OS</button>
     </div>
   </div>
